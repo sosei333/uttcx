@@ -15,14 +15,27 @@ import {
 } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import SearchIcon from '@mui/icons-material/Search';
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const drawerWidth = 240;
-
 interface RootLayoutProps {
     children: ReactNode;
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+    const menuItems = [
+        { text: 'Home', icon: <HomeIcon /> },
+        { text: 'Explore', icon: <SearchIcon /> },
+        { text: 'Communities', icon: <GroupIcon /> },
+        { text: 'Settings', icon: <SettingsIcon /> },
+        { text: 'Profile', icon: <PersonIcon /> },
+    ];
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -50,13 +63,13 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
+                        {menuItems.map((item, index) => (
+                            <ListItem key={item.text} disablePadding>
                                 <ListItemButton>
                                     <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                        {item.icon}
                                     </ListItemIcon>
-                                    <ListItemText primary={text} />
+                                    <ListItemText primary={item.text} />
                                 </ListItemButton>
                             </ListItem>
                         ))}

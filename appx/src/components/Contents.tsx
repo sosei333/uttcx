@@ -3,15 +3,17 @@ import { auth } from "../firebase";
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
 import '../App.css';
 import RootLayout from "./Rootlayout";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './Home';
 import About from './About';
 import Contact from './Contact';
 
 const Contents: React.FC = () => {
+    const navigate = useNavigate();
     const handleSignOut = () => {
         signOut(auth).then(() => {
             alert("ログアウトしました");
+            navigate('/');
         }).catch(error => {
             alert("ログアウトに失敗しました: " + error.message);
         });
