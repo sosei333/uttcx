@@ -4,36 +4,21 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Rootlayout from './components/Rootlayout';
-import Contents from './components/Contents';
-import { Box, Typography, Button } from '@mui/material';
+import RootLayout from './components/RootLayout';
+import Home from './components/Home';
 
-const HomeHome: React.FC = () => { //未使用
-  const handleLogout = async () => {
-    await auth.signOut();
-  };
+import { Box, Typography, Button, CircularProgress } from '@mui/material';
+import { Explore } from '@mui/icons-material';
 
+const Title: React.FC = () => {
   return (
-    <Box textAlign="center">
-      <Typography variant="h4" mb={2}>Twitter</Typography>
-      <Typography variant="h6">ようこそ, {auth.currentUser?.email} さん</Typography>
-      <Button variant="contained" color="secondary" onClick={handleLogout} style={{ marginTop: '16px' }}>
-        ログアウト
-      </Button>
-      <Box mt={2}>
-        <Link to="/contents">
-          <Button variant="contained" color="primary">コンテンツページへ</Button>
-        </Link>
-      </Box>
-    </Box>
-  );
-};
-
-const Home: React.FC = () => {
-
-  return (
-    <Box textAlign="center">
-      <Typography variant="h4" mb={2}>Twitter</Typography>
+    <Box textAlign="center" mt={4}>
+      <Typography variant="h4" mb={2} sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+        Twitter
+      </Typography>
+      <Typography variant="subtitle1" color="textSecondary">
+        あなたのソーシャルメディアの出発点
+      </Typography>
     </Box>
   );
 };
@@ -51,7 +36,12 @@ const App: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <Typography variant="h6">Loading...</Typography>;
+    return (
+      <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
+        <CircularProgress />
+        <Typography variant="h6" ml={2}>Loading...</Typography>
+      </Box>
+    );
   }
 
   return (
@@ -61,27 +51,46 @@ const App: React.FC = () => {
   );
 };
 
-// <Router> の中で useLocation を使うために MainContent コンポーネントを分離
 const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
   const location = useLocation();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="50vh">
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="80vh" sx={{ bgcolor: 'background.default', padding: 3 }}>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/contents" element={user ? <Contents /> : <Navigate to="/login" />} />
+        {/* ログイン前のルート */}
+        {!user ? (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </>
+        ) : (
+          // ログイン後のルート（RootLayoutでラップ）
+          <Route element={<RootLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="*" element={<Navigate to="/contents" />} />
+          </Route>
+        )}
       </Routes>
-      <Box mt={2}>
+
+      {/* ログイン前のメニュー表示 */}
+      <Box mt={4} textAlign="center">
         {!user && !['/login', '/signup'].includes(location.pathname) && (
           <>
-            <Home></Home>
-            <Link to="/login" style={{ marginRight: 16 }}>
-              <Button variant="contained" color="primary">ログイン</Button>
-            </Link>
-            <Link to="/signup">
-              <Button variant="contained" color="primary">新規登録</Button>
-            </Link>
+            <Title />
+            <Box mt={2}>
+              <Link to="/login" style={{ marginRight: 16, textDecoration: 'none' }}>
+                <Button variant="contained" color="primary" sx={{ minWidth: 120 }}>
+                  ログイン
+                </Button>
+              </Link>
+              <Link to="/signup" style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" color="primary" sx={{ minWidth: 120 }}>
+                  アカウントを作成
+                </Button>
+              </Link>
+            </Box>
           </>
         )}
       </Box>
