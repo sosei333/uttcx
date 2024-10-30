@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     CssBaseline,
@@ -12,6 +13,7 @@ import {
     ListItemIcon,
     ListItemText,
     Divider,
+    Button
 } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
@@ -21,20 +23,23 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
+
 interface RootLayoutProps {
     children: ReactNode;
 }
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     const menuItems = [
-        { text: 'Home', icon: <HomeIcon /> },
-        { text: 'Explore', icon: <SearchIcon /> },
-        { text: 'Communities', icon: <GroupIcon /> },
-        { text: 'Settings', icon: <SettingsIcon /> },
-        { text: 'Profile', icon: <PersonIcon /> },
+        { text: 'Home', link: './home', icon: <HomeIcon /> },
+        { text: 'Explore', link: '/explore', icon: <SearchIcon /> },
+        { text: 'Communities', link: '/communities', icon: <GroupIcon /> },
+        { text: 'Settings', link: '/settings', icon: <SettingsIcon /> },
+        { text: 'Profile', link: '/profile', icon: <PersonIcon /> },
     ];
+    const navigate = useNavigate();
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -65,7 +70,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                     <List>
                         {menuItems.map((item, index) => (
                             <ListItem key={item.text} disablePadding>
-                                <ListItemButton>
+                                <ListItemButton onClick={() => navigate(item.link)}>
                                     <ListItemIcon>
                                         {item.icon}
                                     </ListItemIcon>
