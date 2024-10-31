@@ -67,6 +67,9 @@ const Signup: React.FC = () => {
             <Button variant="contained" color="primary" onClick={handleSignup} fullWidth>
                 新規登録
             </Button>
+            <Button variant="outlined" color="primary" onClick={()=>navigate('/login')} fullWidth sx={{ mt: 2 }}>
+                ログイン
+            </Button>
             <Button variant="outlined" color="secondary" onClick={handleBackToHome} fullWidth sx={{ mt: 2 }}>
                 トップページに戻る
             </Button>

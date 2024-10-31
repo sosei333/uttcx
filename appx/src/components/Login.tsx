@@ -50,6 +50,9 @@ const Login: React.FC = () => {
             <Button variant="contained" color="primary" onClick={handleLogin} fullWidth>
                 ログイン
             </Button>
+            <Button variant="outlined" color="primary" onClick={()=>navigate('/signup')} fullWidth sx={{ mt: 2 }}>
+                アカウントを作成
+            </Button>
             <Button variant="outlined" color="secondary" onClick={handleBackToHome} fullWidth sx={{ mt: 2 }}>
                 トップページに戻る
             </Button>
