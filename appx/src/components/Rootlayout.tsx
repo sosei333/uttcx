@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 import {
     Box,
     CssBaseline,
@@ -13,6 +15,7 @@ import {
     ListItemIcon,
     ListItemText,
     Divider,
+    Button,
 } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
@@ -36,7 +39,17 @@ const RootLayout: React.FC<RootLayoutProps> = () => {
         { text: 'Settings',link:'./explore', icon: <SettingsIcon /> },
         { text: 'Profile',link:'./explore', icon: <PersonIcon /> },
     ];
+
     const navigate=useNavigate();
+
+    const handleSignOut = () => {
+        signOut(auth).then(() => {
+            alert("ログアウトしました");
+            navigate('/');
+        }).catch(error => {
+            alert("ログアウトに失敗しました: " + error.message);
+        });
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -69,6 +82,11 @@ const RootLayout: React.FC<RootLayoutProps> = () => {
                         ))}
                     </List>
                     <Divider />
+                    <Box sx={{p:2}}>
+                        <Button onClick={handleSignOut} variant='contained' color='secondary' fullWidth>
+                            ログアウト
+                        </Button>
+                    </Box>
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
