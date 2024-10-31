@@ -2,7 +2,7 @@
 import React from 'react';
 
 const Explore: React.FC = () => {
-    return <h1>Contact Us</h1>;
+    return <h1>Explore</h1>;
 };
 
 export default Explore;

@@ -4,11 +4,11 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Explore from './components/Explore';
 import RootLayout from './components/RootLayout';
 import Home from './components/Home';
 
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
-import { Explore } from '@mui/icons-material';
 
 const Title: React.FC = () => {
   return (
@@ -62,7 +62,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         ) : (
           // ログイン後のルート（RootLayoutでラップ）

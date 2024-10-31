@@ -30,11 +30,11 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = () => {
     const menuItems = [
-        { text: 'Home', link:'./Home', icon: <HomeIcon /> },
-        { text: 'Explore',link:'./Explore', icon: <SearchIcon /> },
-        { text: 'Communities', link:'./Explore',icon: <GroupIcon /> },
-        { text: 'Settings',link:'./Explore', icon: <SettingsIcon /> },
-        { text: 'Profile',link:'./Explore', icon: <PersonIcon /> },
+        { text: 'Home', link:'./home', icon: <HomeIcon /> },
+        { text: 'Explore',link:'./explore', icon: <SearchIcon /> },
+        { text: 'Communities', link:'./explore',icon: <GroupIcon /> },
+        { text: 'Settings',link:'./explore', icon: <SettingsIcon /> },
+        { text: 'Profile',link:'./explore', icon: <PersonIcon /> },
     ];
     const navigate=useNavigate();
 
@@ -44,7 +44,7 @@ const RootLayout: React.FC<RootLayoutProps> = () => {
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap component="div">
-                        Clipped drawer
+                        Twitter
                     </Typography>
                 </Toolbar>
             </AppBar>
