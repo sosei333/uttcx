@@ -78,6 +78,17 @@ const RootLayout: React.FC<RootLayoutProps> = () => {
                         ))}
                     </List>
                     <Divider />
+                    <List>
+                        {menuItems.map((item, index) => (
+                            <ListItem key={item.text} disablePadding>
+                                <ListItemButton onClick={()=>navigate(item.link)}>
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider/>
                     <Box sx={{ p: 2 }}>
                         <Button variant="contained" onClick={handleSignOut} color="secondary" fullWidth>
                             ログアウト
