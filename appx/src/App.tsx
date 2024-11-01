@@ -5,10 +5,11 @@ import { auth } from './firebase';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import RootLayout from './components/RootLayout';
+import Explore from './components/Explore';
 import Home from './components/Home';
 
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
-import { Explore } from '@mui/icons-material';
+
 
 const Title: React.FC = () => {
   return (
