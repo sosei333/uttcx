@@ -29,10 +29,6 @@ const Signup: React.FC = () => {
         }
     };
 
-    const handleBackToHome = () => {
-        navigate('/');
-    };
-
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh">
             <Typography variant="h4" mb={2}>新規登録</Typography>
@@ -64,10 +60,13 @@ const Signup: React.FC = () => {
                 margin="normal"
                 fullWidth
             />
-            <Button variant="contained" color="primary" onClick={handleSignup} fullWidth>
+            <Button variant="contained" color="primary" onClick={handleSignup} fullWidth sx={{ mt: 2 }}>
                 新規登録
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleBackToHome} fullWidth sx={{ mt: 2 }}>
+            <Button variant="outlined" color="primary" onClick={()=>navigate('/login')} fullWidth sx={{ mt: 2 }}>
+                ログイン
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={()=>navigate('/')} fullWidth sx={{ mt: 2 }}>
                 トップページに戻る
             </Button>
         </Box>

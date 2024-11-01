@@ -62,14 +62,14 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<Navigate to="/login" />} />
+            {/*<Route path="*" element={<Navigate to="/login" />} />*/}
           </>
         ) : (
           // ログイン後のルート（RootLayoutでラップ）
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
-            <Route path="*" element={<Navigate to="/contents" />} />
+            <Route path="*" element={<Navigate to="/home" />} />
           </Route>
         )}
       </Routes>
