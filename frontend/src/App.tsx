@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } f
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Login from './components/Login';
-import Signup from './components/Signup';
+import SignUp from './components/SignUp';
 import RootLayout from './components/RootLayout';
 import Explore from './components/Explore';
 import Home from './components/Home';
@@ -62,7 +62,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
         {!user ? (
           <>
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<SignUp />} />
             {/*<Route path="*" element={<Navigate to="/login" />} />*/}
           </>
         ) : (
