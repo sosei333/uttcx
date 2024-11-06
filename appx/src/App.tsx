@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } f
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Login from './components/Login';
-import Signup from './components/Signup';
+import Signup from './pages/Signup';
 import RootLayout from './components/RootLayout';
 import Explore from './components/Explore';
 import Home from './components/Home';
