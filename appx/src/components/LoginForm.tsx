@@ -1,35 +1,28 @@
+// components/SignupForm.tsx
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
+interface LoginFormProps {
+    onLogin: (email: string, password: string) => void;
+    error: string | null;
+    success: string | null;
+}
 
-const Login: React.FC = () => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
-        const auth = getAuth();
-        setError(null);
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/home')
-        } catch (error: any) {
-            setError(error.message);
-        }
-    };
-
-    const handleBackToHome = () => {
-        navigate('/');
+    const handleSubmit = () => {
+        onLogin(email, password);
     };
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh">
             <Typography variant="h4" mb={2}>ログイン</Typography>
             {error && <Alert severity="error">{error}</Alert>}
+            {success && <Alert severity="success">{success}</Alert>}
             <TextField
                 label="メールアドレス"
                 variant="outlined"
@@ -47,17 +40,17 @@ const Login: React.FC = () => {
                 margin="normal"
                 fullWidth
             />
-            <Button variant="contained" color="primary" onClick={handleLogin} fullWidth sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth sx={{ mt: 2 }}>
                 ログイン
             </Button>
-            <Button variant="outlined" color="primary" onClick={()=>navigate('/signup')} fullWidth　sx={{ mt: 2 }}>
-                アカウントを作成
+            <Button variant="outlined" color="primary" onClick={() => navigate('/signup')} fullWidth sx={{ mt: 2 }}>
+                新規登録
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleBackToHome} fullWidth sx={{ mt: 2 }}>
+            <Button variant="outlined" color="secondary" onClick={() => navigate('/')} fullWidth sx={{ mt: 2 }}>
                 トップページに戻る
             </Button>
         </Box>
     );
 };
 
-export default Login;
+export default LoginForm;

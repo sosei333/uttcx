@@ -1,32 +1,22 @@
+// components/SignupForm.tsx
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Signup: React.FC = () => {
+interface SignupFormProps {
+    onSignup: (email: string, password: string, confirmPassword: string) => void;
+    error: string | null;
+    success: string | null;
+}
+
+const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSignup = async () => {
-        setError(null);
-        setSuccess(null);
-
-        if (password !== confirmPassword) {
-            setError('パスワードが一致しません。');
-            return;
-        }
-
-        try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            setSuccess('新規登録が成功しました。ログインしてください。');
-        } catch (error: any) {
-            setError(error.message);
-        }
+    const handleSubmit = () => {
+        onSignup(email, password, confirmPassword);
     };
 
     return (
@@ -60,17 +50,17 @@ const Signup: React.FC = () => {
                 margin="normal"
                 fullWidth
             />
-            <Button variant="contained" color="primary" onClick={handleSignup} fullWidth sx={{ mt: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth sx={{ mt: 2 }}>
                 新規登録
             </Button>
-            <Button variant="outlined" color="primary" onClick={()=>navigate('/login')} fullWidth sx={{ mt: 2 }}>
+            <Button variant="outlined" color="primary" onClick={() => navigate('/login')} fullWidth sx={{ mt: 2 }}>
                 ログイン
             </Button>
-            <Button variant="outlined" color="secondary" onClick={()=>navigate('/')} fullWidth sx={{ mt: 2 }}>
+            <Button variant="outlined" color="secondary" onClick={() => navigate('/')} fullWidth sx={{ mt: 2 }}>
                 トップページに戻る
             </Button>
         </Box>
     );
 };
 
-export default Signup;
+export default SignupForm;
