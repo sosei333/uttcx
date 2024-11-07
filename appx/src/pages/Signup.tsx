@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
     const { handleSignup, error, success } = useSignup();
-    const navigate = useNavigate();
 
     return (
         <SignupForm

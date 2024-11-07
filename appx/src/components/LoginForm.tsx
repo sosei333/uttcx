@@ -1,6 +1,7 @@
 // components/SignupForm.tsx
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
     onLogin: (email: string, password: string) => void;
@@ -11,6 +12,7 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
         onLogin(email, password);
@@ -39,7 +41,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
                 fullWidth
             />
             <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth sx={{ mt: 2 }}>
+                ログイン
+            </Button>
+            <Button variant="outlined" color="primary" onClick={() => navigate('/signup')} fullWidth sx={{ mt: 2 }}>
                 新規登録
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={() => navigate('/')} fullWidth sx={{ mt: 2 }}>
+                トップページに戻る
             </Button>
         </Box>
     );
