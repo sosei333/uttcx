@@ -1,5 +1,5 @@
 // services/authService.ts
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
 interface User {
@@ -22,3 +22,7 @@ export const registerUserToBackend = async (user: User): Promise<void> => {
     });
     if (!response.ok) throw new Error("Failed to register user to backend");
 };
+
+export const signinWithFirebase = async (email:string, password:string)=>{
+    signInWithEmailAndPassword(auth, email, password);
+}
