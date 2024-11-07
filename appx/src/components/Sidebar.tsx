@@ -1,14 +1,14 @@
 import React from 'react';
-import { Toolbar, Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button } from '@mui/material';
+import { Toolbar, Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../constants/MenuItems';
-import useSignOut from '../hooks/useSignOut';
+import SignOutButton from './atoms/SignOutButton';
+import PostButton from './atoms/PostButton';
 
 const drawerWidth = 240;
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
-    const handleSignOut = useSignOut();
 
     return (
         <Drawer
@@ -31,12 +31,11 @@ const Sidebar: React.FC = () => {
                         </ListItem>
                     ))}
                 </List>
-                <Divider/>
+                <Divider />
             </Box>
             <Box sx={{ p: 2 }}>
-                <Button variant="contained" onClick={handleSignOut} color="secondary" fullWidth>
-                    ログアウト
-                </Button>
+                <PostButton />
+                <SignOutButton />
             </Box>
         </Drawer>
     );
