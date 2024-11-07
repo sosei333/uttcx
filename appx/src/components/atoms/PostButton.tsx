@@ -22,7 +22,7 @@ const PostButton: React.FC = () => {
 
     return (
         <>
-            <Fab color="success" aria-label="add" size="large" sx={{m:8,p:4}}>
+            <Fab onClick={handleClickOpen} color="success" aria-label="add" size="large" sx={{m:8,p:4}}>
                 <DrawOutlinedIcon />
             </Fab>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
