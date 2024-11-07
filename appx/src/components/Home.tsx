@@ -1,4 +1,3 @@
-import { auth } from "../firebase";
 import { Box } from '@mui/material';
 
 const Home: React.FC = () => {
@@ -9,6 +8,7 @@ const Home: React.FC = () => {
             alignItems="center"
             justifyContent="flex-start"
             height="100vh"               // 画面の高さ全体を使う
+            width="60vw"
             padding={2}                  // 内側の余白
         >
             <Box
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
                 {/* サンプルコンテンツを追加 */}
                 {[...Array(20)].map((_, i) => (
                     <Box key={i} p={2} my={1} border="1px solid #ccc" borderRadius={2} width="100%">
-                        コンテンツ {i + 1}
+                        コンテンツ{i + 1}
                     </Box>
                 ))}
             </Box>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Fab, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 
 const PostButton: React.FC = () => {
@@ -22,9 +22,9 @@ const PostButton: React.FC = () => {
 
     return (
         <>
-            <Button variant="contained" color="success" endIcon={<DrawOutlinedIcon />} size="large" fullWidth sx={{ my: 2 }} onClick={handleClickOpen}>
-                投稿
-            </Button>
+            <Fab color="success" aria-label="add" size="large" sx={{m:8,p:4}}>
+                <DrawOutlinedIcon />
+            </Fab>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
                 <DialogTitle>新しい投稿</DialogTitle>
                 <DialogContent>
