@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import PostBox from './PostBox';
 
 const Home: React.FC = () => {
     return (
@@ -7,9 +8,9 @@ const Home: React.FC = () => {
             flexDirection="column"
             alignItems="center"
             justifyContent="flex-start"
-            height="100vh"               // 画面の高さ全体を使う
+            height="100vh"
             width="60vw"
-            padding={2}                  // 内側の余白
+            padding={2}
         >
             <Box
                 display="flex"
@@ -18,14 +19,17 @@ const Home: React.FC = () => {
                 justifyContent="flex-start"
                 height="100%"
                 width="100%"
-                overflow="auto"           // スクロールを可能にする
-                padding={2}               // 内側の余白
+                overflow="auto"
+                padding={2}
             >
-                {/* サンプルコンテンツを追加 */}
+                {/* 投稿を表示するためのサンプルデータ */}
                 {[...Array(20)].map((_, i) => (
-                    <Box key={i} p={2} my={1} border="1px solid #ccc" borderRadius={2} width="100%">
-                        コンテンツ{i + 1}
-                    </Box>
+                    <PostBox
+                        key={i}
+                        content={`コンテンツ${i + 1}`}
+                        author={`ユーザー${i + 1}`}
+                        date={`2024-11-08`}
+                    />
                 ))}
             </Box>
         </Box>
