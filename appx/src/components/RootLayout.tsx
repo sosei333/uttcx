@@ -35,7 +35,6 @@ const RootLayout: React.FC = () => {
                     component="main"
                     sx={{
                         flexGrow: 2,
-                        p: 2,
                         ml: 5,
                         borderRight: '1px solid #ccc', // 境界線を追加（オプション）
                     }}
@@ -46,7 +45,6 @@ const RootLayout: React.FC = () => {
                 <Box
                     sx={{
                         flexGrow: 2,
-                        p: 3,
                         backgroundColor: '#f5f5f5', // 背景色を設定
                         minWidth: '250px',           // 最小幅を設定
                     }}

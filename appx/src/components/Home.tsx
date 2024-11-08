@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import PostBox from './PostBox';
+import PostBox from './organisms/PostBox';
 
 const Home: React.FC = () => {
     return (
