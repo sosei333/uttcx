@@ -1,29 +1,30 @@
-# Step 1: Build the Go application
-FROM golang:1.23 AS builder  
+# Step 1: Use a smaller Go image for building
+FROM golang:1.18-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy only the Go module files and download dependencies (cache optimization)
-COPY go.mod go.sum ./
+# Copy go.mod and go.sum to download dependencies
+COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
 # Copy the rest of the source code
-COPY . .
+COPY backend/ .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
+RUN go build -o main ./cmd/main.go
 
-# Step 2: Create a minimal runtime image
-FROM scratch
+# Step 2: Use a minimal runtime image
+FROM alpine:latest
 
 # Set the working directory in the container
-WORKDIR /root/
+WORKDIR /app
 
 # Copy the built Go binary from the builder stage
 COPY --from=builder /app/main .
 
-# Expose port 8080
+# Expose the port specified by the Cloud Run environment variable
+# Cloud Run sets PORT to 8080 by default
 EXPOSE 8080
 
 # Command to run the application
