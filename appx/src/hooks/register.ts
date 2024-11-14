@@ -5,8 +5,8 @@ export const registerUserToBackend=async (userId:string, userName:string)=> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: userId,
-        user_name: userName,
+        ID: userId,
+        UserName: userName,
       }),
     });
   

@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  x_db:
+    container_name: x_db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/x86_64
+    tty: true
+    ports:
+      - 3306:3306
+    env_file:
+      - ./.env
+    volumes:
+      - type: volume
+        source: x_mysql
+        target: /var/lib/mysql
+      - type: bind
+        source: ./init
+        target: /docker-entrypoint-initdb.d
+
+volumes:
+  x_mysql:
+    name: x_mysql
