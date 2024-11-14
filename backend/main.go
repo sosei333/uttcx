@@ -14,8 +14,8 @@ import (
 )
 
 type User struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	id        string `json:"id"`
+	user_name string `json:"user_name"`
 }
 
 var db *sql.DB
@@ -47,41 +47,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
-	case http.MethodGet:
-		name := r.URL.Query().Get("name")
-		if name == "" {
-			log.Println("fail: name is empty")
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		rows, err := db.Query("SELECT id, name FROM users WHERE name = ?", name)
-		if err != nil {
-			log.Printf("fail: db.Query, %v\n", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		defer rows.Close()
-
-		users := make([]User, 0)
-		for rows.Next() {
-			var u User
-			if err := rows.Scan(&u.Id, &u.Name); err != nil {
-				log.Printf("fail: rows.Scan, %v\n", err)
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			users = append(users, u)
-		}
-
-		bytes, err := json.Marshal(users)
-		if err != nil {
-			log.Printf("fail: json.Marshal, %v\n", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(bytes)
 
 	case http.MethodPost:
 		var newUser User
@@ -90,8 +55,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		print(newUser.Id)
-		_, err := db.Exec("INSERT INTO users (id, email) VALUES (?, ?)", newUser.Id, newUser.Name)
+
+		_, err := db.Exec("INSERT INTO users (id, user_name) VALUES (?, ?)", newUser.id, newUser.user_name)
 		if err != nil {
 			log.Printf("fail: db.Exec, %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)
