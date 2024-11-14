@@ -12,7 +12,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main go.main
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main.go
 
 # Step 2: Create a minimal runtime image
 FROM alpine:latest
