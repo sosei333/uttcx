@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  uttcx_db:
+    container_name: uttcx-db-v2
+    image: mysql:8.0
+    platform: linux/x86_64
+    environment:
+      MYSQL_USER: sosei
+      MYSQL_PASSWORD: Niko#124
+      MYSQL_ROOT_PASSWORD: Niko#124
+      MYSQL_DATABASE: hackathon
+    ports:
+      - "3306:3306"
+    volumes:
+      - type: volume
+        source: uttcx_mysql
+        target: /var/lib/mysql
+      - type: bind
+        source: ./init
+        target: /docker-entrypoint-initdb.d
+    tty: true
+
+volumes:
+  uttcx_mysql:
+    name: uttcx_mysql
