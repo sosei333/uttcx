@@ -4,7 +4,7 @@ import { TextField, Button, Box, Typography, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 interface SignupFormProps {
-    onSignup: (email: string, password: string, confirmPassword: string) => void;
+    onSignup: (email: string, name: string, password: string, confirmPassword: string) => void;
     error: string | null;
     success: string | null;
 }
@@ -12,11 +12,12 @@ interface SignupFormProps {
 const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        onSignup(email, password, confirmPassword);
+        onSignup(email, name, password, confirmPassword);
     };
 
     return (
@@ -29,6 +30,15 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                margin="normal"
+                fullWidth
+            />
+            <TextField
+                label="ユーザー名"
+                type="string"
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 margin="normal"
                 fullWidth
             />
