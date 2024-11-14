@@ -1,5 +1,5 @@
 # Step 1: Build the Go application
-FROM golang:1.19 AS builder
+FROM golang:1.23 AS builder  
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
 # Step 2: Create a minimal runtime image
 FROM alpine:latest
