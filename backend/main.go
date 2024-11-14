@@ -17,8 +17,8 @@ func main() {
 	http.HandleFunc("/user", handlers.UserHandler)
 	closeDBWithSysCall()
 
-	log.Println("Listening on port 8000...")
-	if err := http.ListenAndServe(":8000", nil); err != nil {
+	log.Println("Listening on port 8080...")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
 }
