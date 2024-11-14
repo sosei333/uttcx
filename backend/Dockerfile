@@ -15,7 +15,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
 # Step 2: Create a minimal runtime image
-FROM alpine:latest
+FROM scratch
 
 # Set the working directory in the container
 WORKDIR /root/
