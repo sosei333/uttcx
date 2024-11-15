@@ -3,7 +3,6 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 
@@ -13,8 +12,21 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file:", err)
+	// .envからのみ読み込む環境変数
+	envVars := []string{"DB_USER", "DB_PASSWORD", "DB_NAME", "DB_HOST", "DB_PORT", "PORT"}
+
+	//if os.Getenv("ENV") != "production" {	//golandでの実行時はコメントアウト解除
+	//	// 本番環境でない場合のみ .env を読み込む
+	//	if err := godotenv.Load(".env"); err != nil {
+	//		log.Println("Warning: .env file not found, using environment variables.")
+	//	}
+	//}
+
+	// .envから読み込んだ環境変数を出力
+	fmt.Println("Loaded environment variables from .env:")
+	for _, key := range envVars {
+		value := os.Getenv(key)
+		fmt.Printf("%s=%s\n", key, value)
 	}
 
 	mysqlUser := os.Getenv("DB_USER")
