@@ -33,13 +33,14 @@ func InitDB() {
 	mysqlUserPwd := os.Getenv("DB_PASSWORD")
 	mysqlDatabase := os.Getenv("DB_NAME")
 	mysqlHost := os.Getenv("DB_HOST")
-	mysqlPort := os.Getenv("DB_PORT")
+	//mysqlPort := os.Getenv("DB_PORT")
 
 	if mysqlUser == "" || mysqlUserPwd == "" || mysqlDatabase == "" {
 		log.Fatal("必要な環境変数が設定されていません")
 	}
 
-	_db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", mysqlUser, mysqlUserPwd, mysqlHost, mysqlPort, mysqlDatabase))
+	connStr := fmt.Sprintf("%s:%s@%s/%s", mysqlUser, mysqlUserPwd, mysqlHost, mysqlDatabase)
+	_db, err := sql.Open("mysql", connStr)
 
 	if err != nil {
 		log.Fatalf("fail: sql.Open, %v\n", err)
