@@ -1,24 +1,21 @@
 # ビルドステージ
-FROM golang:1.21 as build
+FROM golang:1.23 AS build
 
 # 作業ディレクトリを設定
 WORKDIR /app
 
 # Go モジュールを利用するために依存関係をコピー
-COPY ./backend/go.mod ./backend/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
 # ソースコードをコピー
-COPY ./backend .
+COPY . .
 
 # バイナリをビルド
 RUN CGO_ENABLED=0 GOOS=linux go build -o server .
 
 # 実行ステージ
 FROM alpine:latest
-
-# 証明書をインストール
-RUN apk --no-cache add ca-certificates
 
 # ビルドしたバイナリをコピー
 COPY --from=build /app/server /server
