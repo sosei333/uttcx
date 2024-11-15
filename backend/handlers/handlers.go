@@ -36,7 +36,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_, err := db.DB.Exec("INSERT INTO users (id, user_name) VALUES (?, ?)", newUser.ID, newUser.UserName)
+		_, err := db.DB.Exec("INSERT INTO users (user_id, user_name) VALUES (?, ?)", newUser.ID, newUser.UserName)
 		if err != nil {
 			log.Printf("fail: db.Exec, %v\n", err)
 			log.Printf("id=%v, user_name=%v\n", newUser.ID, newUser.UserName)
