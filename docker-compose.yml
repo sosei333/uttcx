@@ -3,10 +3,33 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend       # Dockerfileがあるディレクトリを指定
-      dockerfile: Dockerfile   # backendディレクトリ内のDockerfileを指定
-    ports:
-      - "${PORT}:${PORT}"
+      context: ./backend
+      dockerfile: Dockerfile
     env_file:
-      - ./backend/.env       # backendディレクトリ内の.envを指定
+      - ./backend/.env
     command: ["/server"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
