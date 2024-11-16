@@ -20,6 +20,9 @@ export const postToBackend = async (content: string) => {
         return;
     }
 
+    const createdAt = new Date().toISOString().replace('T', ' ').replace('Z', '');
+
+
     // Fetchでリクエスト送信
     const response = await fetch(`${backendUrl}/post`, {
         method: "POST",
@@ -27,9 +30,9 @@ export const postToBackend = async (content: string) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            ID: userId,
+            UserID: userId,
             Content: content,
-            CreatedAt: new Date().toISOString()
+            CreatedAt: createdAt
         }),
     });
 
