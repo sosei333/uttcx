@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Fab, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 
-const PostButton: React.FC = () => {
+const PostButtonOld: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [postText, setPostText] = useState('');
 
@@ -53,4 +53,4 @@ const PostButton: React.FC = () => {
     );
 };
 
-export default PostButton;
+export default PostButtonOld;
