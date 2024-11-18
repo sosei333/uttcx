@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import TextField from '../atoms/TextField';
 import Button from '../atoms/Button';
-import { postToBackend } from '../../services/postToBackend';
+import { postToBackend } from '../../services/tweet';
 
 interface PostDialogProps {
   open: boolean;
