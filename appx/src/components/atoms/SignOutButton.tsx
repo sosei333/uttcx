@@ -6,7 +6,7 @@ const SignOutButton: React.FC = () => {
     const handleSignOut = useSignOut();
 
     return (
-        <Button variant="outlined" onClick={handleSignOut} color="error" fullWidth>
+        <Button variant="contained" onClick={handleSignOut} color="error" fullWidth>
             ログアウト
         </Button>
     );
