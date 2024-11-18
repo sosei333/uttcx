@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS posts (
 
 INSERT INTO posts (user_id, content, created_at)
 VALUES
-    ('user123', 'これはサンプル投稿1です。', '2024-11-16 12:00:00'),
-    ('user456', 'これはサンプル投稿2です。', '2024-11-16 12:05:00'),
-    ('user789', 'これはサンプル投稿3です。', '2024-11-16 12:10:00');
+    ('user123', 'Hello, how are you doing today?', '2024-11-16 12:00:00'),
+    ('user456', 'I am planning to visit the library this afternoon.', '2024-11-16 12:05:00'),
+    ('user789', 'The weather is perfect for a walk in the park.', '2024-11-16 12:10:00');
 
