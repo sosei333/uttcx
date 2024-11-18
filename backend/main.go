@@ -15,6 +15,7 @@ func main() {
 	defer db.CloseDB()
 
 	http.HandleFunc("/user", handlers.UserHandler)
+	http.HandleFunc("/post", handlers.PostHandler)
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")
