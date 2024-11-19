@@ -58,25 +58,29 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="80vh" sx={{ bgcolor: 'background.default', padding: 3 }}>
-      <Routes>
-        {/* ログイン前のルート */}
-        {!user ? (
-          <>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/*<Route path="*" element={<Navigate to="/login" />} />*/}
-          </>
-        ) : (
-          // ログイン後のルート（RootLayoutでラップ）
-          <Route element={<RootLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/tweet/:id" element={<TweetDetails />} />
-            
-            {/*<Route path="*" element={<Navigate to="/home" />} /> */}
-          </Route>
-        )}
-      </Routes>
+        <Routes>
+          {/* ログイン前のルート */}
+          {!user ? (
+            <>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* ログイン状態でアクセスしようとした場合、リダイレクト */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          ) : (
+            // ログイン後のルート（RootLayoutでラップ）
+            <Route element={<RootLayout />}>
+              <Route path="/home" element={<Home />} />
+              <Route path="/explore" element={<Explore />} />
+              <Route path="/tweet/:id" element={<TweetDetails />} />
+              
+              {/* ログイン前のページに戻らないようリダイレクト */}
+              <Route path="/login" element={<Navigate to="/home" />} />
+              <Route path="/signup" element={<Navigate to="/home" />} />
+              <Route path="*" element={<Navigate to="/home" />} />
+            </Route>
+          )}
+        </Routes>
 
       {/* ログイン前のメニュー表示 */}
       <Box mt={4} textAlign="center">
