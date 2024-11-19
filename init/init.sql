@@ -6,21 +6,35 @@ CREATE TABLE IF NOT EXISTS users (
     user_name VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS tweets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    );
+
+CREATE TABLE replies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parent_id INT NOT NULL, -- 親投稿ID
+    user_id VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_id) REFERENCES tweets(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
 INSERT INTO users (user_id, user_name) VALUES
     ('1', 'Alice'),
     ('2', 'Bob'),
     ('3', 'Charlie');
 
-CREATE TABLE IF NOT EXISTS posts (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   user_id VARCHAR(255) NOT NULL,
-   content TEXT NOT NULL,
-   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO posts (user_id, content, created_at)
+INSERT INTO tweets (user_id, content, created_at)
 VALUES
-    ('user123', 'Hello, how are you doing today?', '2024-11-16 12:00:00'),
-    ('user456', 'I am planning to visit the library this afternoon.', '2024-11-16 12:05:00'),
-    ('user789', 'The weather is perfect for a walk in the park.', '2024-11-16 12:10:00');
+    ('1', 'Hello, how are you doing today?', '2024-11-16 12:00:00'),
+    ('2', 'I am planning to visit the library this afternoon.', '2024-11-16 12:05:00'),
+    ('3', 'The weather is perfect for a walk in the park.', '2024-11-16 12:10:00');
 
+INSERT INTO replies (parent_id, user_id, content, created_at)
+VALUES
+    (1, '2', 'I am good, thank you!', '2024-11-16 12:15:00');
