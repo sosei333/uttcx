@@ -5,8 +5,9 @@ import { auth } from './firebase';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import RootLayout from './components/RootLayout';
-import Explore from './components/Explore';
-import Home from './components/Home';
+import Explore from './pages/Explore';
+import Home from './pages/Home';
+import TweetDetails from './pages/TweetDetails';
 
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -70,7 +71,9 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
-            <Route path="*" element={<Navigate to="/home" />} />
+            <Route path="/tweet/:id" element={<TweetDetails />} />
+            
+            {/*<Route path="*" element={<Navigate to="/home" />} /> */}
           </Route>
         )}
       </Routes>
