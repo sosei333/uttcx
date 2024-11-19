@@ -1,7 +1,27 @@
+import React, { useEffect, useState } from 'react';
+import { getTweet } from '../services/tweet'; // getTweet をインポート
+import PostBox from './organisms/PostBox'; // PostBox コンポーネントをインポート
 import { Box } from '@mui/material';
-import PostBox from './organisms/PostBox';
 
-const Home: React.FC = () => {
+type Tweet = {
+    id: number;
+    user_id: string;
+    content: string;
+    created_at: string;
+};
+
+const Tweets: React.FC = () => {
+    const [tweets, setTweets] = useState<Tweet[]>([]);
+
+    useEffect(() => {
+        const fetchTweets = async () => {
+            const data = await getTweet();
+            setTweets(data); // 状態に取得した投稿を保存
+        };
+
+        fetchTweets();
+    }, []);
+
     return (
         <Box
             display="flex"
@@ -22,13 +42,13 @@ const Home: React.FC = () => {
                 overflow="auto"
                 padding={2}
             >
-                {/* 投稿を表示するためのサンプルデータ */}
-                {[...Array(20)].map((_, i) => (
+                {/* 投稿を PostBox を利用して表示 */}
+                {tweets.map((tweet) => (
                     <PostBox
-                        key={i}
-                        content={`コンテンツ${i + 1}`}
-                        author={`ユーザー${i + 1}`}
-                        date={`2024-11-08`}
+                        key={tweet.id}
+                        content={tweet.content}
+                        author={tweet.user_id}
+                        date={new Date(tweet.created_at).toLocaleDateString()}
                     />
                 ))}
             </Box>
@@ -36,4 +56,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default Tweets;
