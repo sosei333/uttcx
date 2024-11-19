@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getTweet } from '../services/tweet'; // getTweet をインポート
-import PostBox from './organisms/PostBox'; // PostBox コンポーネントをインポート
+import { getAllTweet } from '../services/tweet'; // getTweet をインポート
+import PostBox from '../components/organisms/PostBox'; // PostBox コンポーネントをインポート
 import { Box } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 type Tweet = {
     id: number;
@@ -12,10 +13,16 @@ type Tweet = {
 
 const Tweets: React.FC = () => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
+    const navigate = useNavigate();
+
+     // onViewDetails 関数
+     const handleViewDetails = (tweetId: number) => {
+        navigate(`/tweet/${tweetId}`); // React Router を利用して詳細ページに遷移
+    };
 
     useEffect(() => {
         const fetchTweets = async () => {
-            const data = await getTweet();
+            const data = await getAllTweet();
             setTweets(data); // 状態に取得した投稿を保存
         };
 
@@ -49,6 +56,7 @@ const Tweets: React.FC = () => {
                         content={tweet.content}
                         author={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
+                        onViewDetails={() => handleViewDetails(tweet.id)}
                     />
                 ))}
             </Box>

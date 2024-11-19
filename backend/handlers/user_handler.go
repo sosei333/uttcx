@@ -1,10 +1,9 @@
 package handlers
 
 import (
-	"backend/db"
-	"backend/models" // modelsパッケージをインポート
+	"backend/dao"
+	"backend/models"
 	"encoding/json"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
 )
@@ -21,7 +20,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
-		var newUser models.User // models.Userを使用
+		var newUser models.User
 		if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
 			log.Printf("fail: json.Decode, %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -36,13 +35,13 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		_, err := db.DB.Exec("INSERT INTO users (user_id, user_name) VALUES (?, ?)", newUser.ID, newUser.UserName)
-		if err != nil {
-			log.Printf("fail: db.Exec, %v\n", err)
-			log.Printf("id=%v, user_name=%v\n", newUser.ID, newUser.UserName)
+		// DAO を利用してデータベース操作を行う
+		if err := dao.CreateUser(newUser); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Failed to create user"))
 			return
 		}
+
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte("User created successfully"))
 

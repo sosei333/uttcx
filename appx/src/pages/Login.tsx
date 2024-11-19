@@ -1,6 +1,6 @@
 // pages/Signup.tsx
 import React from 'react';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/organisms/LoginForm';
 import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 

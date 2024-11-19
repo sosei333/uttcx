@@ -10,7 +10,7 @@ import (
 
 // 投稿データを保存
 func SavePost(userID, content, createdAt string) error {
-	query := `INSERT INTO posts (user_id, content, created_at) VALUES (?, ?, ?)`
+	query := `INSERT INTO tweets (user_id, content, created_at) VALUES (?, ?, ?)`
 
 	// デフォルトで現在時刻を使用する場合
 	if createdAt == "" {
@@ -28,7 +28,7 @@ func SavePost(userID, content, createdAt string) error {
 }
 
 func GetAllPost() ([]models.Post, error) {
-	query := `SELECT id, user_id, content, created_at FROM posts`
+	query := `SELECT id, user_id, content, created_at FROM tweets`
 
 	// クエリを実行
 	rows, err := db.DB.Query(query)
@@ -58,4 +58,18 @@ func GetAllPost() ([]models.Post, error) {
 	}
 
 	return posts, nil
+}
+
+func GetTweetById(tweetId int) (*models.Tweet, error) {
+	query := `SELECT id, user_id, content, created_at FROM tweets WHERE id = ?`
+
+	// クエリを実行してデータを取得
+	var tweet models.Tweet
+	err := db.DB.QueryRow(query, tweetId).Scan(&tweet.ID, &tweet.UserID, &tweet.Content, &tweet.CreatedAt)
+	if err != nil {
+		log.Printf("Error retrieving tweet with ID %d: %v", tweetId, err)
+		return nil, err
+	}
+
+	return &tweet, nil
 }

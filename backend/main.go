@@ -15,7 +15,12 @@ func main() {
 	defer db.CloseDB()
 
 	http.HandleFunc("/user", handlers.UserHandler)
-	http.HandleFunc("/post", handlers.PostHandler)
+
+	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
+	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)
+	http.HandleFunc("/tweet/id", handlers.GetTweetByIdHandler)
+
+	http.HandleFunc("/reply", handlers.GetRepliesByParentIdHandler)
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")
