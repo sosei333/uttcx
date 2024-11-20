@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllTweet } from '../services/tweet'; // getTweet をインポート
-import PostBox from '../components/organisms/PostBox'; // PostBox コンポーネントをインポート
+import TweetBox from '../components/organisms/TweetBox'; // PostBox コンポーネントをインポート
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
@@ -51,12 +51,14 @@ const Tweets: React.FC = () => {
             >
                 {/* 投稿を PostBox を利用して表示 */}
                 {tweets.map((tweet) => (
-                    <PostBox
+                    <TweetBox
                         key={tweet.id}
+                        tweet_id={tweet.id}
                         content={tweet.content}
                         author={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
                         onViewDetails={() => handleViewDetails(tweet.id)}
+                        
                     />
                 ))}
             </Box>

@@ -13,7 +13,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { menuItems } from '../constants/MenuItems';
 import SignOutButton from './atoms/SignOutButton';
-import PostDialog from './organisms/PostDialog';
+import PostDialog from './organisms/PostTweetDialog';
 import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 
