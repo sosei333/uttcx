@@ -3,31 +3,8 @@ package dao
 import (
 	"backend/db"
 	"backend/models"
-	"database/sql"
 	"log"
 )
-
-type Reply struct {
-	ID        int    `json:"id"`
-	ParentID  int    `json:"parent_id"`
-	UserID    string `json:"user_id"`
-	Content   string `json:"content"`
-	CreatedAt string `json:"created_at"`
-}
-
-func SaveReply(db *sql.DB, reply Reply) (int, error) {
-	query := `INSERT INTO replies (parent_id, user_id, content, created_at) VALUES (?, ?, ?, ?)`
-	result, err := db.Exec(query, reply.ParentID, reply.UserID, reply.Content, reply.CreatedAt)
-	if err != nil {
-		return 0, err
-	}
-
-	insertedID, err := result.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-	return int(insertedID), nil
-}
 
 func GetRepliesByParentID(parentID int) ([]models.Reply, error) {
 	query := `SELECT id, parent_id, user_id, content, created_at FROM replies WHERE parent_id = ?`
@@ -58,4 +35,25 @@ func GetRepliesByParentID(parentID int) ([]models.Reply, error) {
 	}
 
 	return replies, nil
+}
+
+// SaveReply はリプライをデータベースに保存する
+func SaveReply(parentID int, userID string, content string, createdAt string) (int64, error) {
+
+	// リプライを挿入
+	query := `INSERT INTO replies (parent_id, user_id, content, created_at) VALUES (?, ?, ?, ?)`
+	result, err := db.DB.Exec(query, parentID, userID, content, createdAt)
+	if err != nil {
+		log.Printf("Error inserting reply: %v", err)
+		return 0, err
+	}
+
+	// 挿入されたIDを取得
+	replyID, err := result.LastInsertId()
+	if err != nil {
+		log.Printf("Error retrieving last insert ID: %v", err)
+		return 0, err
+	}
+
+	return replyID, nil
 }

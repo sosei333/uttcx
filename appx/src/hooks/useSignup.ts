@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signupWithFirebase } from '../services/authService';
-import { registerUserToBackend } from '../services/backendService';
+import { registerUserToBackend } from '../services/user';
 
 export const useSignup = () => {
     const [error, setError] = useState<string | null>(null);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getReplies } from "../services/reply"; // API 呼び出し
 import { getTweetById } from "../services/tweet";
-import PostBox from "../components/organisms/PostBox";
+import PostBox from "../components/organisms/TweetBox";
 import { Box } from "@mui/material";
 
 type Tweet = {
@@ -26,10 +26,15 @@ const TweetDetails: React.FC = () => {
 
     useEffect(() => {
         const fetchDetails = async () => {
-            const tweetData = await getTweetById(Number(id));
-            const repliesData = await getReplies(Number(id));
-            setTweet(tweetData);
-            setReplies(repliesData);
+            try {
+                const tweetData = await getTweetById(Number(id));
+                const repliesData = await getReplies(Number(id));
+                setTweet(tweetData);
+                setReplies(repliesData || []); // null ガード
+            } catch (error) {
+                console.error("Failed to fetch tweet details:", error);
+                setReplies([]); // エラー時も空配列
+            }
         };
 
         fetchDetails();
@@ -41,6 +46,7 @@ const TweetDetails: React.FC = () => {
                 <Box marginBottom={4}>
                     <h2>投稿詳細</h2>
                     <PostBox
+                        tweet_id={tweet.id}
                         content={tweet.content}
                         author={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
@@ -50,9 +56,10 @@ const TweetDetails: React.FC = () => {
 
             <Box>
                 <h3>リプライ</h3>
-                {replies.map((reply) => (
+                {(replies || []).map((reply) => (
                     <PostBox
                         key={reply.id}
+                        tweet_id={reply.id}
                         content={reply.content}
                         author={reply.user_id}
                         date={new Date(reply.created_at).toLocaleDateString()}

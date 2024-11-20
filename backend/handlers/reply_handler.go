@@ -1,24 +1,33 @@
 package handlers
 
 import (
+	"backend/dao"
+	"backend/models"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
-
-	"backend/dao"
-	"backend/db"
 )
 
-func ReplyHandler(w http.ResponseWriter, r *http.Request) {
+func SaveReplyHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// OPTIONSリクエストを処理
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 
-	var reply dao.Reply
+	var reply models.NewReplyRequest
 	if err := json.NewDecoder(r.Body).Decode(&reply); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
@@ -26,7 +35,7 @@ func ReplyHandler(w http.ResponseWriter, r *http.Request) {
 
 	reply.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
 
-	insertedID, err := dao.SaveReply(db.DB, reply)
+	insertedID, err := dao.SaveReply(reply.ParentID, reply.UserID, reply.Content, reply.CreatedAt)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to save reply: %v", err), http.StatusInternalServerError)
 		return
