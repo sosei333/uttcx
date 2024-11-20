@@ -1,15 +1,28 @@
+import React, { useState } from 'react';
 import { Box, IconButton, Typography, Button } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import PostReplyDialog from './PostReplyDialog'; // ダイアログをインポート
 
 interface PostProps {
+    tweet_id: number;
     content: string;
     author: string;
     date: string;
     onViewDetails?: () => void; // 詳細を表示するためのコールバック関数
 }
 
-const PostBox: React.FC<PostProps> = ({ content, author, date, onViewDetails }) => {
+const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
+    const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
+
+    const handleReplyClick = () => {
+        setReplyDialogOpen(true);
+    };
+
+    const handleReplyDialogClose = () => {
+        setReplyDialogOpen(false);
+    };
+
     return (
         <Box
             display="flex"
@@ -37,17 +50,28 @@ const PostBox: React.FC<PostProps> = ({ content, author, date, onViewDetails }) 
 
             {/* いいねとブックマークボタンを右下に配置 */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mt="auto">
-                {/* 詳細を表示ボタン */}
-                {onViewDetails && (
+                <Box display="flex" gap={1}>
+                    {/* 詳細を表示ボタン */}
+                    {onViewDetails && (
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={onViewDetails}
+                        >
+                            詳細を表示
+                        </Button>
+                    )}
+                    {/* リプライを投稿するボタン */}
                     <Button
                         variant="outlined"
-                        color="primary"
+                        color="secondary"
                         size="small"
-                        onClick={onViewDetails}
+                        onClick={handleReplyClick}
                     >
-                        詳細を表示
+                        リプライを投稿
                     </Button>
-                )}
+                </Box>
                 {/* アクションボタン（いいね、ブックマーク） */}
                 <Box>
                     <IconButton aria-label="like">
@@ -58,8 +82,12 @@ const PostBox: React.FC<PostProps> = ({ content, author, date, onViewDetails }) 
                     </IconButton>
                 </Box>
             </Box>
+
+            {/* リプライ用ダイアログ */}
+            <PostReplyDialog 
+            parent_id={tweet_id} open={isReplyDialogOpen} onClose={handleReplyDialogClose} />
         </Box>
     );
 };
 
-export default PostBox;
+export default TweetBox;

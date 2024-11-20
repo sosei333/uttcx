@@ -21,6 +21,8 @@ func main() {
 	http.HandleFunc("/tweet/id", handlers.GetTweetByIdHandler)
 
 	http.HandleFunc("/reply", handlers.GetRepliesByParentIdHandler)
+	http.HandleFunc("/reply/new", handlers.SaveReplyHandler)
+
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")
