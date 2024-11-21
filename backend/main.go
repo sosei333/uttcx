@@ -23,6 +23,9 @@ func main() {
 	http.HandleFunc("/reply", handlers.GetRepliesByParentIdHandler)
 	http.HandleFunc("/reply/new", handlers.SaveReplyHandler)
 
+	http.HandleFunc("/like/add", handlers.AddLikeHandler)       // いいねを追加
+	http.HandleFunc("/like/remove", handlers.RemoveLikeHandler) // いいねを解除
+
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")

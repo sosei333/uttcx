@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Box, IconButton, Typography, Button } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import PostReplyDialog from './PostReplyDialog'; // ダイアログをインポート
+import { addLike, removeLike } from '../../services/like';
 
 interface PostProps {
     tweet_id: number;
@@ -13,7 +15,22 @@ interface PostProps {
 }
 
 const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
+    const [isLiked, setLiked] = useState(false); // いいね状態を管理
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
+
+    const handleLikeClick = async () => {
+        try {
+            if (isLiked) {
+                await removeLike(tweet_id); // ユーザーIDは適切に設定
+                setLiked(false);
+            } else {
+                await addLike(tweet_id); // ユーザーIDは適切に設定
+                setLiked(true);
+            }
+        } catch (error) {
+            console.error('Failed to toggle like:', error);
+        }
+    };
 
     const handleReplyClick = () => {
         setReplyDialogOpen(true);
@@ -74,8 +91,8 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
                 </Box>
                 {/* アクションボタン（いいね、ブックマーク） */}
                 <Box>
-                    <IconButton aria-label="like">
-                        <FavoriteBorderIcon />
+                    <IconButton aria-label="like" onClick={handleLikeClick}>
+                        {isLiked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
                     </IconButton>
                     <IconButton aria-label="bookmark">
                         <BookmarkBorderIcon />

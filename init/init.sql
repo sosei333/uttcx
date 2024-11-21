@@ -24,6 +24,17 @@ CREATE TABLE replies (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE IF NOT EXISTS likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    tweet_id INT, -- tweets テーブルへの外部キー
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (tweet_id) REFERENCES tweets(id) ON DELETE CASCADE,
+    UNIQUE (user_id, tweet_id) -- 同じユーザーが同じ投稿に複数回いいねできない
+);
+
+
 INSERT INTO users (user_id, user_name) VALUES
     ('1', 'Alice'),
     ('2', 'Bob'),
