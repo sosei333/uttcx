@@ -4,10 +4,11 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import RootLayout from './components/RootLayout';
+import RootLayout from './layouts/RootLayout';
 import Explore from './pages/Explore';
 import Home from './pages/Home';
 import TweetDetails from './pages/TweetDetails';
+import Profile from './pages/Profile';
 
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -57,53 +58,63 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
   const location = useLocation();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="80vh" sx={{ bgcolor: 'background.default', padding: 3 }}>
-        <Routes>
-          {/* ログイン前のルート */}
-          {!user ? (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              {/* ログイン状態でアクセスしようとした場合、リダイレクト */}
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
-          ) : (
-            // ログイン後のルート（RootLayoutでラップ）
-            <Route element={<RootLayout />}>
-              <Route path="/home" element={<Home />} />
-              <Route path="/explore" element={<Explore />} />
-              <Route path="/tweet/:id" element={<TweetDetails />} />
-              
-              {/* ログイン前のページに戻らないようリダイレクト */}
-              <Route path="/login" element={<Navigate to="/home" />} />
-              <Route path="/signup" element={<Navigate to="/home" />} />
-              <Route path="*" element={<Navigate to="/home" />} />
-            </Route>
-          )}
-        </Routes>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{
+        flexGrow: 1, // 高さを画面全体に拡張
+        width: '100%', // 幅を全体に拡張
+        bgcolor: 'background.default',
+        padding: 3,
+      }}
+    >
+      <Routes>
+        {/* ログイン前のルート */}
+        {!user ? (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            {/* ログイン状態でアクセスしようとした場合、リダイレクト */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        ) : (
+          // ログイン後のルート（RootLayoutでラップ）
+          <Route element={<RootLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/tweet/:id" element={<TweetDetails />} />
+            {/* ログイン前のページに戻らないようリダイレクト */}
+            <Route path="/login" element={<Navigate to="/home" />} />
+            <Route path="/signup" element={<Navigate to="/home" />} />
+            <Route path="*" element={<Navigate to="/home" />} />
+          </Route>
+        )}
+      </Routes>
 
       {/* ログイン前のメニュー表示 */}
-      <Box mt={4} textAlign="center">
-        {!user && !['/login', '/signup'].includes(location.pathname) && (
-          <>
-            <Title />
-            <Box mt={2}>
-              <Link to="/login" style={{ marginRight: 16, textDecoration: 'none' }}>
-                <Button variant="contained" color="primary" sx={{ minWidth: 120 }}>
-                  ログイン
-                </Button>
-              </Link>
-              <Link to="/signup" style={{ textDecoration: 'none' }}>
-                <Button variant="outlined" color="primary" sx={{ minWidth: 120 }}>
-                  アカウントを作成
-                </Button>
-              </Link>
-            </Box>
-          </>
-        )}
-      </Box>
+      {!user && !['/login', '/signup'].includes(location.pathname) && (
+        <Box mt={4} textAlign="center">
+          <Title />
+          <Box mt={2}>
+            <Link to="/login" style={{ marginRight: 16, textDecoration: 'none' }}>
+              <Button variant="contained" color="primary" sx={{ minWidth: 120 }}>
+                ログイン
+              </Button>
+            </Link>
+            <Link to="/signup" style={{ textDecoration: 'none' }}>
+              <Button variant="outlined" color="primary" sx={{ minWidth: 120 }}>
+                アカウントを作成
+              </Button>
+            </Link>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
+
 
 export default App;
