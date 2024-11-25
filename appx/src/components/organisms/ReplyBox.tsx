@@ -15,7 +15,7 @@ interface PostProps {
     onViewDetails?: () => void;
 }
 
-const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
+const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -64,24 +64,8 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
                 {content}
             </Typography>
 
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt="auto">
-                <Box display="flex" gap={1}>
-                    {onViewDetails && <ViewDetailsButton onClick={onViewDetails} />}
-                    <ReplyButton onClick={handleReplyClick} />
-                </Box>
-                <Box>
-                    <LikeButton isLiked={isLiked} onClick={handleLikeClick} />
-                    <BookmarkButton />
-                </Box>
-            </Box>
-
-            <PostReplyDialog 
-                parent_id={tweet_id} 
-                open={isReplyDialogOpen} 
-                onClose={handleReplyDialogClose} 
-            />
         </Box>
     );
 };
 
-export default TweetBox;
+export default ReplyBox;

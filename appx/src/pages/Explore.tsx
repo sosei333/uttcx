@@ -7,7 +7,7 @@ const Explore: React.FC = () => {
 
     return (
         <Box
-            display="flex" flexDirection="column" alignItems="flex-start" justifyContent="flex-start" height="20vh" width="60vw"
+            display="flex" flexDirection="column" alignItems="flex-start" justifyContent="flex-start" 
             sx={{
                 border: '2px dashed #000', // 黒い2pxの枠線
                 borderRadius: '8px', // 角を丸くする

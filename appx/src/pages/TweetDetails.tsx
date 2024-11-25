@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { getReplies } from "../services/reply"; // API 呼び出し
 import { getTweetById } from "../services/tweet";
 import PostBox from "../components/organisms/TweetBox";
-import { Box } from "@mui/material";
+import ReplyBox from "../components/organisms/ReplyBox";
+import { Box, Divider } from "@mui/material";
 
 type Tweet = {
     id: number;
@@ -53,11 +54,11 @@ const TweetDetails: React.FC = () => {
                     />
                 </Box>
             )}
-
+            <Divider />
             <Box>
                 <h3>リプライ</h3>
                 {(replies || []).map((reply) => (
-                    <PostBox
+                    <ReplyBox
                         key={reply.id}
                         tweet_id={reply.id}
                         content={reply.content}
