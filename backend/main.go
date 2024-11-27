@@ -15,6 +15,8 @@ func main() {
 	defer db.CloseDB()
 
 	http.HandleFunc("/user", handlers.UserHandler)
+	http.HandleFunc("/user/getusername", handlers.GetUserNameByIDHandler)
+	http.HandleFunc("/user/update", handlers.UpdateUserNameHandler)
 
 	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
 	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)

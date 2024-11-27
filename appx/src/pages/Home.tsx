@@ -15,8 +15,8 @@ const Tweets: React.FC = () => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
     const navigate = useNavigate();
 
-     // onViewDetails 関数
-     const handleViewDetails = (tweetId: number) => {
+    // onViewDetails 関数
+    const handleViewDetails = (tweetId: number) => {
         navigate(`/tweet/${tweetId}`); // React Router を利用して詳細ページに遷移
     };
 
@@ -34,22 +34,21 @@ const Tweets: React.FC = () => {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            justifyContent="flex-start"
-            height="100vh"
-            width="60vw"
+            justifyContent="center"
+            height="80vh"
+            width="60vh" // 親要素の幅いっぱいに広げる
             padding={2}
         >
             <Box
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                justifyContent="flex-start"
-                height="100%"
-                width="100%"
+                justifyContent="center"
                 overflow="auto"
                 padding={2}
+                width="100%" // 親要素の幅いっぱいに広げる
             >
-                {/* 投稿を PostBox を利用して表示 */}
+                {/* 投稿を TweetBox を利用して表示 */}
                 {tweets.map((tweet) => (
                     <TweetBox
                         key={tweet.id}
@@ -58,7 +57,6 @@ const Tweets: React.FC = () => {
                         author={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
                         onViewDetails={() => handleViewDetails(tweet.id)}
-                        
                     />
                 ))}
             </Box>

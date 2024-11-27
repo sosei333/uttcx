@@ -31,7 +31,7 @@ func AddLikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	
+
 	err := dao.AddLike(like.UserID, like.TweetID)
 	if err != nil {
 		log.Printf("Failed to add like: %v\n", err) // ログにエラー出力

@@ -2,12 +2,13 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, CssBaseline, AppBar, Toolbar, Typography } from '@mui/material';
 import Sidebar from './Sidebar';
+import colors from './colors';
 
 const RootLayout: React.FC = () => {
     const appBarHeight = 60; // AppBarの高さを任意の値に設定
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', height: '100vh' }}>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -21,6 +22,7 @@ const RootLayout: React.FC = () => {
                         minHeight: `${appBarHeight}px`, // Toolbarの高さを設定
                         display: 'flex',
                         alignItems: 'center',
+                        backgroundColor: colors.secondary, // AppBarの背景色
                     }}
                 >
                     <Typography variant="h6" noWrap component="div">
@@ -28,29 +30,33 @@ const RootLayout: React.FC = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Sidebar />
-            <Box sx={{ display: 'flex', flexGrow: 1, mt: `${appBarHeight+200}px` }}>
-                {/* 左側のメインコンテンツ */}
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexGrow: 1,
+                    mt: `${appBarHeight}px`, // AppBarの高さ分の余白を確保
+                    width: '100%', // 全体の幅を100%に設定
+                }}
+            >
+                {/* Sidebar を Box として扱う */}
+                <Box>
+                    <Sidebar />
+                </Box>
+
+                {/* 真ん中のメインコンテンツ */}
                 <Box
                     component="main"
                     sx={{
-                        flexGrow: 2,
-                        ml: 5,
-                        borderRight: '1px solid #ccc', // 境界線を追加（オプション）
+                        //flex: '0 0 60%', // 幅を60%に固定
+                        flexShrink: 0, // 内容に応じて幅が縮小されるのを防ぐ
+                        minWidth: 0, // 必要以上に広がるのを防ぐ
+                        backgroundColor: colors.background, // メインコンテンツの背景色
+                        padding: '0px',
+                        borderRight: '1px solid #ccc',
+                        width:'100vh'
                     }}
                 >
                     <Outlet />
-                </Box>
-                {/* 右側の新しいBox */}
-                <Box
-                    sx={{
-                        flexGrow: 2,
-                        backgroundColor: '#f5f5f5', // 背景色を設定
-                        minWidth: '250px',           // 最小幅を設定
-                    }}
-                >
-                    <Typography variant="h6">追加コンテンツ</Typography>
-                    {/* ここに追加コンテンツを配置 */}
                 </Box>
             </Box>
         </Box>
