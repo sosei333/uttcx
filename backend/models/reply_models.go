@@ -6,6 +6,7 @@ type Reply struct {
 	UserID    string `json:"user_id"`
 	Content   string `json:"content"`
 	CreatedAt string `json:"created_at"`
+	UserName  string `json:"user_name"`
 }
 
 // リクエストで受け取るデータの構造体

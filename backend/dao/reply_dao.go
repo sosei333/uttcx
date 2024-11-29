@@ -7,7 +7,8 @@ import (
 )
 
 func GetRepliesByParentID(parentID int) ([]models.Reply, error) {
-	query := `SELECT id, parent_id, user_id, content, created_at FROM replies WHERE parent_id = ?`
+	// repliesとusersをJOINしてuser_nameを取得するSQLクエリ
+	query := `SELECT replies.id, replies.parent_id, replies.user_id, users.user_name, replies.content, replies.created_at FROM replies INNER JOIN users ON replies.user_id = users.user_id WHERE replies.parent_id = ?`
 
 	// クエリを実行
 	rows, err := db.DB.Query(query, parentID)
@@ -21,7 +22,7 @@ func GetRepliesByParentID(parentID int) ([]models.Reply, error) {
 	var replies []models.Reply
 	for rows.Next() {
 		var reply models.Reply
-		if err := rows.Scan(&reply.ID, &reply.ParentID, &reply.UserID, &reply.Content, &reply.CreatedAt); err != nil {
+		if err := rows.Scan(&reply.ID, &reply.ParentID, &reply.UserID, &reply.UserName, &reply.Content, &reply.CreatedAt); err != nil {
 			log.Printf("Error scanning row: %v", err)
 			return nil, err
 		}

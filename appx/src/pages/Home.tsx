@@ -9,6 +9,7 @@ type Tweet = {
     user_id: string;
     content: string;
     created_at: string;
+    user_name: string;
 };
 
 const Tweets: React.FC = () => {
@@ -53,7 +54,7 @@ const Tweets: React.FC = () => {
                         key={tweet.id}
                         tweet_id={tweet.id}
                         content={tweet.content}
-                        author={tweet.user_id}
+                        author={tweet.user_name}
                         date={new Date(tweet.created_at).toLocaleDateString()}
                         onViewDetails={() => handleViewDetails(tweet.id)}
                     />
