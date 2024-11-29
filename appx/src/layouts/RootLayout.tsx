@@ -2,44 +2,62 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, CssBaseline, AppBar, Toolbar, Typography } from '@mui/material';
 import Sidebar from './Sidebar';
-import colors from './colors';
+import {colors} from './colors';
 
 const RootLayout: React.FC = () => {
-    const appBarHeight = 60; // AppBarの高さを任意の値に設定
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ display: 'flex', height: '100vh', width:'100vw' }}>
             <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                    height: `${appBarHeight}px`, // AppBar自体の高さを設定
-                }}
-            >
-                <Toolbar
-                    sx={{
-                        minHeight: `${appBarHeight}px`, // Toolbarの高さを設定
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: colors.secondary, // AppBarの背景色
-                    }}
-                >
-                    <Typography variant="h6" noWrap component="div">
-                        Twitter
-                    </Typography>
-                </Toolbar>
-            </AppBar>
             <Box
                 sx={{
                     display: 'flex',
                     flexGrow: 1,
-                    mt: `${appBarHeight}px`, // AppBarの高さ分の余白を確保
-                    width: '100%', // 全体の幅を100%に設定
+                    width: '100vw', // 全体の幅を100%に設定
+                    height: '10vh'
+                }}
+            >
+                <AppBar
+                    //position="fixed"
+                    sx={{
+                        zIndex: (theme) => theme.zIndex.drawer + 1,
+                        height: `10vh`, // AppBar自体の高さを設定
+                        backgroundColor: colors.primary,
+                    }}
+                >
+                    <Toolbar
+                        sx={{
+                            minHeight: `10vh`, // Toolbarの高さを設定
+                            display: 'flex',
+                            alignItems: 'center',
+                            //backgroundColor: colors.primary, // AppBarの背景色
+                        }}
+                    >
+                        <Typography variant="h6" noWrap component="div">
+                            Twitter
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            
+            <Box
+                sx={{
+                    //display: 'flex',
+                    //flexGrow: 1,
+                    //mt: `${appBarHeight}px`, // AppBarの高さ分の余白を確保
+                    width: '100vw', // 全体の幅を100%に設定
+                    height: '90vh',
+                    mt:'10vh',
                 }}
             >
                 {/* Sidebar を Box として扱う */}
-                <Box>
+                <Box
+                    sx={{
+                        width: '20vw',
+                        backgroundColor: colors.background, // Sidebar用の背景色（任意）
+                        borderRight: '1px solid #ccc',
+                    }}
+                >
                     <Sidebar />
                 </Box>
 
@@ -47,13 +65,15 @@ const RootLayout: React.FC = () => {
                 <Box
                     component="main"
                     sx={{
-                        //flex: '0 0 60%', // 幅を60%に固定
-                        flexShrink: 0, // 内容に応じて幅が縮小されるのを防ぐ
-                        minWidth: 0, // 必要以上に広がるのを防ぐ
+                        width:'80vw', // 残りのスペースを占有
+                        display: 'flex',
+                        justifyContent: 'center', // コンテンツを右寄せ
+                        alignItems: 'flex-start', // 縦方向は上揃え
                         backgroundColor: colors.background, // メインコンテンツの背景色
-                        padding: '0px',
-                        borderRight: '1px solid #ccc',
-                        width:'100vh'
+                        padding: 0, // 任意の余白
+                        overflow:'hidden',
+                        height: '90vh',
+                        boxSizing: 'border-box',
                     }}
                 >
                     <Outlet />

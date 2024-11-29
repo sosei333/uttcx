@@ -1,8 +1,9 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button} from '@mui/material';
 import TextField from '../atoms/TextField';
-import Button from '../atoms/Button';
+//import Button from '../atoms/Button';
 import { postToBackend } from '../../services/tweet';
+import {colors} from '../../layouts/colors';
 
 interface PostDialogProps {
   open: boolean;
@@ -29,10 +30,10 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onClose} sx={{color:colors.accent}}>
           キャンセル
         </Button>
-        <Button onClick={handlePost} color="primary" disabled={!postText}>
+        <Button onClick={handlePost} disabled={!postText} sx={{color:colors.accent}}>
           投稿
         </Button>
       </DialogActions>

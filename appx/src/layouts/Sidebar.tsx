@@ -16,13 +16,14 @@ import SignOutButton from '../components/atoms/SignOutButton';
 import PostDialog from '../components/organisms/PostTweetDialog';
 import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
-import CustomButton from '../components/atoms/CustomButton';
-
-const drawerWidth = 240;
+import ChatDialog from '../components/organisms/GeminiChatBox';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import {colors} from './colors';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
     const [postDialogOpen, setPostDialogOpen] = useState(false);
+    const [chatDialogOpen, setChatDialogOpen] = useState(false);
 
     const handleOpenPostDialog = () => {
         setPostDialogOpen(true);
@@ -32,12 +33,20 @@ const Sidebar: React.FC = () => {
         setPostDialogOpen(false);
     };
 
+    const handleOpenChatDialog = () => {
+        setChatDialogOpen(true);
+    };
+
+    const handleCloseChatDialog = () => {
+        setChatDialogOpen(false);
+    };
+
     return (
         <Drawer
             variant="permanent"
             sx={{
                 [`& .MuiDrawer-paper`]: {
-                    width: '15%',
+                    width: '20%',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
@@ -63,17 +72,34 @@ const Sidebar: React.FC = () => {
                 {/* 投稿ボタン */}
                 <Fab
                     onClick={handleOpenPostDialog}
-                    color="success"
                     aria-label="add"
                     size="large"
-                    sx={{ alignSelf: 'center' }}
+                    sx={{ alignSelf: 'center',
+                        backgroundColor:colors.accent,
+                    }}
                 >
-                    <DrawOutlinedIcon />
+                    <DrawOutlinedIcon sx={{color:colors.text}}/>
                 </Fab>
                 {/* 投稿ダイアログ */}
                 <PostDialog
                     open={postDialogOpen}
                     onClose={handleClosePostDialog}
+                />
+                {/*gemini*/}
+                 <Fab
+                    onClick={handleOpenChatDialog}
+                    aria-label="add"
+                    size="large"
+                    sx={{ alignSelf: 'center',
+                        backgroundColor:colors.accent
+                     }}
+                >
+                    <SupportAgentIcon sx={{color:colors.background}}/>
+                </Fab>
+                {/* 投稿ダイアログ */}
+                <ChatDialog
+                    open={chatDialogOpen}
+                    onClose={handleCloseChatDialog}
                 />
                 <SignOutButton />
             </Box>
