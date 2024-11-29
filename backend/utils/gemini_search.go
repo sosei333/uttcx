@@ -91,8 +91,6 @@ func SearchSample(projectID, location, engineID, searchQuery string) (map[string
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %v", err)
 	}
-
-	// リクエストボディを確認
 	log.Printf("Request body: %s", string(jsonData))
 
 	ctx := context.Background()
@@ -118,7 +116,6 @@ func SearchSample(projectID, location, engineID, searchQuery string) (map[string
 		return nil, fmt.Errorf("failed to read response body: %v", err)
 	}
 
-	// レスポンスステータスを確認
 	log.Printf("Response status: %d", resp.StatusCode)
 
 	if resp.StatusCode != http.StatusOK {
@@ -130,30 +127,18 @@ func SearchSample(projectID, location, engineID, searchQuery string) (map[string
 		return nil, fmt.Errorf("failed to unmarshal response: %v", err)
 	}
 
-	// フルレスポンスをログ出力
 	log.Printf("Full API response: %v", response)
 
 	// 必要な情報（summary）を抽出
-	summaries := []interface{}{}
-	if results, ok := response["results"].([]interface{}); ok {
-		for _, result := range results {
-			if resultMap, ok := result.(map[string]interface{}); ok {
-				log.Printf("Result map: %v", resultMap)
-				if document, ok := resultMap["document"].(map[string]interface{}); ok {
-					log.Printf("Document map: %v", document)
-					if content, ok := document["content"].(map[string]interface{}); ok {
-						log.Printf("Content map: %v", content)
-						if summary, ok := content["summary"].(string); ok {
-							summaries = append(summaries, summary)
-						}
-					}
-				}
-			}
+	var summaryText string
+	if summary, ok := response["summary"].(map[string]interface{}); ok {
+		if text, ok := summary["summaryText"].(string); ok {
+			summaryText = text
 		}
 	}
 
 	return map[string]interface{}{
-		"summary": summaries,
+		"summary": summaryText,
 		"log":     "Search successful",
 	}, nil
 }
