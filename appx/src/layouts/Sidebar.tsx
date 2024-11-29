@@ -16,13 +16,15 @@ import SignOutButton from '../components/atoms/SignOutButton';
 import PostDialog from '../components/organisms/PostTweetDialog';
 import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
-import CustomButton from '../components/atoms/CustomButton';
+import ChatDialog from '../components/organisms/GeminiChatBox';
+
 
 const drawerWidth = 240;
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
     const [postDialogOpen, setPostDialogOpen] = useState(false);
+    const [chatDialogOpen, setChatDialogOpen] = useState(false);
 
     const handleOpenPostDialog = () => {
         setPostDialogOpen(true);
@@ -32,12 +34,20 @@ const Sidebar: React.FC = () => {
         setPostDialogOpen(false);
     };
 
+    const handleOpenChatDialog = () => {
+        setChatDialogOpen(true);
+    };
+
+    const handleCloseChatDialog = () => {
+        setChatDialogOpen(false);
+    };
+
     return (
         <Drawer
             variant="permanent"
             sx={{
                 [`& .MuiDrawer-paper`]: {
-                    width: '15%',
+                    width: '25%',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
@@ -74,6 +84,22 @@ const Sidebar: React.FC = () => {
                 <PostDialog
                     open={postDialogOpen}
                     onClose={handleClosePostDialog}
+                />
+
+                {/*gemini*/}
+                 <Fab
+                    onClick={handleOpenChatDialog}
+                    color="error"
+                    aria-label="add"
+                    size="large"
+                    sx={{ alignSelf: 'center' }}
+                >
+                    <DrawOutlinedIcon />
+                </Fab>
+                {/* 投稿ダイアログ */}
+                <ChatDialog
+                    open={chatDialogOpen}
+                    onClose={handleCloseChatDialog}
                 />
                 <SignOutButton />
             </Box>

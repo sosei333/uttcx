@@ -42,11 +42,10 @@ const Tweets: React.FC = () => {
             <Box
                 display="flex"
                 flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
+
                 overflow="auto"
                 padding={2}
-                width="100%" // 親要素の幅いっぱいに広げる
+               
             >
                 {/* 投稿を TweetBox を利用して表示 */}
                 {tweets.map((tweet) => (
