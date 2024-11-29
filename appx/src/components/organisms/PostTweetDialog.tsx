@@ -25,8 +25,11 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
   const handleChat = async () => {
     setLoading(true);
     setAiResponse(null); // 前回の回答をクリア
+
+    const formattedPrompt = `以下の内容をSNSに投稿しようと思うのですが、不適切な内容はありますか？\n\n"${postText}"`;
+
     try {
-      const response = await sendPromptToGemini(postText);
+      const response = await sendPromptToGemini(formattedPrompt);
       if (response && response.answer) {
         setAiResponse(response.answer); // AIの回答を状態に保存
       } else {
