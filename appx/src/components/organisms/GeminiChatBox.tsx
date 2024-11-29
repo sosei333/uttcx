@@ -1,8 +1,9 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
 import TextField from '../atoms/TextField';
-import Button from '../atoms/Button';
+//import Button from '../atoms/Button';
 import { sendToGemini } from '../../services/gemini';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 interface ChatDialogProps {
   open: boolean;

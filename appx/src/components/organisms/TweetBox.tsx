@@ -6,6 +6,7 @@ import LikeButton from '../molecules/LikeButton';
 import BookmarkButton from '../molecules/BookmarkButton';
 import PostReplyDialog from './PostReplyDialog';
 import { addLike, removeLike } from '../../services/like';
+import {colors} from '../../layouts/colors';
 
 interface PostProps {
     tweet_id: number;
@@ -47,14 +48,19 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
             flexDirection="column"
             p={2}
             my={1}
+            mx="auto"
             border="1px solid #ccc"
             borderRadius={2}
-            width="100%"
             position="relative"
             bgcolor="#f9f9f9"
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
+            sx={{
+                width: '80%',
+                borderColor: colors.text,
+                borderWidth: '1.5pt'
+            }}
         >
-            <Box position="absolute" top={8} left={8}>
+            <Box  top={8} left={8}>
                 <Typography variant="caption" color="textSecondary">
                     {author} ・ {date}
                 </Typography>

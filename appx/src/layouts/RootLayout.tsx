@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, CssBaseline, AppBar, Toolbar, Typography } from '@mui/material';
 import Sidebar from './Sidebar';
-import colors from './colors';
+import {colors} from './colors';
 
 const RootLayout: React.FC = () => {
 
@@ -18,7 +18,7 @@ const RootLayout: React.FC = () => {
                 }}
             >
                 <AppBar
-                    position="fixed"
+                    //position="fixed"
                     sx={{
                         zIndex: (theme) => theme.zIndex.drawer + 1,
                         height: `10vh`, // AppBar自体の高さを設定
@@ -42,8 +42,8 @@ const RootLayout: React.FC = () => {
             
             <Box
                 sx={{
-                    display: 'flex',
-                    flexGrow: 1,
+                    //display: 'flex',
+                    //flexGrow: 1,
                     //mt: `${appBarHeight}px`, // AppBarの高さ分の余白を確保
                     width: '100vw', // 全体の幅を100%に設定
                     height: '90vh',
@@ -53,7 +53,7 @@ const RootLayout: React.FC = () => {
                 {/* Sidebar を Box として扱う */}
                 <Box
                     sx={{
-                        width: '15vw',
+                        width: '20vw',
                         backgroundColor: colors.background, // Sidebar用の背景色（任意）
                         borderRight: '1px solid #ccc',
                     }}
@@ -65,28 +65,18 @@ const RootLayout: React.FC = () => {
                 <Box
                     component="main"
                     sx={{
-                        width:'65vw', // 残りのスペースを占有
+                        width:'80vw', // 残りのスペースを占有
                         display: 'flex',
                         justifyContent: 'center', // コンテンツを右寄せ
                         alignItems: 'flex-start', // 縦方向は上揃え
                         backgroundColor: colors.background, // メインコンテンツの背景色
-                        padding: '16px', // 任意の余白
+                        padding: 0, // 任意の余白
+                        overflow:'hidden',
+                        height: '90vh',
+                        boxSizing: 'border-box',
                     }}
                 >
                     <Outlet />
-                </Box>
-                <Box
-                    component="main"
-                    sx={{
-                        width:'20vw', // 残りのスペースを占有
-                        display: 'flex',
-                        justifyContent: 'flex-end', // コンテンツを右寄せ
-                        alignItems: 'flex-start', // 縦方向は上揃え
-                        backgroundColor: colors.primary, // メインコンテンツの背景色
-                        padding: '16px', // 任意の余白
-                    }}
-                >
-                    別のコンテンツ（リプライとか表示してもいいね）
                 </Box>
             </Box>
         </Box>

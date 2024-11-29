@@ -11,6 +11,7 @@ import TweetDetails from './pages/TweetDetails';
 import Profile from './pages/Profile';
 
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
+import TweetAndReplies from './pages/TweetAndReplies';
 
 
 const Title: React.FC = () => {
@@ -85,7 +86,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/tweet/:id" element={<TweetDetails />} />
+            <Route path="/tweet/:id" element={<TweetAndReplies />} />
             {/* ログイン前のページに戻らないようリダイレクト */}
             <Route path="/login" element={<Navigate to="/home" />} />
             <Route path="/signup" element={<Navigate to="/home" />} />
