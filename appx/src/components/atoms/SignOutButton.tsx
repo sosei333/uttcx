@@ -1,15 +1,15 @@
 import React from 'react';
 import useSignOut from '../../hooks/useSignOut';
-import CustomButton from './CustomButton';
+import { Button } from "@mui/material";
+import {colors}from '../../layouts/colors';
 
 const SignOutButton: React.FC = () => {
     const handleSignOut = useSignOut();
-
     return (
-        <CustomButton variant="contained" onClick={handleSignOut} color="secondary" fullWidth>
+        <Button variant="contained" onClick={handleSignOut} fullWidth sx={{color:colors.background, backgroundColor:colors.accent}}>
             ログアウト
-        </CustomButton>
+        </Button>
     );
-};
+}
 
 export default SignOutButton;

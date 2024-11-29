@@ -17,9 +17,8 @@ import PostDialog from '../components/organisms/PostTweetDialog';
 import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 import ChatDialog from '../components/organisms/GeminiChatBox';
-
-
-const drawerWidth = 240;
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import {colors} from './colors';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -47,7 +46,7 @@ const Sidebar: React.FC = () => {
             variant="permanent"
             sx={{
                 [`& .MuiDrawer-paper`]: {
-                    width: '25%',
+                    width: '20%',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
@@ -73,28 +72,29 @@ const Sidebar: React.FC = () => {
                 {/* 投稿ボタン */}
                 <Fab
                     onClick={handleOpenPostDialog}
-                    color="success"
                     aria-label="add"
                     size="large"
-                    sx={{ alignSelf: 'center' }}
+                    sx={{ alignSelf: 'center',
+                        backgroundColor:colors.accent,
+                    }}
                 >
-                    <DrawOutlinedIcon />
+                    <DrawOutlinedIcon sx={{color:colors.text}}/>
                 </Fab>
                 {/* 投稿ダイアログ */}
                 <PostDialog
                     open={postDialogOpen}
                     onClose={handleClosePostDialog}
                 />
-
                 {/*gemini*/}
                  <Fab
                     onClick={handleOpenChatDialog}
-                    color="error"
                     aria-label="add"
                     size="large"
-                    sx={{ alignSelf: 'center' }}
+                    sx={{ alignSelf: 'center',
+                        backgroundColor:colors.accent
+                     }}
                 >
-                    <DrawOutlinedIcon />
+                    <SupportAgentIcon sx={{color:colors.background}}/>
                 </Fab>
                 {/* 投稿ダイアログ */}
                 <ChatDialog
