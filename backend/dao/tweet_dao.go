@@ -60,12 +60,47 @@ func GetAllPost() ([]models.Post, error) {
 	return posts, nil
 }
 
+func GetAllTweetsWithUserName() ([]models.TweetWithUserName, error) {
+	// SQLクエリ: tweetsとusersを結合してデータを取得
+	query := `SELECT tweets.id, tweets.user_id, users.user_name, tweets.content, tweets.created_at FROM tweets INNER JOIN users ON tweets.user_id = users.user_id`
+
+	// クエリを実行
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		log.Printf("Error executing query in GetAllTweetsWithUserName: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	// 結果を格納するスライス
+	var posts []models.TweetWithUserName
+
+	// データベースの行をループしながら読み取る
+	for rows.Next() {
+		var post models.TweetWithUserName
+		if err := rows.Scan(&post.ID, &post.UserID, &post.UserName, &post.Content, &post.CreatedAt); err != nil {
+			log.Printf("Error scanning row in GetAllTweetsWithUserName: %v", err)
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	// rows.Next() 後のエラーチェック
+	if err := rows.Err(); err != nil {
+		log.Printf("Rows iteration error in GetAllTweetsWithUserName: %v", err)
+		return nil, err
+	}
+
+	return posts, nil
+}
+
 func GetTweetById(tweetId int) (*models.Tweet, error) {
-	query := `SELECT id, user_id, content, created_at FROM tweets WHERE id = ?`
+	// tweetsとusersをJOINしてuser_nameを取得するSQLクエリ
+	query := `SELECT tweets.id, tweets.user_id, users.user_name, tweets.content, tweets.created_at FROM tweets INNER JOIN users ON tweets.user_id = users.user_id WHERE tweets.id = ?`
 
 	// クエリを実行してデータを取得
 	var tweet models.Tweet
-	err := db.DB.QueryRow(query, tweetId).Scan(&tweet.ID, &tweet.UserID, &tweet.Content, &tweet.CreatedAt)
+	err := db.DB.QueryRow(query, tweetId).Scan(&tweet.ID, &tweet.UserID, &tweet.UserName, &tweet.Content, &tweet.CreatedAt)
 	if err != nil {
 		log.Printf("Error retrieving tweet with ID %d: %v", tweetId, err)
 		return nil, err

@@ -79,7 +79,7 @@ func GetAllTweetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 投稿データを取得
-	posts, err := dao.GetAllPost()
+	posts, err := dao.GetAllTweetsWithUserName()
 	if err != nil {
 		log.Printf("Error retrieving posts: %v", err)
 		http.Error(w, "Failed to retrieve posts", http.StatusInternalServerError)
