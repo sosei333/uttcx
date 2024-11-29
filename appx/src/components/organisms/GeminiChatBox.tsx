@@ -15,18 +15,24 @@ const ChatDialog: React.FC<ChatDialogProps> = ({ open, onClose }) => {
 
   const handlePost = async () => {
     const response = await sendToGemini(keyWord);
-
+  
     // レスポンスの処理
-    if (response.summary && response.summary.length > 0) {
-      setAnswer(response.summary.join('\n')); // 検索結果を改行で結合
-    } else if (response.summary && response.summary.length === 0) {
-      setAnswer("検索結果が見つかりませんでした。"); // 結果が空の場合
+    if (response.summary) {
+      // `summary` が文字列の場合
+      if (typeof response.summary === "string") {
+        setAnswer(response.summary); // そのまま表示
+      } 
+      // `summary` が配列の場合（念のためのチェック）
+      else if (Array.isArray(response.summary)) {
+        setAnswer(response.summary.join('\n')); // 改行で結合して表示
+      }
     } else {
-      setAnswer(response.log); // エラーログを表示
+      setAnswer(response.log || "検索結果が見つかりませんでした。"); // エラーログを表示
     }
-
+  
     setKeyWord('');
   };
+  
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
