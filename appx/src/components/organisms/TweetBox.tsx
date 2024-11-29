@@ -56,7 +56,7 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCo
             bgcolor="#f9f9f9"
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             sx={{
-                width: '80%',
+                width: '90%',
                 borderColor: colors.text,
                 borderWidth: '1.5pt'
             }}

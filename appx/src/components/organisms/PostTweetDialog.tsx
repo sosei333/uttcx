@@ -20,13 +20,14 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
     postToBackend(postText);
     setPostText('');
     setAiResponse(null); // 投稿時にはAIの回答をリセット
+    onClose();
   };
 
   const handleChat = async () => {
     setLoading(true);
     setAiResponse(null); // 前回の回答をクリア
 
-    const formattedPrompt = `以下の内容をSNSに投稿しようと思うのですが、不適切な内容はありますか？\n\n"${postText}"`;
+    const formattedPrompt = `以下の内容をSNSに投稿しようと思うのですが、不適切な内容はありますか？300字以内で答えてください\n\n"${postText}"`;
 
     try {
       const response = await sendPromptToGemini(formattedPrompt);
