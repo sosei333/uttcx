@@ -29,6 +29,7 @@ func main() {
 	http.HandleFunc("/like/remove", handlers.RemoveLikeHandler) // いいねを解除
 
 	http.HandleFunc("/gemini", handlers.GeminiSearch)
+	http.HandleFunc("/gemini/generate", handlers.GenerateContentHandler)
 
 	closeDBWithSysCall()
 

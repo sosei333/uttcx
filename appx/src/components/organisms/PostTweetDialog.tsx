@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogActions, Button} from '@mui/material';
 import TextField from '../atoms/TextField';
 //import Button from '../atoms/Button';
 import { postToBackend } from '../../services/tweet';
+import { sendPromptToGemini } from '../../services/gemini';
 import {colors} from '../../layouts/colors';
 
 interface PostDialogProps {
@@ -18,6 +19,10 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
     setPostText('');
   };
 
+  const handleChat = () => {
+    sendPromptToGemini(postText)
+  }
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogContent>
@@ -32,6 +37,9 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
       <DialogActions>
         <Button onClick={onClose} sx={{color:colors.accent}}>
           キャンセル
+        </Button>
+        <Button onClick={handleChat} disabled={!postText} sx={{color:colors.accent}}>
+          AIに質問
         </Button>
         <Button onClick={handlePost} disabled={!postText} sx={{color:colors.accent}}>
           投稿

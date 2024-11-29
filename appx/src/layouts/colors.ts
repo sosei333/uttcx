@@ -19,18 +19,27 @@ const colors1={
   text: '#30343A',
 }
 
-const colors = {
+const colors5 = {
   primary:'#2B2721',
   background:'#E6E4E0',
   accent: '#446E72',
   text: '#2B2721',
 }
 
-const colors5 = {
+const colors6 = {
   primary:'#43311F',
   background:'#FFF3E7',
   accent: '#365C3B',
   text: '#43311F',
 }
+
+const colors = {
+  primary:'#2B262E',
+  background:'#FBFCFF',
+  accent: '#344699',
+  text: '#2B262E',
+}
+
+
 export {colors, colors1, colors3, colors5}
   
