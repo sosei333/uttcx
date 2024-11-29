@@ -28,6 +28,8 @@ func main() {
 	http.HandleFunc("/like/add", handlers.AddLikeHandler)       // いいねを追加
 	http.HandleFunc("/like/remove", handlers.RemoveLikeHandler) // いいねを解除
 
+	http.HandleFunc("/gemini", handlers.GeminiSearch)
+
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")

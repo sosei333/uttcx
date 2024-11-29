@@ -1,0 +1,60 @@
+import React from 'react';
+import { Dialog, DialogContent, DialogActions } from '@mui/material';
+import TextField from '../atoms/TextField';
+import Button from '../atoms/Button';
+import { sendToGemini } from '../../services/gemini';
+
+interface ChatDialogProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const ChatDialog: React.FC<ChatDialogProps> = ({ open, onClose }) => {
+  const [keyWord, setKeyWord] = React.useState('');
+  const [answer, setAnswer] = React.useState('');
+
+  const handlePost = async () => {
+    // キーワードを送信し、結果を取得
+    const response = await sendToGemini(keyWord);
+
+    // レスポンスから summary を取得して表示
+    if (response.summary) {
+      setAnswer(response.summary.join('\n')); // 複数行を改行で結合
+    } else {
+      setAnswer(response.log); // エラーログを表示
+    }
+
+    setKeyWord('');
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <DialogContent>
+        <TextField
+          label="検索ワード"
+          value={keyWord}
+          onChange={(e) => setKeyWord(e.target.value)}
+          multiline
+          minRows={4}
+        />
+        <TextField
+          label="検索結果"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          multiline
+          minRows={4}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary">
+          キャンセル
+        </Button>
+        <Button onClick={handlePost} color="primary" disabled={!keyWord}>
+          検索
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default ChatDialog;
