@@ -13,10 +13,11 @@ interface PostProps {
     content: string;
     author: string;
     date: string;
+    likeCount?: number;
     onViewDetails?: () => void;
 }
 
-const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
+const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount, onViewDetails }) => {
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -77,6 +78,7 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
                 </Box>
                 <Box>
                     <LikeButton isLiked={isLiked} onClick={handleLikeClick} />
+                    {likeCount}
                     <BookmarkButton />
                 </Box>
             </Box>

@@ -15,6 +15,7 @@ type Tweet = {
     content: string;
     created_at: string;
     user_name: string;
+    likes_count:number;
 };
 
 type Reply = {
@@ -121,6 +122,7 @@ const TweetAndReplies: React.FC = () => {
                         <TweetBox
                             tweet_id={tweet.id}
                             content={tweet.content}
+                            likeCount={tweet.likes_count}
                             author={tweet.user_name}
                             date={new Date(tweet.created_at).toLocaleDateString()}
                         />
