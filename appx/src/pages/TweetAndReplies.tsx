@@ -15,6 +15,7 @@ type Tweet = {
     content: string;
     created_at: string;
     user_name: string;
+    likes_count:number;
 };
 
 type Reply = {
@@ -82,13 +83,14 @@ const TweetAndReplies: React.FC = () => {
                 alignItems="center"
                 justifyContent="center"
                 height="90vh"
-                padding={2}
+                padding={0}
             >
             <Box
                 display="flex"
                 flexDirection="column"
                 overflow="auto"
-                padding={2}
+                padding={0}
+                sx={{width:'40vw'}}
             >
                 {/* 投稿を TweetBox を利用して表示 */}
                 {tweets.map((tweet) => (
@@ -121,6 +123,7 @@ const TweetAndReplies: React.FC = () => {
                         <TweetBox
                             tweet_id={tweet.id}
                             content={tweet.content}
+                            likeCount={tweet.likes_count}
                             author={tweet.user_name}
                             date={new Date(tweet.created_at).toLocaleDateString()}
                         />
@@ -133,7 +136,7 @@ const TweetAndReplies: React.FC = () => {
                         sx={{
                             flexGrow: 1,
                             overflowY: 'auto', // 縦スクロールを有効化
-                            padding: 2,
+                            padding: 0,
                             maxHeight: '100%', // 高さを制限
                         }}
                     >

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button} from '@mui/material';
 import TextField from '../atoms/TextField';
 //import Button from '../atoms/Button';
 import { sendToGemini } from '../../services/gemini';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import { colors } from '../../layouts/colors';
 
 interface ChatDialogProps {
   open: boolean;
@@ -54,10 +54,10 @@ const ChatDialog: React.FC<ChatDialogProps> = ({ open, onClose }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onClose} sx={{color: colors.accent}}>
           キャンセル
         </Button>
-        <Button onClick={handlePost} color="primary" disabled={!keyWord}>
+        <Button onClick={handlePost} disabled={!keyWord} sx={{color: colors.accent}}>
           検索
         </Button>
       </DialogActions>

@@ -94,13 +94,13 @@ func GetAllTweetsWithUserName() ([]models.TweetWithUserName, error) {
 	return posts, nil
 }
 
-func GetTweetById(tweetId int) (*models.Tweet, error) {
-	// tweetsとusersをJOINしてuser_nameを取得するSQLクエリ
-	query := `SELECT tweets.id, tweets.user_id, users.user_name, tweets.content, tweets.created_at FROM tweets INNER JOIN users ON tweets.user_id = users.user_id WHERE tweets.id = ?`
+func GetTweetById(tweetId int) (*models.TweetWithLikes, error) {
+	// tweetsとusersをJOINしてuser_nameといいね数を取得するSQLクエリ
+	query := `SELECT tweets.id, tweets.user_id, users.user_name, tweets.content, tweets.created_at, IFNULL(COUNT(likes.id), 0) AS likes_count FROM tweets INNER JOIN users ON tweets.user_id = users.user_id LEFT JOIN likes ON tweets.id = likes.tweet_id WHERE tweets.id = ? GROUP BY tweets.id, tweets.user_id, users.user_name, tweets.content, tweets.created_at`
 
 	// クエリを実行してデータを取得
-	var tweet models.Tweet
-	err := db.DB.QueryRow(query, tweetId).Scan(&tweet.ID, &tweet.UserID, &tweet.UserName, &tweet.Content, &tweet.CreatedAt)
+	var tweet models.TweetWithLikes
+	err := db.DB.QueryRow(query, tweetId).Scan(&tweet.ID, &tweet.UserID, &tweet.UserName, &tweet.Content, &tweet.CreatedAt, &tweet.LikesCount)
 	if err != nil {
 		log.Printf("Error retrieving tweet with ID %d: %v", tweetId, err)
 		return nil, err

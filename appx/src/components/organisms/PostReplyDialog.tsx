@@ -17,6 +17,7 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
   const handlePost = () => {
     postReply(parent_id, postText);
     setPostText('');
+    onClose();
   };
 
   return (

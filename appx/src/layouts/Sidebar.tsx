@@ -75,10 +75,15 @@ const Sidebar: React.FC = () => {
                     aria-label="add"
                     size="large"
                     sx={{ alignSelf: 'center',
+                        color:colors.background,
                         backgroundColor:colors.accent,
+                        "&:hover": {
+                            color:colors.accent,
+                            backgroundColor: colors.background, // ホバー時の背景色
+                        },
                     }}
                 >
-                    <DrawOutlinedIcon sx={{color:colors.text}}/>
+                    <DrawOutlinedIcon />
                 </Fab>
                 {/* 投稿ダイアログ */}
                 <PostDialog
@@ -91,10 +96,15 @@ const Sidebar: React.FC = () => {
                     aria-label="add"
                     size="large"
                     sx={{ alignSelf: 'center',
-                        backgroundColor:colors.accent
-                     }}
+                        color:colors.background,
+                        backgroundColor:colors.accent,
+                        "&:hover": {
+                            color:colors.accent,
+                            backgroundColor: colors.background, // ホバー時の背景色
+                        },
+                    }}
                 >
-                    <SupportAgentIcon sx={{color:colors.background}}/>
+                    <SupportAgentIcon />
                 </Fab>
                 {/* 投稿ダイアログ */}
                 <ChatDialog

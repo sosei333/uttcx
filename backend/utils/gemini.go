@@ -10,11 +10,11 @@ import (
 	"cloud.google.com/go/vertexai/genai"
 )
 
-const (
-	location  = "asia-northeast1"
-	modelName = "gemini-1.5-flash-002"
-	projectID = "" // ① 自分のプロジェクトIDを指定する
-)
+//const (
+//	location  = "asia-northeast1"
+//	modelName = "gemini-1.5-flash-002"
+//	projectID = "term6-sosei-aoki" // ① 自分のプロジェクトIDを指定する
+//)
 
 func main() {
 	if len(os.Args) < 2 {
