@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "term6-sosei-aoki",
+  "private_key_id": "07d8c53233827debd1f6233c9a8507beb0ae8d48",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCu9zMUBjq9+8cG\nnEoPFYlXkX+ghOk0X32SSZZKIqYJEhtgiJYIpfnJLeCqTW8Bo6WzP66ZDf61Sdws\nbkZJqqkWnUR7Y6hKHhn30RUv43KK5jB9aprRiXjIgRCFKZKZxMkrVADNKx+DDjdO\nM0X7pyxK8I8SXFVjaS2SkothiZnv9QB5wQ3wA4zWls1vF73RF7B7/3e8AQPaDgAe\nGE5vQ4KzmpGb/NZZFXorVQEC7CYpLWIAmSqvQRV60ZNIFk4VHK+JZDIe2Jz7vfLH\neMDMMYg8OsHia9m4sW0XvmZMO5GF00n0MqcRA5nNZgleirT9qSs6Q+J3alhhjW1M\n3V1r+r9LAgMBAAECggEADG56/hq9NL99ci5Losu8cPDhGRYofbSlNu4slALnOjDD\nqjW6N04Xs+AjHOaYkwy+GsDVFoHkjZv8XVnOe7B5CCbPdVbs36tI3A9KipcGDfFy\nE48uBeJXJyPoeRWtmWhehMoYrns4Z3bsng1NlSZZIs/50mumE4SnHMl1xs3glqh7\nF97L0GsM08nwjstAGEH1Lh+t1syI0VMRz+sX8iCZth9pMVbZDZ+NTTvh4bjn98yr\nhaIaSPPolrCAUHmSiLqZ/xRS6WeLvw0J+LmoAk3OXLFYr4BbQGElXIcwbJT/9Zz5\nA0EQz8La7jV/XArgo3IRzu5Hs1YQ6hh0ysKFPoH6WQKBgQDnszy/d3gcTSLHlHsx\ng5HNofER8RhA9qvqrnN1Mzrwi7z57cXDRzmrZFwzhyl6ba0sNYQd0IUzU6VU6UnK\n/0nN3sdeO4QApn3OgTra6snw/811jPh0mkXTeoXBFEkWJIk3Lp/v0SXUdgG9ie90\nxtMcSJNXcrgBY0bsqfyuzUZGQwKBgQDBULwgHRIQh1JptOhsHQfMzTMKsnOSUuj2\nSteSfpuknZ6SVYH1fmeePpBlKLO05vrfma25xPdy2MxdGo0fiHFzNTgjUS09KaNf\nsJ12Y7XJSubi5XzrahoHT55a9RJr18SxQftHPlhi5tScO2Z2iobuwU4Zgxn1IB7s\n37hNJPJGWQKBgQC/5uwBiOmqRxjvRENklxxDvET2H0F/TM7G6QYno+7FHHfAaPbK\n7ksNcWoMI35vMDelzg1GxFYOVNEyqqW7xAVUxZdKrPB/uWWpi887Ugs/2B5Lph6C\nNORwa6IscKi39jrPwYYmEovKlJKMcZoqliJz4ohmfVV5kMhFa+Ukwk/aEQKBgQCO\ni36821LHt1Dwu0Iq/lkTDjhV6fJIcjRv8A33ar5P6x3TX5PdtuCnEhEdVp70hOF2\nYXZ1piSknfJLsNlg6BZn0lVbzW7jS8G5PJ1PgAS6si2AH6I2YN1iiLYG8fEsbkUO\nQ84K4ZEBFJ6vuSk7vbfzc7yoGUDZvF6xYeIfmF/BuQKBgBEnKCKI3fM7DSFcYYa7\nf5gcq0NpgiQn5/tU1AHXgr/cPN583wchDpSGaeOu8Rv+YcHahld1+rrDg7Twjrwo\nRcSKOktFhK1RfbphzikB589V8iKJdliBS39+CFbPZ+2ERjCTp4W6mMvpiB1t1gsN\n6yqTXvO912apjDgYCblspBc5\n-----END PRIVATE KEY-----\n",
+  "client_email": "sosei-835@term6-sosei-aoki.iam.gserviceaccount.com",
+  "client_id": "114449950753861648204",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sosei-835%40term6-sosei-aoki.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

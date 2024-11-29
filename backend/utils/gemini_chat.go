@@ -22,7 +22,6 @@ func GenerateContentFromText(w io.Writer, projectID, promptText string) error {
 		return fmt.Errorf("error creating client: %w", err)
 	}
 
-	// Geminiにプロンプトを送る
 	gemini := client.GenerativeModel(modelName)
 	prompt := genai.Text(promptText)
 	resp, err := gemini.GenerateContent(ctx, prompt)
@@ -30,10 +29,21 @@ func GenerateContentFromText(w io.Writer, projectID, promptText string) error {
 		return fmt.Errorf("error generating content: %w", err)
 	}
 
-	rb, err := json.MarshalIndent(resp, "", "  ")
-	if err != nil {
-		return fmt.Errorf("json.MarshalIndent: %w", err)
+	// 必要な部分だけ抽出
+	if len(resp.Candidates) == 0 {
+		return fmt.Errorf("no candidates returned by Gemini")
 	}
-	fmt.Fprintln(w, string(rb))
+
+	content := resp.Candidates[0].Content.Parts
+	response := map[string]interface{}{
+		"Content": content,
+	}
+
+	// 抽出したデータをJSON形式で出力
+	rb, err := json.Marshal(response)
+	if err != nil {
+		return fmt.Errorf("json.Marshal: %w", err)
+	}
+	w.Write(rb)
 	return nil
 }
