@@ -14,12 +14,13 @@ const ChatDialog: React.FC<ChatDialogProps> = ({ open, onClose }) => {
   const [answer, setAnswer] = React.useState('');
 
   const handlePost = async () => {
-    // キーワードを送信し、結果を取得
     const response = await sendToGemini(keyWord);
 
-    // レスポンスから summary を取得して表示
-    if (response.summary) {
-      setAnswer(response.summary.join('\n')); // 複数行を改行で結合
+    // レスポンスの処理
+    if (response.summary && response.summary.length > 0) {
+      setAnswer(response.summary.join('\n')); // 検索結果を改行で結合
+    } else if (response.summary && response.summary.length === 0) {
+      setAnswer("検索結果が見つかりませんでした。"); // 結果が空の場合
     } else {
       setAnswer(response.log); // エラーログを表示
     }
