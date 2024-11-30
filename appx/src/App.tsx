@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Signup from './pages/Signup';
@@ -7,12 +7,11 @@ import Login from './pages/Login';
 import RootLayout from './layouts/RootLayout';
 import Explore from './pages/Explore';
 import Home from './pages/Home';
-import TweetDetails from './pages/TweetDetails';
 import Profile from './pages/Profile';
-
-import { Box, Typography, Button, CircularProgress } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import TweetAndReplies from './pages/TweetAndReplies';
 
+import NavigationButton from './components/atoms/NavigationButton';
 
 const Title: React.FC = () => {
   return (
@@ -65,29 +64,25 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
       alignItems="center"
       justifyContent="center"
       sx={{
-        flexGrow: 1, // 高さを画面全体に拡張
-        width: '100%', // 幅を全体に拡張
+        flexGrow: 1,
+        width: '100%',
         bgcolor: 'background.default',
-        padding: 3,
+        padding: 0,
       }}
     >
       <Routes>
-        {/* ログイン前のルート */}
         {!user ? (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            {/* ログイン状態でアクセスしようとした場合、リダイレクト */}
             <Route path="*" element={<Navigate to="/" />} />
           </>
         ) : (
-          // ログイン後のルート（RootLayoutでラップ）
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/tweet/:id" element={<TweetAndReplies />} />
-            {/* ログイン前のページに戻らないようリダイレクト */}
             <Route path="/login" element={<Navigate to="/home" />} />
             <Route path="/signup" element={<Navigate to="/home" />} />
             <Route path="*" element={<Navigate to="/home" />} />
@@ -95,27 +90,17 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
         )}
       </Routes>
 
-      {/* ログイン前のメニュー表示 */}
       {!user && !['/login', '/signup'].includes(location.pathname) && (
-        <Box mt={4} textAlign="center">
+        <Box mt={4} textAlign="center" alignItems="center" alignContent="center">
           <Title />
           <Box mt={2}>
-            <Link to="/login" style={{ marginRight: 16, textDecoration: 'none' }}>
-              <Button variant="contained" color="primary" sx={{ minWidth: 120 }}>
-                ログイン
-              </Button>
-            </Link>
-            <Link to="/signup" style={{ textDecoration: 'none' }}>
-              <Button variant="outlined" color="primary" sx={{ minWidth: 120 }}>
-                アカウントを作成
-              </Button>
-            </Link>
+            <NavigationButton label="ログイン" to="/login" />
+            <NavigationButton label="新規登録" to="/signup" />
           </Box>
         </Box>
       )}
     </Box>
   );
 };
-
 
 export default App;

@@ -7,7 +7,7 @@ import {colors} from './colors';
 const RootLayout: React.FC = () => {
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh', width:'100vw' }}>
+        <Box sx={{ display: 'flex',mt:0, height: '100vh', width:'100vw' }}>
             <CssBaseline />
             <Box
                 sx={{
@@ -21,13 +21,13 @@ const RootLayout: React.FC = () => {
                     //position="fixed"
                     sx={{
                         zIndex: (theme) => theme.zIndex.drawer + 1,
-                        height: `10vh`, // AppBar自体の高さを設定
+                        height: '10vh', // AppBar自体の高さを設定
                         backgroundColor: colors.primary,
                     }}
                 >
                     <Toolbar
                         sx={{
-                            minHeight: `10vh`, // Toolbarの高さを設定
+                            minHeight: '10vh', // Toolbarの高さを設定
                             display: 'flex',
                             alignItems: 'center',
                             //backgroundColor: colors.primary, // AppBarの背景色
@@ -42,12 +42,10 @@ const RootLayout: React.FC = () => {
             
             <Box
                 sx={{
-                    //display: 'flex',
-                    //flexGrow: 1,
-                    //mt: `${appBarHeight}px`, // AppBarの高さ分の余白を確保
                     width: '100vw', // 全体の幅を100%に設定
                     height: '90vh',
                     mt:'10vh',
+                    
                 }}
             >
                 {/* Sidebar を Box として扱う */}
@@ -71,7 +69,6 @@ const RootLayout: React.FC = () => {
                         alignItems: 'flex-start', // 縦方向は上揃え
                         backgroundColor: colors.background, // メインコンテンツの背景色
                         padding: 0, // 任意の余白
-                        overflow:'hidden',
                         height: '90vh',
                         boxSizing: 'border-box',
                     }}
