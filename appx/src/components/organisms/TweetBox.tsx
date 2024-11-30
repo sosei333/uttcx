@@ -4,8 +4,10 @@ import ViewDetailsButton from '../molecules/ViewDetailsButton';
 import ReplyButton from '../molecules/ReplyButton';
 import LikeButton from '../molecules/LikeButton';
 import BookmarkButton from '../molecules/BookmarkButton';
+import FollowButton from '../atoms/FollowButton';
 import PostReplyDialog from './PostReplyDialog';
 import { addLike, removeLike } from '../../services/like';
+import { addFollow, removeFollow } from '../../services/follow';
 import {colors} from '../../layouts/colors';
 
 interface PostProps {
@@ -14,10 +16,12 @@ interface PostProps {
     author: string;
     date: string;
     likeCount?: number;
+    authorId: string; // 作者のユーザーIDを追加
+    isFollowingAuthor?: boolean; // フォロー状態を初期化
     onViewDetails?: () => void;
 }
 
-const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount, onViewDetails }) => {
+const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails }) => {
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -65,6 +69,10 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCo
                 <Typography variant="caption" color="textSecondary">
                     {author} ・ {date}
                 </Typography>
+                {/* フォローボタン */}
+                <Box mt={1}>
+                    <FollowButton userId={authorId} isInitiallyFollowing={isFollowingAuthor} />
+                </Box>
             </Box>
 
             <Typography variant="body1" mt={2} mb={4}>
