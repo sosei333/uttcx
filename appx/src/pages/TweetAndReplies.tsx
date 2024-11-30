@@ -99,6 +99,7 @@ const TweetAndReplies: React.FC = () => {
                         tweet_id={tweet.id}
                         content={tweet.content}
                         author={tweet.user_name}
+                        authorId={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
                         onViewDetails={() => handleViewDetails(tweet.id)}
                     />
@@ -125,6 +126,7 @@ const TweetAndReplies: React.FC = () => {
                             content={tweet.content}
                             likeCount={tweet.likes_count}
                             author={tweet.user_name}
+                            authorId={tweet.user_id}
                             date={new Date(tweet.created_at).toLocaleDateString()}
                         />
                     </Box>

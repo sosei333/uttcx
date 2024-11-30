@@ -7,7 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 export const menuItems = [
     { text: 'Home', link: './home', icon: <HomeIcon /> },
     { text: 'Explore', link: './explore', icon: <SearchIcon /> },
-    { text: 'Communities', link: './communities', icon: <GroupIcon /> },
+    { text: 'Follow', link: './follow', icon: <GroupIcon /> },
     { text: 'Settings', link: './settings', icon: <SettingsIcon /> },
     { text: 'Profile', link: './profile', icon: <PersonIcon /> },
 ];
