@@ -34,6 +34,14 @@ CREATE TABLE IF NOT EXISTS likes (
     UNIQUE (user_id, tweet_id) -- 同じユーザーが同じ投稿に複数回いいねできない
 );
 
+CREATE TABLE IF NOT EXISTS follows (
+    follower_id VARCHAR(255) NOT NULL, -- フォローするユーザーID
+    followed_id VARCHAR(255) NOT NULL, -- フォローされるユーザーID
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- フォロー日時
+    PRIMARY KEY (follower_id, followed_id), -- 重複フォローを防ぐ複合主キー
+    FOREIGN KEY (follower_id) REFERENCES users(user_id) ON DELETE CASCADE, -- フォローするユーザー削除時に削除
+    FOREIGN KEY (followed_id) REFERENCES users(user_id) ON DELETE CASCADE -- フォローされるユーザー削除時に削除
+);
 
 INSERT INTO users (user_id, user_name) VALUES
     ('1', 'Alice'),

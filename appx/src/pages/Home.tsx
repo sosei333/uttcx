@@ -55,6 +55,7 @@ const Tweets: React.FC = () => {
                         tweet_id={tweet.id}
                         content={tweet.content}
                         author={tweet.user_name}
+                        authorId={tweet.user_id}
                         date={new Date(tweet.created_at).toLocaleDateString()}
                         onViewDetails={() => handleViewDetails(tweet.id)}
                     />
