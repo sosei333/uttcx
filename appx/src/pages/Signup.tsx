@@ -1,8 +1,7 @@
 // pages/Signup.tsx
 import React from 'react';
-import SignupForm from '../components/SignupForm';
+import SignupForm from '../components/organisms/SignupForm';
 import { useSignup } from '../hooks/useSignup';
-import { useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
     const { handleSignup, error, success } = useSignup();

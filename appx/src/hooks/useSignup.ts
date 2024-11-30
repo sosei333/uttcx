@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signupWithFirebase } from '../services/authService';
-import { registerUserToBackend } from './register';
+import { registerUserToBackend } from '../services/user';
 
 export const useSignup = () => {
     const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export const useSignup = () => {
             }
 
             // バックエンドにユーザー情報を送信（user_nameとuser_idを送信）
-            await registerUserToBackend(name, userId);
+            await registerUserToBackend(userId,name);
             
             setSuccess("新規登録が成功しました。ログインしてください。");
         } catch (error: any) {

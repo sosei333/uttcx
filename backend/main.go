@@ -15,6 +15,22 @@ func main() {
 	defer db.CloseDB()
 
 	http.HandleFunc("/user", handlers.UserHandler)
+	http.HandleFunc("/user/getusername", handlers.GetUserNameByIDHandler)
+	http.HandleFunc("/user/update", handlers.UpdateUserNameHandler)
+
+	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
+	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)
+	http.HandleFunc("/tweet/id", handlers.GetTweetByIdHandler)
+
+	http.HandleFunc("/reply", handlers.GetRepliesByParentIdHandler)
+	http.HandleFunc("/reply/new", handlers.SaveReplyHandler)
+
+	http.HandleFunc("/like/add", handlers.AddLikeHandler)       // いいねを追加
+	http.HandleFunc("/like/remove", handlers.RemoveLikeHandler) // いいねを解除
+
+	http.HandleFunc("/gemini", handlers.GeminiSearch)
+	http.HandleFunc("/gemini/generate", handlers.GenerateContentHandler)
+
 	closeDBWithSysCall()
 
 	port := os.Getenv("PORT")

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './firebase';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import RootLayout from './components/RootLayout';
-import Explore from './components/Explore';
-import Home from './components/Home';
+import RootLayout from './layouts/RootLayout';
+import Explore from './pages/Explore';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import { Box, Typography, CircularProgress } from '@mui/material';
+import TweetAndReplies from './pages/TweetAndReplies';
 
-import { Box, Typography, Button, CircularProgress } from '@mui/material';
-
+import NavigationButton from './components/atoms/NavigationButton';
 
 const Title: React.FC = () => {
   return (
@@ -56,45 +58,47 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
   const location = useLocation();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="80vh" sx={{ bgcolor: 'background.default', padding: 3 }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{
+        flexGrow: 1,
+        width: '100%',
+        bgcolor: 'background.default',
+        padding: 0,
+      }}
+    >
       <Routes>
-        {/* ログイン前のルート */}
         {!user ? (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            {/*<Route path="*" element={<Navigate to="/login" />} />*/}
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         ) : (
-          // ログイン後のルート（RootLayoutでラップ）
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/tweet/:id" element={<TweetAndReplies />} />
+            <Route path="/login" element={<Navigate to="/home" />} />
+            <Route path="/signup" element={<Navigate to="/home" />} />
             <Route path="*" element={<Navigate to="/home" />} />
           </Route>
         )}
       </Routes>
 
-      {/* ログイン前のメニュー表示 */}
-      <Box mt={4} textAlign="center">
-        {!user && !['/login', '/signup'].includes(location.pathname) && (
-          <>
-            <Title />
-            <Box mt={2}>
-              <Link to="/login" style={{ marginRight: 16, textDecoration: 'none' }}>
-                <Button variant="contained" color="primary" sx={{ minWidth: 120 }}>
-                  ログイン
-                </Button>
-              </Link>
-              <Link to="/signup" style={{ textDecoration: 'none' }}>
-                <Button variant="outlined" color="primary" sx={{ minWidth: 120 }}>
-                  アカウントを作成
-                </Button>
-              </Link>
-            </Box>
-          </>
-        )}
-      </Box>
+      {!user && !['/login', '/signup'].includes(location.pathname) && (
+        <Box mt={4} textAlign="center" alignItems="center" alignContent="center">
+          <Title />
+          <Box mt={2}>
+            <NavigationButton label="ログイン" to="/login" />
+            <NavigationButton label="新規登録" to="/signup" />
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
