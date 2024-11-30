@@ -44,7 +44,7 @@ const Sidebar: React.FC = () => {
     return (
         <Drawer
             variant="permanent"
-            sx={{
+            sx={{mt:0,
                 [`& .MuiDrawer-paper`]: {
                     width: '20%',
                     boxSizing: 'border-box',
