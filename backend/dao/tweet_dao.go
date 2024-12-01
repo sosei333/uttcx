@@ -108,3 +108,26 @@ func GetTweetById(tweetId int) (*models.TweetWithLikes, error) {
 
 	return &tweet, nil
 }
+
+// GetFollowingTweets はフォローしているユーザーのツイートを取得します
+func GetFollowingTweets(userID string) ([]models.Tweet, error) {
+	query := `SELECT t.id, t.user_id, u.user_name, t.content, t.created_at FROM tweets t INNER JOIN follows f ON t.user_id = f.followed_id INNER JOIN users u ON t.user_id = u.user_id WHERE f.follower_id = ? ORDER BY t.created_at DESC`
+	rows, err := db.DB.Query(query, userID)
+	if err != nil {
+		log.Printf("Failed to execute query: %v\n", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tweets []models.Tweet
+	for rows.Next() {
+		var tweet models.Tweet
+		if err := rows.Scan(&tweet.ID, &tweet.UserID, &tweet.UserName, &tweet.Content, &tweet.CreatedAt); err != nil {
+			log.Printf("Failed to scan row: %v\n", err)
+			return nil, err
+		}
+		tweets = append(tweets, tweet)
+	}
+
+	return tweets, nil
+}

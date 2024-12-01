@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import ViewDetailsButton from '../molecules/ViewDetailsButton';
 import ReplyButton from '../molecules/ReplyButton';
 import LikeButton from '../molecules/LikeButton';
@@ -8,7 +8,7 @@ import FollowButton from '../atoms/FollowButton';
 import PostReplyDialog from './PostReplyDialog';
 import { addLike, removeLike } from '../../services/like';
 import { addFollow, removeFollow } from '../../services/follow';
-import {colors} from '../../layouts/colors';
+//import {colors} from '../../layouts/colors';
 
 interface PostProps {
     tweet_id: number;
@@ -22,6 +22,8 @@ interface PostProps {
 }
 
 const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails }) => {
+    const theme=useTheme();
+    
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -61,19 +63,22 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCo
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             sx={{
                 width: '90%',
-                borderColor: colors.text,
+                borderColor: theme.palette.primary.main,
                 borderWidth: '1.5pt'
             }}
         >
-            <Box  top={8} left={8}>
+            <Box display="flex" flexDirection="row" alignItems="center" width="100%">
                 <Typography variant="caption" color="textSecondary">
                     {author} ・ {date}
                 </Typography>
+                {/* スペースを埋める */}
+                <Box flexGrow={1} />
                 {/* フォローボタン */}
-                <Box mt={1}>
+                <Box>
                     <FollowButton userId={authorId} isInitiallyFollowing={isFollowingAuthor} />
                 </Box>
             </Box>
+
 
             <Typography variant="body1" mt={2} mb={4}>
                 {content}

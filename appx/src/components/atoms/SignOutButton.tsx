@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 const SignOutButton: React.FC = () => {
     const handleSignOut = useSignOut();
     return (
-        <Button variant="contained" color='secondary' onClick={handleSignOut} fullWidth 
+        <Button variant="contained" color='primary' onClick={handleSignOut} fullWidth 
         sx={{ alignSelf: 'center',}}>
             ログアウト
         </Button>

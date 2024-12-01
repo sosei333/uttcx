@@ -2,34 +2,43 @@ import { createTheme } from '@mui/material/styles';
 import { colors } from './colors';
 
 const customTheme = createTheme({
-    palette: {
-        primary: {
-            main: colors.accent, // プライマリカラー
-        },
-        secondary: {
-            main: colors.text, // セカンダリカラー
-        },
-        error: {
-            main: '#d32f2f', // エラーカラー
-        },
-        warning: {
-            main: '#ffa726', // 警告カラー
-        },
-        info: {
-            main: '#0288d1', // 情報カラー
-        },
-        success: {
-            main: '#2e7d32', // 成功カラー
-        },
-        background: {
-            default: colors.background, // 背景のデフォルトカラー
-            paper: '#ffffff', // カードやダイアログの背景
-        },
-        text: {
-            primary: colors.text, // テキストのプライマリカラー
-            secondary: '#555555', // テキストのセカンダリカラー
-        },
+  palette: {
+    primary: {
+      main: colors.accent,        // プライマリカラーにアクセントカラーを使用
+      light: colors.accentLight, // 明るいバリエーション
+      dark: colors.accentDark,   // 暗いバリエーション
     },
+    secondary: {
+      main: colors.text,         // セカンダリカラーにテキストカラーを使用
+    },
+    background: {
+      default: colors.base,      // 全体の背景色
+      paper: '#ffffff',          // Paperなどのコンポーネント背景色
+    },
+    text: {
+      primary: colors.text,         // プライマリテキストカラー
+      secondary: colors.textSecondary, // セカンダリテキストカラー
+    },
+  },
+  components: {
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: colors.text,       // デフォルトの文字色
+          '&:hover': {
+            backgroundColor: colors.accentLight, // 未選択時のホバー色
+          },
+          '&.Mui-selected': {
+            backgroundColor: colors.accent, // 選択時の背景色
+            color: '#ffffff',               // 選択時の文字色
+            '&:hover': {
+              backgroundColor: colors.accent, // 選択状態ではホバー時に色を変えない
+            },
+          },
+        },
+      },
+    },
+  },
 });
 
 export default customTheme;

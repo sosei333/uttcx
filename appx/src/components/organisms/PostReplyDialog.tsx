@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, useTheme } from '@mui/material';
 import TextField from '../atoms/TextField';
 //import Button from '../atoms/Button';
 import { postReply } from '../../services/reply';
-import {colors} from '../../layouts/colors';
+//import {colors} from '../../layouts/colors';
 
 interface PostDialogProps {
   open: boolean;
@@ -12,6 +12,8 @@ interface PostDialogProps {
 }
 
 const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }) => {
+  const theme=useTheme();
+  
   const [postText, setPostText] = React.useState('');
 
   const handlePost = () => {
@@ -32,10 +34,10 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} sx={{color:colors.accent}}>
+        <Button onClick={onClose} sx={{color:theme.palette.primary.main}}>
           キャンセル
         </Button>
-        <Button onClick={handlePost}  disabled={!postText} sx={{color:colors.accent}}>
+        <Button onClick={handlePost}  disabled={!postText} sx={{color:theme.palette.primary.main}}>
           リプライを投稿
         </Button>
       </DialogActions>

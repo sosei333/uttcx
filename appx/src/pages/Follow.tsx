@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getFollowingUsers, getFollowedUsers } from '../services/follow'; // フォロー取得関数をインポート
-import { Box, Typography, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import UserBox from '../components/organisms/UserBox'; // UserBox をインポート
+import { getFollowingUsers, getFollowedUsers } from '../services/follow';
+import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Paper, IconButton } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh'; // アイコンボタン用
+import UserBox from '../components/organisms/UserBox';
 
 type FollowingUser = {
     ID: string;
@@ -12,7 +13,7 @@ const FollowingList: React.FC = () => {
     const [users, setUsers] = useState<FollowingUser[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [viewMode, setViewMode] = useState<'following' | 'followed'>('following'); // 表示モードを管理
+    const [viewMode, setViewMode] = useState<'following' | 'followed'>('following');
 
     // ユーザーリストを取得する関数
     const fetchUsers = async (mode: 'following' | 'followed') => {
@@ -42,39 +43,72 @@ const FollowingList: React.FC = () => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            height="80vh"
-            width="60vh"
+            height="90vh"
+            width="70vh"
             padding={2}
         >
-            <Typography variant="h4" gutterBottom>
-                {viewMode === 'following' ? 'Following Users' : 'Followed By Users'}
-            </Typography>
+            {/* ヘッダー部分 */}
+            <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ height: '10vh', width: '100%' }}
+            >
+                <Typography variant="h4" gutterBottom>
+                    {viewMode === 'following' ? 'Following Users' : 'Followed By Users'}
+                </Typography>
+                {/* 更新ボタン（アイコンボタン例） */}
+                <IconButton
+                    onClick={() => fetchUsers(viewMode)}
+                    disabled={loading}
+                    sx={{
+                        border: '1px solid',
+                        borderColor: loading ? 'grey.300' : 'primary.main',
+                    }}
+                >
+                    <RefreshIcon color={loading ? 'disabled' : 'primary'} />
+                </IconButton>
+            </Box>
 
-            {/* 表示切り替えボタン */}
-            <ToggleButtonGroup
-                value={viewMode}
-                exclusive
-                onChange={(_, newMode) => {
-                    if (newMode) setViewMode(newMode); // ボタンを切り替える
+            {/* トグルボタン */}
+            <Box
+                display="flex"
+                flexDirection="column"
+                sx={{ width: '100%', alignItems: 'center', marginBottom: 1 }}
+            >
+                <ToggleButtonGroup
+                    value={viewMode}
+                    exclusive
+                    onChange={(_, newMode) => {
+                        if (newMode) setViewMode(newMode);
+                    }}
+                    sx={{
+                        width: '100%',
+                        marginBottom: 2,
+                        display: 'flex',
+                    }}
+                >
+                    <ToggleButton value="following" sx={{ flex: 1 }}>
+                        Following
+                    </ToggleButton>
+                    <ToggleButton value="followed" sx={{ flex: 1 }}>
+                        Followed By
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
+
+            {/* スクロール可能なエリア */}
+            <Paper
+                elevation={3}
+                sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    width: '100%',
+                    padding: 2,
+                    maxHeight: '65vh',
                 }}
-                sx={{ mb: 2 }}
             >
-                <ToggleButton value="following">Following</ToggleButton>
-                <ToggleButton value="followed">Followed By</ToggleButton>
-            </ToggleButtonGroup>
-
-            {/* 更新ボタン */}
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => fetchUsers(viewMode)}
-                disabled={loading}
-                sx={{ mb: 2 }}
-            >
-                {loading ? 'Loading...' : 'Refresh'}
-            </Button>
-
-            <Box display="flex" flexDirection="column" width="100%" padding={2}>
                 {error ? (
                     <Typography variant="body1" color="error">
                         {error}
@@ -90,7 +124,7 @@ const FollowingList: React.FC = () => {
                         <UserBox key={user.ID} userName={user.UserName} userId={user.ID} />
                     ))
                 )}
-            </Box>
+            </Paper>
         </Box>
     );
 };

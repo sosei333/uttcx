@@ -1,10 +1,10 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, Typography, useTheme } from '@mui/material';
 import TextField from '../atoms/TextField';
 //import Button from '../atoms/Button';
 import { postToBackend } from '../../services/tweet';
 import { sendPromptToGemini } from '../../services/gemini';
-import { colors } from '../../layouts/colors';
+//import { colors } from '../../layouts/colors';
 
 interface PostDialogProps {
   open: boolean;
@@ -12,6 +12,8 @@ interface PostDialogProps {
 }
 
 const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
+const theme=useTheme();
+
   const [postText, setPostText] = React.useState('');
   const [aiResponse, setAiResponse] = React.useState<string | null>(null); // AIの回答を管理
   const [loading, setLoading] = React.useState(false); // ローディング状態を管理
@@ -58,19 +60,19 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
             AIの回答を取得中...
           </Typography>
         ) : aiResponse ? (
-          <Typography variant="body1" sx={{ marginTop: 2, padding: 1, border: `1px solid ${colors.accent}`, borderRadius: 4 }}>
+          <Typography variant="body1" sx={{ marginTop: 2, padding: 1, border: `1px solid ${theme.palette.primary.main}`, borderRadius: 4 }}>
             {aiResponse}
           </Typography>
         ) : null}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} sx={{ color: colors.accent }}>
+        <Button onClick={onClose} sx={{ color: theme.palette.primary.main }}>
           キャンセル
         </Button>
-        <Button onClick={handleChat} disabled={!postText || loading} sx={{ color: colors.accent }}>
+        <Button onClick={handleChat} disabled={!postText || loading} sx={{ color: theme.palette.primary.main }}>
           AIに質問
         </Button>
-        <Button onClick={handlePost} disabled={!postText} sx={{ color: colors.accent }}>
+        <Button onClick={handlePost} disabled={!postText} sx={{ color: theme.palette.primary.main }}>
           投稿
         </Button>
       </DialogActions>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, CssBaseline, AppBar, Toolbar, Typography } from '@mui/material';
+import { Box, CssBaseline, AppBar, Toolbar, Typography,useTheme } from '@mui/material';
 import Sidebar from './Sidebar';
-import {colors} from './colors';
+//import {colors} from './colors';
 
 const RootLayout: React.FC = () => {
+    const theme=useTheme();
 
     return (
         <Box sx={{ display: 'flex',mt:0, height: '100vh', width:'100vw' }}>
@@ -22,7 +23,7 @@ const RootLayout: React.FC = () => {
                     sx={{
                         zIndex: (theme) => theme.zIndex.drawer + 1,
                         height: '10vh', // AppBar自体の高さを設定
-                        backgroundColor: colors.primary,
+                        backgroundColor: theme.palette.text.primary,
                     }}
                 >
                     <Toolbar
@@ -52,7 +53,7 @@ const RootLayout: React.FC = () => {
                 <Box
                     sx={{
                         width: '20vw',
-                        backgroundColor: colors.background, // Sidebar用の背景色（任意）
+                        backgroundColor: theme.palette.background.default, // Sidebar用の背景色（任意）
                         borderRight: '1px solid #ccc',
                     }}
                 >
@@ -67,7 +68,7 @@ const RootLayout: React.FC = () => {
                         display: 'flex',
                         justifyContent: 'center', // コンテンツを右寄せ
                         alignItems: 'flex-start', // 縦方向は上揃え
-                        backgroundColor: colors.background, // メインコンテンツの背景色
+                        backgroundColor: theme.palette.background.default, // メインコンテンツの背景色
                         padding: 0, // 任意の余白
                         height: '90vh',
                         boxSizing: 'border-box',

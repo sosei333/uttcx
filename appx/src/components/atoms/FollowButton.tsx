@@ -27,8 +27,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ userId, isInitiallyFollowin
         <ToggleButton
             isActive={isFollowing}
             onToggle={handleToggleFollow}
-            activeText="Following"
-            inactiveText="Follow"
+            activeText="フォロー中"
+            inactiveText="フォローする"
         />
     );
 };

@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
-import ViewDetailsButton from '../molecules/ViewDetailsButton';
-import ReplyButton from '../molecules/ReplyButton';
-import LikeButton from '../molecules/LikeButton';
-import BookmarkButton from '../molecules/BookmarkButton';
-import PostReplyDialog from './PostReplyDialog';
+import { Box, Typography,useTheme } from '@mui/material';
 import { addLike, removeLike } from '../../services/like';
-import {colors} from '../../layouts/colors';
+// import {colors} from '../../layouts/colors';
 
 interface PostProps {
     tweet_id: number;
@@ -17,6 +12,8 @@ interface PostProps {
 }
 
 const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
+    const theme=useTheme();
+    
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -56,7 +53,7 @@ const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             sx={{
                 width: '90%',
-                borderColor: colors.text,
+                borderColor: theme.palette.primary.main,
                 borderWidth: '1.5pt'
             }}
         >
