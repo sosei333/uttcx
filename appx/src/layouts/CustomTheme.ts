@@ -2,32 +2,37 @@ import { createTheme } from '@mui/material/styles';
 import { colors } from './colors';
 
 const customTheme = createTheme({
+    components: {
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
+                    // デフォルトのスタイル
+                    flex: 1,
+                    color: colors.text,
+                    '&:hover': {
+                        backgroundColor: colors.accentLight, // 未選択時のホバー色
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: colors.accent, // 選択時の背景色
+                        color: '#ffffff', // 選択時のテキスト色
+                        '&:hover': {
+                            backgroundColor: colors.accent, // 選択時にホバーしても色を変えない
+                        },
+                    },
+                },
+            },
+        },
+    },
     palette: {
         primary: {
-            main: colors.accent, // プライマリカラー
-        },
-        secondary: {
-            main: colors.text, // セカンダリカラー
-        },
-        error: {
-            main: '#d32f2f', // エラーカラー
-        },
-        warning: {
-            main: '#ffa726', // 警告カラー
-        },
-        info: {
-            main: '#0288d1', // 情報カラー
-        },
-        success: {
-            main: '#2e7d32', // 成功カラー
+            main: colors.accent,
         },
         background: {
-            default: colors.background, // 背景のデフォルトカラー
-            paper: '#ffffff', // カードやダイアログの背景
+            default: colors.background,
+            paper: '#ffffff',
         },
         text: {
-            primary: colors.text, // テキストのプライマリカラー
-            secondary: '#555555', // テキストのセカンダリカラー
+            primary: colors.text,
         },
     },
 });
