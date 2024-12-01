@@ -25,6 +25,7 @@ func main() {
 	http.HandleFunc("/follow/add", handlers.AddFollowHandler)
 	http.HandleFunc("/follow/remove", handlers.RemoveFollowHandler)
 	http.HandleFunc("/follow/following", handlers.GetFollowingHandler)
+	http.HandleFunc("/follow/followed", handlers.GetFollowedHandler)
 
 	http.HandleFunc("/reply", handlers.GetRepliesByParentIdHandler)
 	http.HandleFunc("/reply/new", handlers.SaveReplyHandler)

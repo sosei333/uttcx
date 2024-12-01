@@ -118,3 +118,42 @@ func GetFollowingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func GetFollowedHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// OPTIONSリクエストを処理
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// クエリパラメータからfollower_idを取得
+	followedID := r.URL.Query().Get("followed_id")
+	if followedID == "" {
+		http.Error(w, "Missing followed_id", http.StatusBadRequest)
+		return
+	}
+
+	// DAOを呼び出してフォローしているユーザーを取得
+	users, err := dao.GetFollowed(followedID)
+	if err != nil {
+		log.Printf("Failed to get followed users: %v\n", err)
+		http.Error(w, "Failed to get followed users", http.StatusInternalServerError)
+		return
+	}
+
+	// レスポンスをJSON形式で返す
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(users); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}
