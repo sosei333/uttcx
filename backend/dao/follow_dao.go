@@ -63,3 +63,25 @@ func GetFollowing(followerID string) ([]models.User, error) {
 
 	return users, nil
 }
+
+// 自分がフォローしているユーザー全員を取得
+func GetFollowed(followedID string) ([]models.User, error) {
+	query := `SELECT u.user_id, u.user_name FROM follows f JOIN users u ON f.follower_id = u.user_id WHERE f.followed_id = ?`
+
+	rows, err := db.DB.Query(query, followedID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		var user models.User
+		if err := rows.Scan(&user.ID, &user.UserName); err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	return users, nil
+}
