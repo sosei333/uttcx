@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button } from '@mui/material';
 import { addFollow, removeFollow } from '../../services/follow';
+import ToggleButton from './ToggleButton';
 
 interface FollowButtonProps {
     userId: string; // フォロー対象のユーザーID
@@ -10,30 +10,26 @@ interface FollowButtonProps {
 const FollowButton: React.FC<FollowButtonProps> = ({ userId, isInitiallyFollowing = false }) => {
     const [isFollowing, setFollowing] = useState(isInitiallyFollowing);
 
-    const handleFollowClick = async () => {
+    const handleToggleFollow = async () => {
         try {
             if (isFollowing) {
-                // フォロー解除処理
                 await removeFollow(userId);
-                setFollowing(false);
             } else {
-                // フォロー追加処理
                 await addFollow(userId);
-                setFollowing(true);
             }
+            setFollowing(!isFollowing); // 状態を反転
         } catch (error) {
             console.error('Failed to toggle follow:', error);
         }
     };
 
     return (
-        <Button
-            variant={isFollowing ? 'contained' : 'outlined'}
-            color="primary"
-            onClick={handleFollowClick}
-        >
-            {isFollowing ? 'Following' : 'Follow'}
-        </Button>
+        <ToggleButton
+            isActive={isFollowing}
+            onToggle={handleToggleFollow}
+            activeText="Following"
+            inactiveText="Follow"
+        />
     );
 };
 

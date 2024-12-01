@@ -74,13 +74,8 @@ const Sidebar: React.FC = () => {
                     onClick={handleOpenPostDialog}
                     aria-label="add"
                     size="large"
-                    sx={{ alignSelf: 'center',
-                        color:colors.background,
-                        backgroundColor:colors.accent,
-                        "&:hover": {
-                            color:colors.accent,
-                            backgroundColor: colors.background, // ホバー時の背景色
-                        },
+                    color='primary'
+                    sx={{ alignSelf: 'center'
                     }}
                 >
                     <DrawOutlinedIcon />
@@ -95,14 +90,9 @@ const Sidebar: React.FC = () => {
                     onClick={handleOpenChatDialog}
                     aria-label="add"
                     size="large"
-                    sx={{ alignSelf: 'center',
-                        color:colors.background,
-                        backgroundColor:colors.accent,
-                        "&:hover": {
-                            color:colors.accent,
-                            backgroundColor: colors.background, // ホバー時の背景色
-                        },
-                    }}
+                    color='primary'
+                    sx={{ alignSelf: 'center',}}
+                    
                 >
                     <SupportAgentIcon />
                 </Fab>

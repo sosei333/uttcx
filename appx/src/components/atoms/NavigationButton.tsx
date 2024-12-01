@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { colors } from '../../layouts/colors';
 
 interface NavigationButtonProps {
   label: string; // ボタンのラベル
@@ -21,15 +20,12 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({ label, to, onClick 
     <Button
       fullWidth
       onClick={handleNavigation}
+      color='primary'
+      variant='outlined'
       sx={{
         minWidth: 120,
-        m: '10px',
-        color: colors.background,
-        backgroundColor: colors.accent,
-        "&:hover": {
-          color: colors.accent,
-          backgroundColor: colors.background,
-        },
+        maxWidth: 150,
+        m:'2px'
       }}
     >
       {label}
