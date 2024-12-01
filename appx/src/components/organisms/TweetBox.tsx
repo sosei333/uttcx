@@ -65,15 +65,18 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCo
                 borderWidth: '1.5pt'
             }}
         >
-            <Box  top={8} left={8}>
+            <Box display="flex" flexDirection="row" alignItems="center" width="100%">
                 <Typography variant="caption" color="textSecondary">
                     {author} ・ {date}
                 </Typography>
+                {/* スペースを埋める */}
+                <Box flexGrow={1} />
                 {/* フォローボタン */}
-                <Box mt={1}>
+                <Box>
                     <FollowButton userId={authorId} isInitiallyFollowing={isFollowingAuthor} />
                 </Box>
             </Box>
+
 
             <Typography variant="body1" mt={2} mb={4}>
                 {content}
