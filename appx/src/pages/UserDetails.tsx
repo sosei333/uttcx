@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getAllTweet } from '../services/tweet';
 import TweetBox from '../components/organisms/TweetBox';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, Paper } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
 import UserBox from '../components/organisms/UserBox';
 import { UserProfile } from "../models/user_models";
 import { getUserNameByID } from '../services/user';
+import UserDetailsBox from '../components/organisms/UserDetailsBox';
 
 type Tweet = {
     id: number;
@@ -71,13 +72,25 @@ const UserDetails: React.FC = () => {
             padding={2}
         >
             {/* ユーザー情報 */}
-            {loadingUser ? (
-                <CircularProgress />
-            ) : currentUser ? (
-                <UserBox userName={currentUser.user_name} userId={currentUser.user_id} />
-            ) : (
-                <Typography color="error">ユーザー情報を取得できませんでした。</Typography>
-            )}
+            <Paper
+                elevation={3}
+                sx={{
+                    padding: 3,
+                    marginBottom: 4,
+                    width: '60vh',
+                    textAlign: 'center',
+                    borderRadius: 3,
+                    backgroundColor: '#f9f9f9',
+                }}
+            >
+                {loadingUser ? (
+                    <CircularProgress />
+                ) : currentUser ? (
+                    <UserDetailsBox userName={currentUser.user_name} userId={currentUser.user_id} />
+                ) : (
+                    <Typography color="error">ユーザー情報を取得できませんでした。</Typography>
+                )}
+            </Paper>
 
             {/* ユーザーの投稿 */}
             <Box
@@ -85,8 +98,13 @@ const UserDetails: React.FC = () => {
                 flexDirection="column"
                 overflow="auto"
                 padding={2}
-                width="100%"
+                width="60vh"
                 maxHeight="60vh"
+                sx={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: 3,
+                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                }}
             >
                 {loadingTweets ? (
                     <CircularProgress />
@@ -103,7 +121,7 @@ const UserDetails: React.FC = () => {
                         />
                     ))
                 ) : (
-                    <Typography color="textSecondary">
+                    <Typography color="textSecondary" textAlign="center">
                         このユーザーはまだ投稿していません。
                     </Typography>
                 )}

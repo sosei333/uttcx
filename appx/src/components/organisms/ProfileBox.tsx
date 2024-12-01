@@ -6,6 +6,7 @@ import EditProfile from "./EditProfile";
 import { updateUserName } from "../../services/user";
 import { getUserNameByID } from "../../services/user";
 import { getAuth } from "firebase/auth";
+import ViewUserDetailsButton from "../atoms/ViewUserButton";
 
 const ProfileBox: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -136,6 +137,7 @@ const ProfileBox: React.FC = () => {
           </Typography>
           <Box sx={{ marginTop: 2, textAlign: "center" }}>
             <EditButton onClick={handleEditClick} />
+            <ViewUserDetailsButton userID={currentUser.user_id}></ViewUserDetailsButton>
           </Box>
         </CardContent>
       </Card>
