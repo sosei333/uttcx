@@ -18,7 +18,6 @@ import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 import ChatDialog from '../components/organisms/GeminiChatBox';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import {colors} from './colors';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -56,7 +55,7 @@ const Sidebar: React.FC = () => {
         >
             <Box>
                 <Toolbar /> {/* AppBarの高さ分の余白を作る */}
-                <List>
+                <List sx={{mt:1}}>
                     {menuItems.map((item) => (
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton onClick={() => navigate(item.link)}>
