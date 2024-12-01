@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {colors} from '../../layouts/colors';
 
@@ -8,10 +8,11 @@ interface ViewDetailsButtonProps {
 }
 
 const ViewDetailsButton: React.FC<ViewDetailsButtonProps> = ({ onClick }) => {
+    const theme=useTheme();
     return (
         <IconButton aria-label="view details" onClick={onClick}>
             <VisibilityIcon sx={{
-                color: colors.accent,
+                color: theme.palette.secondary.main,
             }} />
         </IconButton>
     );

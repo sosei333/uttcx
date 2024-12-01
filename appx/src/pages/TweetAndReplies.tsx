@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getReplies} from "../services/reply"; // API 呼び出し
 import { getTweetById } from "../services/tweet";
 import ReplyBox from "../components/organisms/ReplyBox";
-import { Box, Divider, Typography } from "@mui/material";
-import { colors } from "../layouts/colors";
+import { Box, Divider, Typography, useTheme } from "@mui/material";
+//import { colors } from "../layouts/colors";
 import TweetBox from "../components/organisms/TweetBox";
 import TweetList from "../components/organisms/TweetsList";
 
@@ -26,6 +26,8 @@ type Reply = {
 };
 
 const TweetAndReplies: React.FC = () => {
+    const theme=useTheme();
+
     const { id } = useParams<{ id: string }>();
     const [tweet, setTweet] = useState<Tweet | null>(null);
     const [replies, setReplies] = useState<Reply[]>([]);
@@ -65,7 +67,7 @@ const TweetAndReplies: React.FC = () => {
             <Box
                 sx={{
                     width: "40vw",
-                    backgroundColor: colors.background,
+                    backgroundColor: theme.palette.background.default,
                     borderLeft: "1px solid #ccc",
                     display: "flex",
                     flexDirection: "column",
@@ -75,7 +77,7 @@ const TweetAndReplies: React.FC = () => {
             >
                 {tweet && (
                     <Box marginBottom={4}>
-                        <Typography p={1} sx={{ color: colors.text }}>
+                        <Typography p={1} sx={{ color: theme.palette.text.primary }}>
                             投稿詳細
                         </Typography>
                         <TweetBox
