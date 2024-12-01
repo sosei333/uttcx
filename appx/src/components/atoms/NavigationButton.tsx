@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { colors } from '../../layouts/colors';
 
 interface NavigationButtonProps {
   label: string; // ボタンのラベル
@@ -25,6 +24,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({ label, to, onClick 
       variant='outlined'
       sx={{
         minWidth: 120,
+        maxWidth: 150,
         m:'2px'
       }}
     >

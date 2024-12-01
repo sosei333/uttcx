@@ -1,14 +1,15 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import FollowButton from '../atoms/FollowButton';
+import ViewUserButton from '../atoms/ViewUserButton';
 
 interface UserBoxProps {
     userName: string;
     userId: string;
-    isFoloowing?: boolean;
+    isFollowing?: boolean;
 }
 
-const UserBox: React.FC<UserBoxProps> = ({ userName, userId }) => {
+const UserBox: React.FC<UserBoxProps> = ({ userName, userId, isFollowing }) => {
     return (
         <Box
             display="flex"
@@ -25,7 +26,8 @@ const UserBox: React.FC<UserBoxProps> = ({ userName, userId }) => {
             <Typography variant="body2" color="textSecondary">
                 User ID: {userId}
             </Typography>
-            <FollowButton userId={userId}></FollowButton>
+            <FollowButton userId={userId} isInitiallyFollowing={isFollowing}></FollowButton>
+            <ViewUserButton userID={userId}></ViewUserButton>
         </Box>
     );
 };
