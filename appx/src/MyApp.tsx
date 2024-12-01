@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import RootLayout from './layouts/RootLayout';
 import Explore from './pages/Explore';
 import Home from './pages/Home';
+import UserDetails from './pages/UserDetails';
 import FollowingList from './pages/Follow';
 import Profile from './pages/Profile';
 import { Box, Typography, CircularProgress } from '@mui/material';
@@ -85,6 +86,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/follow" element={<FollowingList />} />
             <Route path="/tweet/:id" element={<TweetAndReplies />} />
+            <Route path="/user/:userID" element={<UserDetails/>}/>
             <Route path="/login" element={<Navigate to="/home" />} />
             <Route path="/signup" element={<Navigate to="/home" />} />
             <Route path="*" element={<Navigate to="/home" />} />
