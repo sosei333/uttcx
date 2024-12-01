@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
 	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)
 	http.HandleFunc("/tweet/id", handlers.GetTweetByIdHandler)
+	http.HandleFunc("/tweet/following", handlers.GetFollowingTweetsHandler)
 
 	http.HandleFunc("/follow/add", handlers.AddFollowHandler)
 	http.HandleFunc("/follow/remove", handlers.RemoveFollowHandler)

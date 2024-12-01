@@ -115,3 +115,39 @@ export const getTweetById = async (tweetId: number) => {
         return null;
     }
 };
+
+export const getFollowingTweets = async (user_id:string) => {
+    // 環境変数からバックエンドURLを取得
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+    if (!backendUrl) {
+        console.error("Backend URL is not defined in the environment variables");
+        return null;
+    }
+
+    try {
+        // Fetchでバックエンドから特定の投稿を取得
+        const response = await fetch(`${backendUrl}/tweet/following?user_id=${user_id}`, {
+            method: "GET", // GET メソッドでリクエスト送信
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });        
+
+        // レスポンスの確認
+        if (!response.ok) {
+            console.error(`Failed to fetch tweet with ID ${user_id}`, response.status);
+            return null;
+        }
+
+        // JSONデータを取得
+        const data = await response.json();
+        console.log(`Fetched tweet with ID ${user_id} successfully:`, data);
+
+        // データを返す
+        return data;
+    } catch (error) {
+        console.error(`Error fetching tweet with ID ${user_id}:`, error);
+        return null;
+    }
+};

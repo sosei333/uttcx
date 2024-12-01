@@ -49,3 +49,10 @@ type TweetWithUserName struct {
 	CreatedAt string `json:"created_at"`
 	UserName  string `json:"user_name"`
 }
+
+type FollowingTweet struct {
+	ID        int    `json:"id"`
+	UserID    string `json:"user_id"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"created_at"`
+}
