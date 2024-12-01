@@ -21,15 +21,11 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({ label, to, onClick 
     <Button
       fullWidth
       onClick={handleNavigation}
+      color='primary'
+      variant='outlined'
       sx={{
         minWidth: 120,
-        m: '10px',
-        color: colors.background,
-        backgroundColor: colors.accent,
-        "&:hover": {
-          color: colors.accent,
-          backgroundColor: colors.background,
-        },
+        m:'2px'
       }}
     >
       {label}
