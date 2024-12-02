@@ -54,8 +54,8 @@ const Sidebar: React.FC = () => {
             }}
         >
             <Box>
-                <Toolbar /> {/* AppBarの高さ分の余白を作る */}
-                <List sx={{mt:1}}>
+                {/*<Toolbar /> {/* AppBarの高さ分の余白を作る */}
+                <List sx={{mt:'10vh'}}>
                     {menuItems.map((item) => (
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton onClick={() => navigate(item.link)}>
