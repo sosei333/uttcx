@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getReplies} from "../services/reply"; // API 呼び出し
 import { getTweetById } from "../services/tweet";
 import ReplyBox from "../components/organisms/ReplyBox";
-import { Box, Divider, Typography, useTheme } from "@mui/material";
+import { Box, Divider, Typography, useTheme, Paper } from "@mui/material";
 //import { colors } from "../layouts/colors";
 import TweetBox from "../components/organisms/TweetBox";
 import TweetList from "../components/organisms/TweetsList";
@@ -76,7 +76,7 @@ const TweetAndReplies: React.FC = () => {
                 }}
             >
                 {tweet && (
-                    <Box marginBottom={4}>
+                    <Box marginBottom={2}>
                         <Typography p={1} sx={{ color: theme.palette.text.primary }}>
                             投稿詳細
                         </Typography>
@@ -92,24 +92,35 @@ const TweetAndReplies: React.FC = () => {
                 )}
                 <Divider />
                 <Box sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-                    <Typography p={1}>リプライ</Typography>
-                    <Box
+                    {/*<Typography variant="h5" fontWeight="bold" p={1}>リプライ</Typography>*/}
+                    <Paper
+                        elevation={3}
                         sx={{
                             flexGrow: 1,
                             overflowY: "auto",
-                            padding: 0,
+                            padding: 2,
+                            margin: 2,
+                            borderRadius: 2,
+                            backgroundColor: theme.palette.primary.light,
                         }}
                     >
-                        {replies.map((reply) => (
-                            <ReplyBox
-                                key={reply.id}
-                                tweet_id={reply.id}
-                                content={reply.content}
-                                author={reply.user_name}
-                                date={new Date(reply.created_at).toLocaleDateString()}
-                            />
-                        ))}
-                    </Box>
+                        {replies.length > 0 ? (
+                            replies.map((reply) => (
+                                <Box key={reply.id} sx={{ marginBottom: 2 }}>
+                                    <ReplyBox
+                                        tweet_id={reply.id}
+                                        content={reply.content}
+                                        author={reply.user_name}
+                                        date={new Date(reply.created_at).toLocaleDateString()}
+                                    />
+                                </Box>
+                            ))
+                        ) : (
+                            <Typography textAlign="center" color={theme.palette.text.secondary}>
+                                リプライはまだありません。
+                            </Typography>
+                        )}
+                    </Paper>
                 </Box>
             </Box>
         </Box>
