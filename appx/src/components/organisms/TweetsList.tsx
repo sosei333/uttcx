@@ -61,17 +61,27 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             if (!currentUser) return; // currentUser が null の場合は何もしない
             setLoading(true);
             try {
-                const data =
-                    mode === "all" ? await getAllTweet() : await getFollowingTweets(currentUser.user_id); // 適宜変更
+                let data: Tweet[] = [];
+                if (mode === "all") {
+                    data = await getAllTweet();
+                } else {
+                    data = await getFollowingTweets(currentUser.user_id);
+                    if (!data || data.length === 0) {
+                        setTweets([]);
+                        return; // フォロー中のユーザーがいない場合は空の配列を設定
+                    }
+                }
                 setTweets(data);
             } catch (error) {
                 console.error("ツイートの取得に失敗しました:", error);
+                setTweets([]); // エラー時に空の配列を設定
             } finally {
                 setLoading(false);
             }
         };
         fetchTweets();
     }, [mode, currentUser]);
+    
 
     return (
         <Box
