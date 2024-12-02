@@ -10,6 +10,7 @@ export const useSignup = () => {
         setError(null);
         setSuccess(null);
 
+        // パスワード確認
         if (password !== confirmPassword) {
             setError('パスワードが一致しません。');
             return;
@@ -25,11 +26,31 @@ export const useSignup = () => {
             }
 
             // バックエンドにユーザー情報を送信（user_nameとuser_idを送信）
-            await registerUserToBackend(userId,name);
-            
+            await registerUserToBackend(userId, name);
+
             setSuccess("新規登録が成功しました。ログインしてください。");
         } catch (error: any) {
-            setError(error.message);
+            // Firebaseエラーコードに基づいてメッセージを設定
+            let userMessage = "登録処理に失敗しました。もう一度お試しください。";
+            switch (error.code) {
+                case "auth/email-already-in-use":
+                    userMessage = "このメールアドレスはすでに登録されています。";
+                    break;
+                case "auth/invalid-email":
+                    userMessage = "メールアドレスの形式が正しくありません。";
+                    break;
+                case "auth/weak-password":
+                    userMessage = "パスワードが短すぎます。6文字以上にしてください。";
+                    break;
+                case "auth/network-request-failed":
+                    userMessage = "ネットワーク接続に問題があります。";
+                    break;
+                default:
+                    userMessage = "予期しないエラーが発生しました。";
+            }
+
+            console.error("エラーコード:", error.code, "エラーメッセージ:", error.message);
+            setError(userMessage);
         }
     };
 

@@ -6,9 +6,17 @@ interface NavigationButtonProps {
   label: string; // ボタンのラベル
   to: string; // 遷移先
   onClick?: () => void; // オプションのクリックイベント
+  variant?: 'text' | 'outlined' | 'contained'; // ボタンのスタイル
+  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'; // カラーバリエーション
 }
 
-const NavigationButton: React.FC<NavigationButtonProps> = ({ label, to, onClick }) => {
+const NavigationButton: React.FC<NavigationButtonProps> = ({
+  label,
+  to,
+  onClick,
+  variant = 'outlined', // デフォルト値を指定
+  color = 'primary', // デフォルトの色
+}) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
@@ -20,12 +28,12 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({ label, to, onClick 
     <Button
       fullWidth
       onClick={handleNavigation}
-      color='primary'
-      variant='outlined'
+      color={color}
+      variant={variant}
       sx={{
         minWidth: 120,
         maxWidth: 150,
-        m:'2px'
+        m: '2px',
       }}
     >
       {label}
