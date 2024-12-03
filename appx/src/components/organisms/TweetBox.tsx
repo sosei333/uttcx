@@ -19,9 +19,10 @@ interface PostProps {
     authorId: string; // 作者のユーザーIDを追加
     isFollowingAuthor?: boolean; // フォロー状態を初期化
     onViewDetails?: () => void;
+    showFollowButton?:boolean;
 }
 
-const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails }) => {
+const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails ,showFollowButton=true}) => {
     const theme=useTheme();
     
     const [isLiked, setLiked] = useState(false);
@@ -73,10 +74,12 @@ const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCo
                 </Typography>
                 {/* スペースを埋める */}
                 <Box flexGrow={1} />
-                {/* フォローボタン */}
-                <Box>
-                    <FollowButton userId={authorId} isInitiallyFollowing={isFollowingAuthor} />
-                </Box>
+                {/* フォローボタンを showFollowButton が true の場合のみ表示 */}
+                {showFollowButton && (
+                    <Box>
+                        <FollowButton userId={authorId} isInitiallyFollowing={isFollowingAuthor} />
+                    </Box>
+                )}
             </Box>
 
 
