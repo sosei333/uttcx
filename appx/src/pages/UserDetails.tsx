@@ -3,10 +3,10 @@ import { getAllTweet } from '../services/tweet';
 import TweetBox from '../components/organisms/TweetBox';
 import { Box, CircularProgress, Typography, Paper } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
-import UserBox from '../components/organisms/UserBox';
+import UserDetailsBox from '../components/organisms/UserDetailsBox';
 import { UserProfile } from "../models/user_models";
 import { getUserNameByID } from '../services/user';
-import UserDetailsBox from '../components/organisms/UserDetailsBox';
+import { getFollowingUsers } from '../services/follow';
 
 type Tweet = {
     id: number;
@@ -22,6 +22,7 @@ const UserDetails: React.FC = () => {
     const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
     const [loadingUser, setLoadingUser] = useState(true);
     const [loadingTweets, setLoadingTweets] = useState(true);
+    const [followingUserIds, setFollowingUserIds] = useState<Set<string>>(new Set()); // フォロー中のユーザーIDを保存
     const navigate = useNavigate();
 
     // ユーザー情報を取得する関数
@@ -41,6 +42,17 @@ const UserDetails: React.FC = () => {
         }
     };
 
+    // フォロー中のユーザーリストを取得する関数
+    const fetchFollowingUsers = async () => {
+        try {
+            const followingUsers = await getFollowingUsers();
+            const followingIds = new Set(followingUsers.map((user) => user.ID));
+            setFollowingUserIds(followingIds);
+        } catch (error) {
+            console.error("Failed to fetch following users:", error);
+        }
+    };
+
     // 投稿を取得する関数
     const fetchTweets = async () => {
         setLoadingTweets(true);
@@ -55,11 +67,12 @@ const UserDetails: React.FC = () => {
         }
     };
 
-    // ユーザー情報と投稿を取得
+    // ユーザー情報、投稿、フォロー中リストを取得
     useEffect(() => {
         if (userID) {
             fetchUser();
             fetchTweets();
+            fetchFollowingUsers();
         }
     }, [userID]);
 
@@ -117,7 +130,9 @@ const UserDetails: React.FC = () => {
                             author={tweet.user_name}
                             authorId={tweet.user_id}
                             date={new Date(tweet.created_at).toLocaleDateString()}
+                            isFollowingAuthor={followingUserIds.has(tweet.user_id)} // フォロー状態を渡す
                             onViewDetails={() => navigate(`/tweet/${tweet.id}`)}
+                            showFollowButton={false}
                         />
                     ))
                 ) : (

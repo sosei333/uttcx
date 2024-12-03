@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getFollowingUsers, getFollowedUsers } from '../services/follow';
-import { Box, Typography, Button, ToggleButtonGroup, ToggleButton, Paper, IconButton } from '@mui/material';
-import RefreshIcon from '@mui/icons-material/Refresh'; // アイコンボタン用
+import { Box, Typography, IconButton, ToggleButtonGroup, ToggleButton, Paper } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import UserBox from '../components/organisms/UserBox';
 
 type FollowingUser = {
@@ -14,8 +14,19 @@ const FollowingList: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<'following' | 'followed'>('following');
+    const [followingUserIds, setFollowingUserIds] = useState<Set<string>>(new Set()); // フォローされているユーザーIDを保存
 
-    // ユーザーリストを取得する関数
+    // フォローされているユーザーリストを取得
+    const fetchFollowedUserIds = async () => {
+        try {
+            const followingUsers = await getFollowingUsers();
+            setFollowingUserIds(new Set(followingUsers.map((user) => user.ID)));
+        } catch (err) {
+            console.error('Failed to fetch followed users:', err);
+        }
+    };
+
+    // 表示モードに基づくユーザーリストを取得
     const fetchUsers = async (mode: 'following' | 'followed') => {
         setLoading(true);
         setError(null);
@@ -32,9 +43,10 @@ const FollowingList: React.FC = () => {
         }
     };
 
-    // 表示モードが切り替わるたびにデータを取得
+    // 初期データの取得とモード変更時のデータ取得
     useEffect(() => {
-        fetchUsers(viewMode);
+        fetchFollowedUserIds(); // フォローされているユーザーリストを取得
+        fetchUsers(viewMode); // 表示モードに応じたユーザーリストを取得
     }, [viewMode]);
 
     return (
@@ -58,7 +70,6 @@ const FollowingList: React.FC = () => {
                 <Typography variant="h4" gutterBottom>
                     {viewMode === 'following' ? 'Following Users' : 'Followed By Users'}
                 </Typography>
-                {/* 更新ボタン（アイコンボタン例） */}
                 <IconButton
                     onClick={() => fetchUsers(viewMode)}
                     disabled={loading}
@@ -121,7 +132,12 @@ const FollowingList: React.FC = () => {
                     </Typography>
                 ) : (
                     users.map((user) => (
-                        <UserBox key={user.ID} userName={user.UserName} userId={user.ID} />
+                        <UserBox
+                            key={user.ID}
+                            userName={user.UserName}
+                            userId={user.ID}
+                            isFollowing={followingUserIds.has(user.ID)} // フォロー状態を反映
+                        />
                     ))
                 )}
             </Paper>

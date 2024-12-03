@@ -5,7 +5,7 @@ import { getAllTweet, getFollowingTweets } from "../../services/tweet";
 import { getAuth } from "firebase/auth";
 import { UserProfile } from "../../models/user_models";
 import { getUserNameByID } from "../../services/user";
-
+import { getFollowedUsers, getFollowingUsers } from "../../services/follow"; // フォロー中のユーザーを取得する関数をインポート
 
 type Tweet = {
     id: number;
@@ -24,6 +24,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     const [mode, setMode] = useState<"all" | "following">("all");
     const [loading, setLoading] = useState(false);
     const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+    const [followedUserIds, setFollowedUserIds] = useState<Set<string>>(new Set()); // フォロー中のユーザーID
 
     const auth = getAuth();
     const firebaseUser = auth.currentUser;
@@ -55,6 +56,21 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
         fetchUser();
     }, [firebaseUser]);
 
+    // フォロー中のユーザーを取得
+    useEffect(() => {
+        const fetchFollowedUsers = async () => {
+            try {
+                const followingUsers = await getFollowingUsers();
+                const followingIds = new Set(followingUsers.map((user) => user.ID));
+                setFollowedUserIds(followingIds);
+            } catch (error) {
+                console.error("フォロー中のユーザーの取得に失敗しました:", error);
+            }
+        };
+
+        fetchFollowedUsers();
+    }, []);
+
     // ツイートの取得
     useEffect(() => {
         const fetchTweets = async () => {
@@ -81,7 +97,6 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
         };
         fetchTweets();
     }, [mode, currentUser]);
-    
 
     return (
         <Box
@@ -129,6 +144,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                             author={tweet.user_name}
                             authorId={tweet.user_id}
                             date={new Date(tweet.created_at).toLocaleDateString()}
+                            isFollowingAuthor={followedUserIds.has(tweet.user_id)} // フォローしているかを判定
                             onViewDetails={() => onViewDetails(tweet.id)}
                         />
                     ))
