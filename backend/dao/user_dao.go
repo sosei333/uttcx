@@ -4,7 +4,7 @@ import (
 	"backend/db"
 	"backend/models"
 	"database/sql"
-	"errors"
+	"fmt"
 	"log"
 )
 
@@ -43,22 +43,73 @@ func GetUserNameByID(userId string) (models.UserName, error) {
 	return userName, nil
 }
 
-func UpdateUserName(userID string, userName string) error {
+func GetUserIntroductionByID(userId string) (models.UpdateUserIntroduction, error) {
+	var userIntroduction models.UpdateUserIntroduction
 
+	// クエリ文
+	query := "SELECT user_introduction FROM users WHERE user_id = ?"
+
+	// クエリの実行
+	row := db.DB.QueryRow(query, userId)
+
+	// 結果を取得
+	err := row.Scan(&userIntroduction.UserIntroduction) // Scanで値を取得
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// ユーザーが見つからない場合
+			log.Printf("No user found with ID: %v. Returning empty introduction.\n", userId)
+			return userIntroduction, nil // 空の構造体を返すがエラーは返さない
+		}
+		// その他のエラーの場合
+		log.Printf("Failed to execute query for user ID: %v, error: %v\n", userId, err)
+		return userIntroduction, err
+	}
+
+	// 正常に取得できた場合
+	log.Printf("Successfully retrieved introduction for user ID: %v\n", userId)
+	return userIntroduction, nil
+}
+
+func UpdateUserName(userID string, userName string) error {
 	// クエリを実行
 	query := "UPDATE users SET user_name = ? WHERE user_id = ?"
 	result, err := db.DB.Exec(query, userName, userID)
 	if err != nil {
+		log.Printf("Error executing query: %s, userID: %s, userName: %s, error: %v", query, userID, userName, err)
 		return err
 	}
 
 	// 更新件数の確認
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
+		log.Printf("Error fetching rows affected for userID: %s, error: %v", userID, err)
 		return err
 	}
 	if rowsAffected == 0 {
-		return errors.New("no rows updated, invalid userID?")
+		log.Printf("No changes detected for userID: %s, userName: %s", userID, userName)
+		// エラーを返さず正常終了として扱う
+		return nil
+	}
+
+	log.Printf("UserName successfully updated for userID: %s, newUserName: %s", userID, userName)
+	return nil
+}
+
+func UpdateUserIntroduction(userID string, userIntroduction string) error {
+	// クエリを実行
+	query := "UPDATE users SET user_introduction = ? WHERE user_id = ?"
+	result, err := db.DB.Exec(query, userIntroduction, userID)
+	if err != nil {
+		return fmt.Errorf("failed to execute update query: %w", err)
+	}
+
+	// 更新件数の確認
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to check rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows updated for userID: %s", userID)
 	}
 
 	return nil

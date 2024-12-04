@@ -3,42 +3,48 @@ import { UserProfile } from "../../models/user_models";
 import { Card, CardContent, Typography, Box, CircularProgress } from "@mui/material";
 import EditButton from "../atoms/EditButton";
 import EditProfile from "./EditProfile";
-import { updateUserName } from "../../services/user";
-import { getUserNameByID } from "../../services/user";
+import { updateUserName, updateUserIntroduction } from "../../services/user";
+import { getUserNameByID, getUserIntroductionByID } from "../../services/user";
 import { getAuth } from "firebase/auth";
 import ViewUserDetailsButton from "../atoms/ViewUserButton";
 
 const ProfileBox: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null); // 初期値は null
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [userIntroduction, setUserIntroduction] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Firebaseから認証されたユーザーを取得
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
 
   useEffect(() => {
     if (!firebaseUser) {
-      console.error("User is not authenticated");
-      setLoading(false); // ローディングを終了
+      setError("User is not authenticated");
+      setLoading(false);
       return;
     }
 
-    const userId = firebaseUser.uid; // FirebaseのユーザーID
+    const userId = firebaseUser.uid;
 
     const fetchUser = async () => {
       setLoading(true);
+      setError(null); // エラーをリセット
       try {
-        const userName = await getUserNameByID(userId); // ユーザー名をバックエンドから取得
+        const userName = await getUserNameByID(userId);
+        const userIntro = await getUserIntroductionByID(userId);
+
         if (userName) {
           setCurrentUser({ user_id: userId, user_name: userName });
+          setUserIntroduction(userIntro || "No bio available");
         } else {
-          console.error("ユーザー情報の取得に失敗しました");
+          throw new Error("Failed to fetch user information");
         }
-      } catch (error) {
-        console.error("エラーが発生しました:", error);
+      } catch (fetchError: any) {
+        console.error("Error fetching user data:", fetchError);
+        setError(fetchError.message || "An error occurred while fetching user data");
       } finally {
-        setLoading(false); // ローディングを終了
+        setLoading(false);
       }
     };
 
@@ -49,26 +55,37 @@ const ProfileBox: React.FC = () => {
     setIsEditing(true);
   };
 
-  const handleSave = async (updatedUser: UserProfile) => {
-    if (!updatedUser.user_name.trim()) {
-      alert("ユーザーネームを入力してください");
-      return;
-    }
-  
+  const handleSave = async (updatedUser: UserProfile, updatedIntroduction: string) => {
     try {
-      // バックエンドに更新を送信
-      const success = await updateUserName(updatedUser.user_id, updatedUser.user_name);
-  
-      if (success) {
-        // 成功した場合、状態を更新
-        setCurrentUser(updatedUser);
+      // 変更がない場合はリクエストを送信しない
+      const isNameChanged = updatedUser.user_name !== currentUser?.user_name;
+      const isBioChanged = updatedIntroduction !== userIntroduction;
+
+      if (!isNameChanged && !isBioChanged) {
+        alert("No changes detected");
         setIsEditing(false);
+        return;
+      }
+
+      const nameUpdateSuccess = isNameChanged
+        ? await updateUserName(updatedUser.user_id, updatedUser.user_name)
+        : true; // 変更がない場合は成功とみなす
+
+      const bioUpdateSuccess = isBioChanged
+        ? await updateUserIntroduction(updatedUser.user_id, updatedIntroduction)
+        : true; // 変更がない場合は成功とみなす
+
+      if (nameUpdateSuccess && bioUpdateSuccess) {
+        setCurrentUser(updatedUser);
+        setUserIntroduction(updatedIntroduction);
+        setIsEditing(false);
+        alert("Profile updated successfully");
       } else {
-        alert("ユーザーネームの更新に失敗しました");
+        throw new Error("Failed to update profile");
       }
     } catch (error) {
-      console.error("ユーザーネームの更新中にエラーが発生しました:", error);
-      alert("予期しないエラーが発生しました");
+      console.error("Error while updating user information:", error);
+      alert("An unexpected error occurred while updating your profile");
     }
   };
 
@@ -92,9 +109,30 @@ const ProfileBox: React.FC = () => {
     );
   }
 
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          bgcolor: "#f5f5f5",
+        }}
+      >
+        <Typography color="error">{error}</Typography>
+      </Box>
+    );
+  }
+
   if (isEditing && currentUser) {
     return (
-      <EditProfile user={currentUser} onSave={handleSave} onCancel={handleCancel} />
+      <EditProfile
+        user={currentUser}
+        introduction={userIntroduction || ""}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
     );
   }
 
@@ -109,7 +147,7 @@ const ProfileBox: React.FC = () => {
           bgcolor: "#f5f5f5",
         }}
       >
-        <Typography color="error">ユーザー情報が見つかりません</Typography>
+        <Typography color="error">User information not found</Typography>
       </Box>
     );
   }
@@ -127,13 +165,16 @@ const ProfileBox: React.FC = () => {
       <Card sx={{ maxWidth: 400, padding: 2 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
-            プロフィール
+            Profile
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            <strong>ユーザーID:</strong> {currentUser.user_id}
+            <strong>User ID:</strong> {currentUser.user_id}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            <strong>ユーザー名:</strong> {currentUser.user_name}
+            <strong>User Name:</strong> {currentUser.user_name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            <strong>Introduction:</strong> {userIntroduction || "No bio available"}
           </Typography>
           <Box sx={{ marginTop: 2, textAlign: "center" }}>
             <EditButton onClick={handleEditClick} />

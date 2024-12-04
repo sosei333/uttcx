@@ -12,3 +12,7 @@ type UserName struct {
 type UpdateUserNameRequest struct {
 	UserName string `json:"userName"`
 }
+
+type UpdateUserIntroduction struct {
+	UserIntroduction string `json:"userIntroduction"`
+}
