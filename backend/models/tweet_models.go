@@ -56,3 +56,7 @@ type FollowingTweet struct {
 	Content   string `json:"content"`
 	CreatedAt string `json:"created_at"`
 }
+
+type TweetID struct {
+	ID int `json:"id"`
+}

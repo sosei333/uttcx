@@ -20,12 +20,13 @@ interface PostProps {
     isFollowingAuthor?: boolean; // フォロー状態を初期化
     onViewDetails?: () => void;
     showFollowButton?:boolean;
+    isInitialyLiked?:boolean;
 }
 
-const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails ,showFollowButton=true}) => {
+const TweetBox: React.FC<PostProps> = ({ tweet_id, content, author, date, likeCount,authorId,isFollowingAuthor=false, onViewDetails ,showFollowButton=true ,isInitialyLiked}) => {
     const theme=useTheme();
     
-    const [isLiked, setLiked] = useState(false);
+    const [isLiked, setLiked] = useState(isInitialyLiked ||false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
     const handleLikeClick = async () => {

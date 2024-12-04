@@ -90,3 +90,41 @@ export const removeLike = async (
         console.error("Error removing like:", error);
     }
 };
+
+export const getLike = async (): Promise<number[]> => {
+  try {
+    // FirebaseからユーザーIDを取得
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.error("User is not authenticated");
+      return [];
+    }
+
+    const userId = currentUser.uid; // FirebaseのユーザーID
+
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    if (!backendUrl) {
+      console.error("Backend URL is not defined in the environment variables");
+      return [];
+    }
+
+    const response = await fetch(`${backendUrl}/like/get?user_id=${encodeURIComponent(userId)}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Failed to fetch liked tweets");
+    }
+
+    const data: number[] = await response.json(); // サーバーからのレスポンスを配列として取得
+    return data;
+  } catch (error) {
+    console.error("Error fetching liked tweets:", error);
+    return [];
+  }
+};
+
