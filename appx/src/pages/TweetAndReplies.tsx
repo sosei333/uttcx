@@ -90,6 +90,7 @@ const TweetAndReplies: React.FC = () => {
                         />
                     </Box>
                 )}
+       
                 <Divider />
                 <Box sx={{ flexGrow: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
                     {/*<Typography variant="h5" fontWeight="bold" p={1}>リプライ</Typography>*/}
