@@ -92,41 +92,49 @@ func GetUserNameByIDHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserIntroductionByIDHandler(w http.ResponseWriter, r *http.Request) {
+	// CORS ヘッダーの設定
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	// OPTIONSリクエストを処理
+	// OPTIONS リクエストの早期処理
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
 
-	// POSTメソッドの確認
+	// メソッドの確認
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
+	// クエリパラメータの取得
 	userIDStr := r.URL.Query().Get("userId")
 	if userIDStr == "" {
 		http.Error(w, "Missing user_id parameter", http.StatusBadRequest)
 		return
 	}
 
-	// ツイートデータを取得
-	userName, err := dao.GetUserIntroductionByID(userIDStr)
+	// データベースから自己紹介を取得
+	userIntroduction, err := dao.GetUserIntroductionByID(userIDStr)
 	if err != nil {
-		log.Printf("Error getting introduction with ID %d: %v", userIDStr, err)
+		log.Printf("Error getting introduction for userID %s: %v", userIDStr, err)
 		http.Error(w, "Failed to get introduction", http.StatusInternalServerError)
+		return
+	}
+
+	// ユーザーが見つからない場合の処理
+	if userIntroduction.UserIntroduction == "" {
+		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 
 	// JSON形式でレスポンスを返す
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(userName); err != nil {
-		log.Printf("Error encoding tweet to JSON: %v", err)
-		http.Error(w, "Failed to get introduction", http.StatusInternalServerError)
+	if err := json.NewEncoder(w).Encode(userIntroduction); err != nil {
+		log.Printf("Error encoding introduction to JSON: %v", err)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
 	}
 }

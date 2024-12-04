@@ -13,13 +13,14 @@ const ProfileBox: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [userIntroduction, setUserIntroduction] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
 
   useEffect(() => {
     if (!firebaseUser) {
-      console.error("User is not authenticated");
+      setError("User is not authenticated");
       setLoading(false);
       return;
     }
@@ -28,17 +29,20 @@ const ProfileBox: React.FC = () => {
 
     const fetchUser = async () => {
       setLoading(true);
+      setError(null); // エラーをリセット
       try {
         const userName = await getUserNameByID(userId);
         const userIntro = await getUserIntroductionByID(userId);
+
         if (userName) {
           setCurrentUser({ user_id: userId, user_name: userName });
-          setUserIntroduction(userIntro);
+          setUserIntroduction(userIntro || "No bio available");
         } else {
-          console.error("Failed to fetch user information");
+          throw new Error("Failed to fetch user information");
         }
-      } catch (error) {
-        console.error("Error occurred:", error);
+      } catch (fetchError: any) {
+        console.error("Error fetching user data:", fetchError);
+        setError(fetchError.message || "An error occurred while fetching user data");
       } finally {
         setLoading(false);
       }
@@ -53,19 +57,35 @@ const ProfileBox: React.FC = () => {
 
   const handleSave = async (updatedUser: UserProfile, updatedIntroduction: string) => {
     try {
-      const nameUpdateSuccess = await updateUserName(updatedUser.user_id, updatedUser.user_name);
-      const bioUpdateSuccess = await updateUserIntroduction(updatedUser.user_id, updatedIntroduction);
+      // 変更がない場合はリクエストを送信しない
+      const isNameChanged = updatedUser.user_name !== currentUser?.user_name;
+      const isBioChanged = updatedIntroduction !== userIntroduction;
+
+      if (!isNameChanged && !isBioChanged) {
+        alert("No changes detected");
+        setIsEditing(false);
+        return;
+      }
+
+      const nameUpdateSuccess = isNameChanged
+        ? await updateUserName(updatedUser.user_id, updatedUser.user_name)
+        : true; // 変更がない場合は成功とみなす
+
+      const bioUpdateSuccess = isBioChanged
+        ? await updateUserIntroduction(updatedUser.user_id, updatedIntroduction)
+        : true; // 変更がない場合は成功とみなす
 
       if (nameUpdateSuccess && bioUpdateSuccess) {
         setCurrentUser(updatedUser);
         setUserIntroduction(updatedIntroduction);
         setIsEditing(false);
+        alert("Profile updated successfully");
       } else {
-        alert("Failed to update user information");
+        throw new Error("Failed to update profile");
       }
     } catch (error) {
       console.error("Error while updating user information:", error);
-      alert("An unexpected error occurred");
+      alert("An unexpected error occurred while updating your profile");
     }
   };
 
@@ -85,6 +105,22 @@ const ProfileBox: React.FC = () => {
         }}
       >
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          bgcolor: "#f5f5f5",
+        }}
+      >
+        <Typography color="error">{error}</Typography>
       </Box>
     );
   }
