@@ -5,7 +5,8 @@ import { getAllTweet, getFollowingTweets } from "../../services/tweet";
 import { getAuth } from "firebase/auth";
 import { UserProfile } from "../../models/user_models";
 import { getUserNameByID } from "../../services/user";
-
+import { getFollowingUsers } from "../../services/follow";
+import { getLike } from "../../services/like";
 
 type Tweet = {
     id: number;
@@ -13,6 +14,7 @@ type Tweet = {
     content: string;
     created_at: string;
     user_name: string;
+    likes_count?: number;
 };
 
 type TweetListWithToggleProps = {
@@ -23,7 +25,10 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
     const [mode, setMode] = useState<"all" | "following">("all");
     const [loading, setLoading] = useState(false);
+    const [dataLoaded, setDataLoaded] = useState(false); // すべてのデータが揃ったかを判定
     const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+    const [followedUserIds, setFollowedUserIds] = useState<Set<string>>(new Set());
+    const [likedTweetIds, setLikedTweetIds] = useState<Set<number>>(new Set());
 
     const auth = getAuth();
     const firebaseUser = auth.currentUser;
@@ -55,33 +60,36 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
         fetchUser();
     }, [firebaseUser]);
 
-    // ツイートの取得
+    // データの一括取得 (いいね状態, フォロー状態, ツイート)
     useEffect(() => {
-        const fetchTweets = async () => {
-            if (!currentUser) return; // currentUser が null の場合は何もしない
+        const fetchAllData = async () => {
+            if (!currentUser) return;
             setLoading(true);
             try {
-                let data: Tweet[] = [];
-                if (mode === "all") {
-                    data = await getAllTweet();
-                } else {
-                    data = await getFollowingTweets(currentUser.user_id);
-                    if (!data || data.length === 0) {
-                        setTweets([]);
-                        return; // フォロー中のユーザーがいない場合は空の配列を設定
-                    }
-                }
-                setTweets(data);
+                const [likedIds, followingUsers, tweetsData] = await Promise.all([
+                    getLike(),
+                    getFollowingUsers(),
+                    mode === "all" ? getAllTweet() : getFollowingTweets(currentUser.user_id),
+                ]);
+
+                // いいね状態とフォロー状態を設定
+                setLikedTweetIds(new Set(likedIds));
+                const followingIds = new Set(followingUsers.map((user) => user.ID));
+                setFollowedUserIds(followingIds);
+
+                // ツイートを設定
+                setTweets(tweetsData || []);
             } catch (error) {
-                console.error("ツイートの取得に失敗しました:", error);
-                setTweets([]); // エラー時に空の配列を設定
+                console.error("データの取得に失敗しました:", error);
+                setTweets([]);
             } finally {
                 setLoading(false);
+                setDataLoaded(true); // データが揃ったら true に設定
             }
         };
-        fetchTweets();
+
+        fetchAllData();
     }, [mode, currentUser]);
-    
 
     return (
         <Box
@@ -93,51 +101,59 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             height="90vh"
             width="40vw"
         >
-            {/* トグルボタン */}
-            <ToggleButtonGroup
-                value={mode}
-                exclusive
-                onChange={(_, newMode) => newMode && setMode(newMode)}
-                sx={{ width: "100%", marginBottom: 2 }}
-            >
-                <ToggleButton value="all" sx={{ flex: 1 }}>
-                    すべての投稿
-                </ToggleButton>
-                <ToggleButton value="following" sx={{ flex: 1 }}>
-                    フォロー中
-                </ToggleButton>
-            </ToggleButtonGroup>
-            {/* ツイート一覧 */}
-            <Box
-                display="flex"
-                flexDirection="column"
-                overflow="auto"
-                padding={2}
-                width="100%"
-                height="100%"
-                border="1px solid #ccc"
-                borderRadius={2}
-            >
-                {loading ? (
-                    <CircularProgress />
-                ) : tweets.length > 0 ? (
-                    tweets.map((tweet) => (
-                        <TweetBox
-                            key={tweet.id}
-                            tweet_id={tweet.id}
-                            content={tweet.content}
-                            author={tweet.user_name}
-                            authorId={tweet.user_id}
-                            date={new Date(tweet.created_at).toLocaleDateString()}
-                            onViewDetails={() => onViewDetails(tweet.id)}
-                        />
-                    ))
-                ) : (
-                    <Box textAlign="center">
-                        {mode === "all" ? "No tweets found." : "No tweets from following users."}
+            {/* ローディング中のインジケータ */}
+            {loading || !dataLoaded ? (
+                <CircularProgress />
+            ) : (
+                <>
+                    {/* トグルボタン */}
+                    <ToggleButtonGroup
+                        value={mode}
+                        exclusive
+                        onChange={(_, newMode) => newMode && setMode(newMode)}
+                        sx={{ width: "100%", marginBottom: 2 }}
+                    >
+                        <ToggleButton value="all" sx={{ flex: 1 }}>
+                            すべての投稿
+                        </ToggleButton>
+                        <ToggleButton value="following" sx={{ flex: 1 }}>
+                            フォロー中
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                    {/* ツイート一覧 */}
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        overflow="auto"
+                        padding={2}
+                        width="100%"
+                        height="100%"
+                        border="1px solid #ccc"
+                        borderRadius={2}
+                    >
+                        {tweets.length > 0 ? (
+                            tweets.map((tweet) => (
+                                <TweetBox
+                                    key={tweet.id}
+                                    tweet_id={tweet.id}
+                                    content={tweet.content}
+                                    author={tweet.user_name}
+                                    authorId={tweet.user_id}
+                                    likeCount={tweet.likes_count}
+                                    date={new Date(tweet.created_at).toLocaleDateString()}
+                                    isFollowingAuthor={followedUserIds.has(tweet.user_id)}
+                                    onViewDetails={() => onViewDetails(tweet.id)}
+                                    isInitialyLiked={likedTweetIds.has(tweet.id)}
+                                />
+                            ))
+                        ) : (
+                            <Box textAlign="center">
+                                {mode === "all" ? "No tweets found." : "No tweets from following users."}
+                            </Box>
+                        )}
                     </Box>
-                )}
-            </Box>
+                </>
+            )}
         </Box>
     );
 };

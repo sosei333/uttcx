@@ -85,7 +85,7 @@ const Sidebar: React.FC = () => {
                     onClose={handleClosePostDialog}
                 />
                 {/*gemini*/}
-                 <Fab
+                 {/* <Fab
                     onClick={handleOpenChatDialog}
                     aria-label="add"
                     size="large"
@@ -94,7 +94,7 @@ const Sidebar: React.FC = () => {
                     
                 >
                     <SupportAgentIcon />
-                </Fab>
+                </Fab> */}
                 {/* 投稿ダイアログ */}
                 <ChatDialog
                     open={chatDialogOpen}
