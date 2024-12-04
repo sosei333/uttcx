@@ -43,7 +43,7 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
     setAiResponse(null); // 前回の回答をクリア
 
     // 選択された質問のAI向け文を使用
-    const formattedPrompt = `${prompts[selectedPrompt].aiPrompt}\n\n"${postText}"`;
+    const formattedPrompt = `${prompts[selectedPrompt].aiPrompt}簡潔に答えてください。\n\n"${postText}"`;
 
     try {
       const response = await sendPromptToGemini(formattedPrompt);
