@@ -4,7 +4,6 @@ import (
 	"backend/db"
 	"backend/models"
 	"database/sql"
-	"errors"
 	"fmt"
 	"log"
 )
@@ -57,13 +56,17 @@ func GetUserIntroductionByID(userId string) (models.UpdateUserIntroduction, erro
 	err := row.Scan(&userIntroduction.UserIntroduction) // Scanで値を取得
 	if err != nil {
 		if err == sql.ErrNoRows {
-			log.Printf("No user found with ID: %v\n", userId)
-			return userIntroduction, nil // ユーザーが見つからない場合はエラーメッセージを表示せず空の構造体を返す
+			// ユーザーが見つからない場合
+			log.Printf("No user found with ID: %v. Returning empty introduction.\n", userId)
+			return userIntroduction, nil // 空の構造体を返すがエラーは返さない
 		}
-		log.Printf("Failed to execute query: %v\n", err)
+		// その他のエラーの場合
+		log.Printf("Failed to execute query for user ID: %v, error: %v\n", userId, err)
 		return userIntroduction, err
 	}
 
+	// 正常に取得できた場合
+	log.Printf("Successfully retrieved introduction for user ID: %v\n", userId)
 	return userIntroduction, nil
 }
 
@@ -83,8 +86,9 @@ func UpdateUserName(userID string, userName string) error {
 		return err
 	}
 	if rowsAffected == 0 {
-		log.Printf("No rows updated, invalid userID? userID: %s", userID)
-		return errors.New("no rows updated, invalid userID?")
+		log.Printf("No changes detected for userID: %s, userName: %s", userID, userName)
+		// エラーを返さず正常終了として扱う
+		return nil
 	}
 
 	log.Printf("UserName successfully updated for userID: %s, newUserName: %s", userID, userName)
