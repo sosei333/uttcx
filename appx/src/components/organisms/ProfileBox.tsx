@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { UserProfile } from "../../models/user_models";
-import { Card, CardContent, Typography, Box, CircularProgress } from "@mui/material";
+import {
+  Paper,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  CircularProgress,
+  useTheme,
+  Button,
+} from "@mui/material";
 import EditButton from "../atoms/EditButton";
 import EditProfile from "./EditProfile";
 import { updateUserName, updateUserIntroduction } from "../../services/user";
@@ -9,6 +18,7 @@ import { getAuth } from "firebase/auth";
 import ViewUserDetailsButton from "../atoms/ViewUserButton";
 
 const ProfileBox: React.FC = () => {
+  const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [userIntroduction, setUserIntroduction] = useState<string | null>(null);
@@ -29,7 +39,7 @@ const ProfileBox: React.FC = () => {
 
     const fetchUser = async () => {
       setLoading(true);
-      setError(null); // エラーをリセット
+      setError(null);
       try {
         const userName = await getUserNameByID(userId);
         const userIntro = await getUserIntroductionByID(userId);
@@ -57,7 +67,6 @@ const ProfileBox: React.FC = () => {
 
   const handleSave = async (updatedUser: UserProfile, updatedIntroduction: string) => {
     try {
-      // 変更がない場合はリクエストを送信しない
       const isNameChanged = updatedUser.user_name !== currentUser?.user_name;
       const isBioChanged = updatedIntroduction !== userIntroduction;
 
@@ -69,11 +78,11 @@ const ProfileBox: React.FC = () => {
 
       const nameUpdateSuccess = isNameChanged
         ? await updateUserName(updatedUser.user_id, updatedUser.user_name)
-        : true; // 変更がない場合は成功とみなす
+        : true;
 
       const bioUpdateSuccess = isBioChanged
         ? await updateUserIntroduction(updatedUser.user_id, updatedIntroduction)
-        : true; // 変更がない場合は成功とみなす
+        : true;
 
       if (nameUpdateSuccess && bioUpdateSuccess) {
         setCurrentUser(updatedUser);
@@ -101,7 +110,7 @@ const ProfileBox: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          bgcolor: "#f5f5f5",
+          bgcolor: theme.palette.background.paper,
         }}
       >
         <CircularProgress />
@@ -117,7 +126,7 @@ const ProfileBox: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          bgcolor: "#f5f5f5",
+          bgcolor: theme.palette.error.light,
         }}
       >
         <Typography color="error">{error}</Typography>
@@ -144,7 +153,7 @@ const ProfileBox: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          bgcolor: "#f5f5f5",
+          bgcolor: theme.palette.warning.light,
         }}
       >
         <Typography color="error">User information not found</Typography>
@@ -158,30 +167,47 @@ const ProfileBox: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        bgcolor: "#f5f5f5",
+        height: "90vh",
+        bgcolor: theme.palette.background.default,
       }}
     >
-      <Card sx={{ maxWidth: 400, padding: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div" gutterBottom>
-            Profile
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            <strong>User ID:</strong> {currentUser.user_id}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            <strong>User Name:</strong> {currentUser.user_name}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            <strong>Introduction:</strong> {userIntroduction || "No bio available"}
-          </Typography>
-          <Box sx={{ marginTop: 2, textAlign: "center" }}>
-            <EditButton onClick={handleEditClick} />
-            <ViewUserDetailsButton userID={currentUser.user_id}></ViewUserDetailsButton>
-          </Box>
-        </CardContent>
-      </Card>
+      <Paper
+        elevation={4}
+        sx={{
+          padding: 2,
+          maxWidth: 500,
+          bgcolor: theme.palette.background.paper,
+          borderRadius: 2,
+          border: `2px solid ${theme.palette.primary.light}`, // 枠線を追加
+        }}
+      >
+        <Card sx={{ maxWidth: 400, padding: 2, boxShadow: "none" }}>
+          <CardContent>
+            <Typography variant="h5" component="div" gutterBottom>
+              Profile
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              <strong>User ID:</strong> {currentUser.user_id}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              <strong>User Name:</strong> {currentUser.user_name}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              <strong>Introduction:</strong> {userIntroduction || "No bio available"}
+            </Typography>
+            <Box
+              sx={{
+                marginTop: 5,
+                display: "flex",
+                justifyContent: "space-around", // ボタン間のスペースを確保
+              }}
+            >
+              <EditButton onClick={handleEditClick} />
+              <ViewUserDetailsButton userID={currentUser.user_id} />
+            </Box>
+          </CardContent>
+        </Card>
+      </Paper>
     </Box>
   );
 };

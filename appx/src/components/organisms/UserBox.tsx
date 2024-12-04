@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import FollowButton from '../atoms/FollowButton';
 import ViewUserButton from '../atoms/ViewUserButton';
+import { getUserIntroductionByID } from '../../services/user';
 
 interface UserBoxProps {
     userName: string;
