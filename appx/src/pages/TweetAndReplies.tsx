@@ -76,7 +76,7 @@ const TweetAndReplies: React.FC = () => {
                 }}
             >
                 {tweet && (
-                    <Box marginBottom={2}>
+                    <Box marginBottom={1}>
                         <Typography p={1} sx={{ color: theme.palette.text.primary }}>
                             投稿詳細
                         </Typography>
