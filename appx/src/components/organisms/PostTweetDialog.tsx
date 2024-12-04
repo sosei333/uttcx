@@ -1,10 +1,8 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogActions, Button, Typography, useTheme } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, Typography, MenuItem, Select, useTheme } from '@mui/material';
 import TextField from '../atoms/TextField';
-//import Button from '../atoms/Button';
 import { postToBackend } from '../../services/tweet';
 import { sendPromptToGemini } from '../../services/gemini';
-//import { colors } from '../../layouts/colors';
 
 interface PostDialogProps {
   open: boolean;
@@ -12,11 +10,20 @@ interface PostDialogProps {
 }
 
 const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
-const theme=useTheme();
+  const theme = useTheme();
 
   const [postText, setPostText] = React.useState('');
   const [aiResponse, setAiResponse] = React.useState<string | null>(null); // AIの回答を管理
   const [loading, setLoading] = React.useState(false); // ローディング状態を管理
+  const [selectedPrompt, setSelectedPrompt] = React.useState(0); // 選択された質問文のインデックス
+
+  // 簡潔な質問文リスト
+  const prompts = [
+    '不適切な内容は？',
+    '英語に翻訳してください',
+    '読みやすい？',
+    '面白い内容か？',
+  ];
 
   const handlePost = () => {
     postToBackend(postText);
@@ -29,7 +36,7 @@ const theme=useTheme();
     setLoading(true);
     setAiResponse(null); // 前回の回答をクリア
 
-    const formattedPrompt = `以下の内容をSNSに投稿しようと思うのですが、不適切な内容はありますか？300字以内で答えてください\n\n"${postText}"`;
+    const formattedPrompt = `以下の内容について、${prompts[selectedPrompt]} 300字以内で回答してください。\n\n"${postText}"`;
 
     try {
       const response = await sendPromptToGemini(formattedPrompt);
@@ -55,6 +62,21 @@ const theme=useTheme();
           multiline
           minRows={4}
         />
+        <Typography variant="body2" sx={{ marginTop: 2 }}>
+          質問を選択:
+        </Typography>
+        <Select
+          value={selectedPrompt}
+          onChange={(e) => setSelectedPrompt(Number(e.target.value))}
+          fullWidth
+          sx={{ marginBottom: 2 }}
+        >
+          {prompts.map((prompt, index) => (
+            <MenuItem value={index} key={index}>
+              {prompt}
+            </MenuItem>
+          ))}
+        </Select>
         {loading ? (
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
             AIの回答を取得中...

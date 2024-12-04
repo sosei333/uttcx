@@ -12,7 +12,6 @@ import FollowingList from './pages/Follow';
 import Profile from './pages/Profile';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import TweetAndReplies from './pages/TweetAndReplies';
-
 import NavigationButton from './components/atoms/NavigationButton';
 
 const Title: React.FC = () => {
