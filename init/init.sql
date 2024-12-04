@@ -3,8 +3,10 @@ USE mydatabase;
 
 CREATE TABLE IF NOT EXISTS users (
     user_id VARCHAR(255) PRIMARY KEY,
-    user_name VARCHAR(255) NOT NULL
+    user_name VARCHAR(255) NOT NULL,
+    user_introduction TEXT
 );
+
 
 CREATE TABLE IF NOT EXISTS tweets (
     id INT AUTO_INCREMENT PRIMARY KEY,
