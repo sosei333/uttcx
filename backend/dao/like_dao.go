@@ -57,3 +57,24 @@ func RemoveLike(userID string, tweetID int) error {
 
 	return nil
 }
+
+func GetLikedTweetIDs(userID string) ([]int, error) {
+
+	query := `SELECT tweet_id FROM likes WHERE user_id = ?`
+	rows, err := db.DB.Query(query, userID) // db は事前に設定された *sql.DB のインスタンス
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tweetIDs []int
+	for rows.Next() {
+		var tweetID int
+		if err := rows.Scan(&tweetID); err != nil {
+			return nil, err
+		}
+		tweetIDs = append(tweetIDs, tweetID)
+	}
+
+	return tweetIDs, nil
+}

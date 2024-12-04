@@ -75,3 +75,38 @@ func RemoveLikeHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Like removed successfully"})
 }
+
+func GetLikedTweetsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// OPTIONSリクエストを処理
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// クエリパラメータから user_id を取得
+	userID := r.URL.Query().Get("user_id")
+	if userID == "" {
+		http.Error(w, "Missing user_id parameter", http.StatusBadRequest)
+		return
+	}
+
+	// いいねした投稿のIDを取得
+	likedTweetIDs, err := dao.GetLikedTweetIDs(userID) // dao 層を利用
+	if err != nil {
+		http.Error(w, "Failed to retrieve liked tweets", http.StatusInternalServerError)
+		return
+	}
+
+	// レスポンスを返す
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(likedTweetIDs)
+}
