@@ -15,14 +15,15 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
   const [postText, setPostText] = React.useState('');
   const [aiResponse, setAiResponse] = React.useState<string | null>(null); // AIの回答を管理
   const [loading, setLoading] = React.useState(false); // ローディング状態を管理
+  const [showPromptSelector, setShowPromptSelector] = React.useState(false); // 質問選択を表示するか
   const [selectedPrompt, setSelectedPrompt] = React.useState(0); // 選択された質問文のインデックス
 
-  // 簡潔な質問文リスト
+  // ユーザーに表示する質問文とAIに送る質問文を分ける
   const prompts = [
-    '不適切な内容は？',
-    '英語に翻訳してください',
-    '読みやすい？',
-    '面白い内容か？',
+    { userPrompt: '不適切な内容は？', aiPrompt: '以下の内容に不適切な表現が含まれている場合、指摘してください。' },
+    { userPrompt: '英語に翻訳して！', aiPrompt: '以下の投稿内容を英語に翻訳してください。' },
+    { userPrompt: '読みやすい？', aiPrompt: '以下の投稿内容が読みやすいかどうか、改善点を教えてください。' },
+    { userPrompt: '面白い内容か？', aiPrompt: '以下の投稿が面白いと思われるかどうか評価してください。' },
   ];
 
   const handlePost = () => {
@@ -32,11 +33,17 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
     onClose();
   };
 
+  const handleShowPromptSelector = () => {
+    setShowPromptSelector(true);
+  };
+
   const handleChat = async () => {
+    setShowPromptSelector(false); // 質問選択を閉じる
     setLoading(true);
     setAiResponse(null); // 前回の回答をクリア
 
-    const formattedPrompt = `以下の内容について、${prompts[selectedPrompt]} 300字以内で回答してください。\n\n"${postText}"`;
+    // 選択された質問のAI向け文を使用
+    const formattedPrompt = `${prompts[selectedPrompt].aiPrompt}\n\n"${postText}"`;
 
     try {
       const response = await sendPromptToGemini(formattedPrompt);
@@ -62,21 +69,6 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
           multiline
           minRows={4}
         />
-        <Typography variant="body2" sx={{ marginTop: 2 }}>
-          質問を選択:
-        </Typography>
-        <Select
-          value={selectedPrompt}
-          onChange={(e) => setSelectedPrompt(Number(e.target.value))}
-          fullWidth
-          sx={{ marginBottom: 2 }}
-        >
-          {prompts.map((prompt, index) => (
-            <MenuItem value={index} key={index}>
-              {prompt}
-            </MenuItem>
-          ))}
-        </Select>
         {loading ? (
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
             AIの回答を取得中...
@@ -91,13 +83,51 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
         <Button onClick={onClose} sx={{ color: theme.palette.primary.main }}>
           キャンセル
         </Button>
-        <Button onClick={handleChat} disabled={!postText || loading} sx={{ color: theme.palette.primary.main }}>
+        <Button
+          onClick={handleShowPromptSelector}
+          disabled={!postText || loading}
+          sx={{ color: theme.palette.primary.main }}
+        >
           AIに質問
         </Button>
         <Button onClick={handlePost} disabled={!postText} sx={{ color: theme.palette.primary.main }}>
           投稿
         </Button>
       </DialogActions>
+
+      {/* 質問選択ダイアログ */}
+      {showPromptSelector && (
+        <Dialog open={showPromptSelector} onClose={() => setShowPromptSelector(false)} fullWidth maxWidth="xs">
+          <DialogContent>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+              質問を選択してください:
+            </Typography>
+            <Select
+              value={selectedPrompt}
+              onChange={(e) => setSelectedPrompt(Number(e.target.value))}
+              fullWidth
+            >
+              {prompts.map((prompt, index) => (
+                <MenuItem value={index} key={index}>
+                  {prompt.userPrompt}
+                </MenuItem>
+              ))}
+            </Select>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowPromptSelector(false)} sx={{ color: theme.palette.primary.main }}>
+              キャンセル
+            </Button>
+            <Button
+              onClick={handleChat}
+              disabled={loading}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              AIに質問する
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Dialog>
   );
 };
