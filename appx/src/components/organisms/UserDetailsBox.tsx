@@ -4,17 +4,20 @@ import FollowButton from '../atoms/FollowButton';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { getFollowingUsers } from '../../services/follow'; // フォロー中ユーザーを取得する関数
+import { getUserIntroductionByID } from '../../services/user'; // 自己紹介を取得する関数
 
 interface UserDetailsBoxProps {
     userName: string;
     userId: string;
-    isInitialyFollowing?:boolean;
+    isInitialyFollowing?: boolean;
 }
 
 const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isInitialyFollowing }) => {
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [isFollowing, setIsFollowing] = useState<boolean>(false); // フォロー状態を管理
-    const [loading, setLoading] = useState<boolean>(true); // ローディング状態を管理
+    const [introduction, setIntroduction] = useState<string | null>(null); // 自己紹介文を管理
+    const [loading, setLoading] = useState<boolean>(true); // 全体のローディング状態を管理
+    const [loadingIntroduction, setLoadingIntroduction] = useState<boolean>(true); // 自己紹介文のローディング状態を管理
 
     // Firebaseから現在のユーザー情報を取得
     useEffect(() => {
@@ -51,22 +54,54 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
         };
 
         checkIfFollowing();
-    }, [currentUserId, userId]); // currentUserIdまたはuserIdが変更されたときに再実行
+    }, [currentUserId, userId]);
+
+    // 自己紹介文を取得
+    useEffect(() => {
+        const fetchIntroduction = async () => {
+            try {
+                setLoadingIntroduction(true);
+                const intro = await getUserIntroductionByID(userId);
+                setIntroduction(intro || 'No introduction available');
+            } catch (error) {
+                console.error("Failed to fetch user introduction:", error);
+                setIntroduction('Failed to load introduction');
+            } finally {
+                setLoadingIntroduction(false);
+            }
+        };
+
+        fetchIntroduction();
+    }, [userId]);
 
     return (
         <Box
             display="flex"
             flexDirection="column"
             bgcolor="#f9f9f9"
+            p={2}
+            my={1}
+            border="1px solid #ccc"
+            borderRadius={2}
+            boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             width="100%"
         >
             <Typography variant="h6">{userName}</Typography>
             <Typography variant="body2" color="textSecondary">
                 User ID: {userId}
             </Typography>
+            {loadingIntroduction ? (
+                <Typography variant="body2" color="textSecondary">
+                    Loading introduction...
+                </Typography>
+            ) : (
+                <Typography variant="body2" color="textSecondary">
+                    {introduction}
+                </Typography>
+            )}
             {/* 現在のユーザーIDと表示するユーザーIDが異なる場合のみフォローボタンを表示 */}
             {currentUserId && userId !== currentUserId && (
-                <Box display="flex" flexDirection="row" alignContent="center" gap={2} mt={1}>
+                <Box display="flex" flexDirection="row" alignItems="center" gap={2} mt={1}>
                     {!loading ? (
                         <FollowButton
                             userId={userId}
@@ -74,7 +109,7 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
                         />
                     ) : (
                         <Typography variant="body2" color="textSecondary">
-                            Loading...
+                            Checking follow status...
                         </Typography>
                     )}
                 </Box>
