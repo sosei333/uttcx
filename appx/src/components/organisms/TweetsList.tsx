@@ -65,29 +65,55 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
         const fetchAllData = async () => {
             if (!currentUser) return;
             setLoading(true);
+    
+            let likedIds = new Set<number>();
+            let followingIds = new Set<string>();
+    
             try {
-                const [likedIds, followingUsers, tweetsData] = await Promise.all([
-                    getLike(),
-                    getFollowingUsers(),
-                    mode === "all" ? getAllTweet() : getFollowingTweets(currentUser.user_id),
-                ]);
-
-                // いいね状態とフォロー状態を設定
-                setLikedTweetIds(new Set(likedIds));
-                const followingIds = new Set(followingUsers.map((user) => user.ID));
-                setFollowedUserIds(followingIds);
-
-                // ツイートを設定
-                setTweets(tweetsData || []);
+                // いいね状態を取得
+                likedIds = new Set(await getLike());
+                setLikedTweetIds(likedIds);
             } catch (error) {
-                console.error("データの取得に失敗しました:", error);
+                console.error("いいね状態の取得に失敗しました:", error);
+            }
+    
+            try {
+                // フォロー状態を取得
+                const followingUsers = await getFollowingUsers();
+                followingIds = new Set(followingUsers.map((user) => user.ID));
+                setFollowedUserIds(followingIds);
+            } catch (error) {
+                console.error("フォロー状態の取得に失敗しました:", error);
+            }
+    
+            try {
+                // ツイートの取得
+                let tweetsData: Tweet[] | null = null;
+                if (mode === "all") {
+                    tweetsData = await getAllTweet();
+                } else if (mode === "following") {
+                    if (followingIds.size === 0) {
+                        tweetsData = await getAllTweet();
+                    } else {
+                        tweetsData = await getFollowingTweets(currentUser.user_id);
+                    }
+                }
+    
+                if (!tweetsData || !Array.isArray(tweetsData)) {
+                    console.error("Invalid tweets data:", tweetsData);
+                    tweetsData = [];
+                }
+    
+                setTweets(tweetsData);
+            } catch (error) {
+                console.error("ツイートの取得に失敗しました:", error);
                 setTweets([]);
             } finally {
                 setLoading(false);
-                setDataLoaded(true); // データが揃ったら true に設定
+                setDataLoaded(true);
             }
         };
-
+    
         fetchAllData();
     }, [mode, currentUser]);
 
