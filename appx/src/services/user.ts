@@ -64,10 +64,47 @@ export const getUserNameByID = async (userId: string): Promise<string | null> =>
   }
 };
 
+export const getUserIntroductionByID = async (userId: string): Promise<string | null> => {
+  // 環境変数からバックエンドURLを取得
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  if (!backendUrl) {
+    console.error("Backend URL is not defined in the environment variables");
+    return null;
+  }
+
+  try {
+    // FetchでGETリクエスト送信
+    const response = await fetch(`${backendUrl}/user/getintroduction?userId=${encodeURIComponent(userId)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // レスポンスの確認
+    if (response.ok) {
+      const data = await response.json(); // JSONレスポンスをパース
+      if (data && data.userIntroduction) {
+        return data.userIntroduction; // ユーザーネームを返す
+      } else {
+        console.error("Response did not contain a valid userIntroduction");
+        return null;
+      }
+    } else {
+      console.error(`Failed to fetch user introduction, status: ${response.status}`);
+      return null;
+    }
+  } catch (error) {
+    console.error("An error occurred while fetching the user introduction:", error);
+    return null;
+  }
+};
+
 
 export const updateUserName = async (userId: string, newUserName: string): Promise<boolean> => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const response = await fetch(`${backendUrl}/user/update?userId=${encodeURIComponent(userId)}`, {
+  const response = await fetch(`${backendUrl}/user/update/name?userId=${encodeURIComponent(userId)}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -81,3 +118,24 @@ export const updateUserName = async (userId: string, newUserName: string): Promi
   }
   return true;
 };
+
+export const updateUserIntroduction = async (userId: string, newUserIntrodution: string): Promise<boolean> => {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const response = await fetch(`${backendUrl}/user/update/introduction?userId=${encodeURIComponent(userId)}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+      userIntroduction: newUserIntrodution
+     }),
+  });
+
+  if (!response.ok) {
+    console.error("Failed to update user name");
+    return false;
+  }
+  return true;
+};
+
+
