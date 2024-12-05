@@ -8,6 +8,8 @@ import { getUserNameByID } from "../../services/user";
 import { getFollowingUsers } from "../../services/follow";
 import { getLike } from "../../services/like";
 import { getLikeCount } from "../../services/like";
+import { getLocalizedStrings } from "../../layouts/strings";
+import { useLanguage } from "../../layouts/LanguageContext";
 
 type Tweet = {
     id: number;
@@ -30,6 +32,8 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
     const [followedUserIds, setFollowedUserIds] = useState<Set<string>>(new Set());
     const [likedTweetIds, setLikedTweetIds] = useState<Set<number>>(new Set());
+    const { language } = useLanguage(); // 言語設定を取得
+    const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
 
     const auth = getAuth();
     const firebaseUser = auth.currentUser;
@@ -155,10 +159,10 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                         sx={{ width: "100%", marginBottom: 2 }}
                     >
                         <ToggleButton value="all" sx={{ flex: 1 }}>
-                            すべての投稿
+                            {strings.allTweet}
                         </ToggleButton>
                         <ToggleButton value="following" sx={{ flex: 1 }}>
-                            フォロー中
+                            {strings.following}
                         </ToggleButton>
                     </ToggleButtonGroup>
                     {/* ツイート一覧 */}

@@ -20,6 +20,8 @@ func main() {
 	//http.HandleFunc("/user/update", handlers.UpdateUserNameHandler)
 	http.HandleFunc("/user/update/name", handlers.UpdateUserNameHandler)
 	http.HandleFunc("/user/update/introduction", handlers.UpdateUserIntroductionHandler)
+	http.HandleFunc("/user/update/settings", handlers.UpdateUserSettingsHandler)
+	http.HandleFunc("/user/get/settings", handlers.GetUserSettingsHandler)
 
 	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
 	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)

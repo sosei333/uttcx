@@ -138,4 +138,48 @@ export const updateUserIntroduction = async (userId: string, newUserIntrodution:
   return true;
 };
 
+export const updateUserSettings = async (
+  userId: string,
+  settings: { language?: string; theme?: string; fontSize?: string }
+): Promise<boolean> => {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  try {
+    const response = await fetch(`${backendUrl}/user/update/settings?userId=${encodeURIComponent(userId)}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(settings),
+    });
 
+    if (!response.ok) {
+      console.error("Failed to update user settings");
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Error updating user settings:", error);
+    return false;
+  }
+};
+
+export const getUserSettings = async (userId: string): Promise<{ language: string; theme: string; fontSize: string } | null> => {
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  try {
+    const response = await fetch(`${backendUrl}/user/get/settings?userId=${encodeURIComponent(userId)}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user settings");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user settings:", error);
+    return null;
+  }
+};

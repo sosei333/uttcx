@@ -1,7 +1,6 @@
 import React from 'react';
 import { IconButton, useTheme } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import {colors} from '../../layouts/colors';
 
 interface ViewDetailsButtonProps {
     onClick: () => void;

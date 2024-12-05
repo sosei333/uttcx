@@ -236,3 +236,97 @@ func UpdateUserIntroductionHandler(w http.ResponseWriter, r *http.Request) {
 	// 成功レスポンス
 	w.WriteHeader(http.StatusOK)
 }
+
+func UpdateUserSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	// CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	// Handle OPTIONS preflight request
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Validate HTTP method
+	if r.Method != http.MethodPut {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Retrieve user ID from URL query parameters
+	userID := r.URL.Query().Get("userId")
+	if userID == "" {
+		http.Error(w, "Missing userId parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Parse request body
+	var req models.UserSettings
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Printf("Failed to decode request body: %v", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	// Validate at least one field is provided
+	if req.Language == "" && req.Theme == "" && req.FontSize == "" {
+		http.Error(w, "At least one setting must be provided", http.StatusBadRequest)
+		return
+	}
+
+	// Update user settings using DAO
+	err := dao.UpdateUserSettings(userID, req)
+	if err != nil {
+		log.Printf("Failed to update user settings for userID %s: %v", userID, err)
+		http.Error(w, "Failed to update user settings", http.StatusInternalServerError)
+		return
+	}
+
+	// Success response
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("User settings updated successfully"))
+}
+
+func GetUserSettingsHandler(w http.ResponseWriter, r *http.Request) {
+	// CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	// Handle OPTIONS preflight request
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Validate HTTP method
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Retrieve user ID from query parameters
+	userID := r.URL.Query().Get("userId")
+	if userID == "" {
+		http.Error(w, "Missing userId parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Fetch user settings from DAO
+	settings, err := dao.GetUserSettings(userID)
+	if err != nil {
+		log.Printf("Error retrieving user settings for userID %s: %v", userID, err)
+		http.Error(w, "Failed to retrieve user settings", http.StatusInternalServerError)
+		return
+	}
+
+	// Respond with user settings as JSON
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(settings); err != nil {
+		log.Printf("Error encoding user settings to JSON: %v", err)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}

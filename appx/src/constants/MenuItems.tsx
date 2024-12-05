@@ -8,6 +8,6 @@ export const menuItems = [
     { text: 'Home', link: './home', icon: <HomeIcon /> },
     //{ text: 'Explore', link: './explore', icon: <SearchIcon /> },
     { text: 'Follow', link: './follow', icon: <GroupIcon /> },
-   // { text: 'Settings', link: './settings', icon: <SettingsIcon /> },
+    { text: 'Settings', link: './settings', icon: <SettingsIcon /> },
     { text: 'Profile', link: './profile', icon: <PersonIcon /> },
 ];
