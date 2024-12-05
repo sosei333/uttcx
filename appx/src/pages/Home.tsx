@@ -1,6 +1,8 @@
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import TweetList from '../components/organisms/TweetsList';
+import { getLocalizedStrings } from '../layouts/strings';
+import { useLanguage } from "../layouts/LanguageContext";
 
 type Tweet = {
     id: number;
@@ -11,6 +13,7 @@ type Tweet = {
 };
 
 const Tweets: React.FC = () => {
+    
     const navigate = useNavigate();
 
     const handleViewDetails = (tweetId: number) => {

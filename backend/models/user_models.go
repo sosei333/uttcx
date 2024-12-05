@@ -16,3 +16,10 @@ type UpdateUserNameRequest struct {
 type UpdateUserIntroduction struct {
 	UserIntroduction string `json:"userIntroduction"`
 }
+
+// UserSettings represents the user settings that can be updated.
+type UserSettings struct {
+	Language string `json:"language,omitempty"`
+	Theme    string `json:"theme,omitempty"`
+	FontSize string `json:"fontSize,omitempty"`
+}

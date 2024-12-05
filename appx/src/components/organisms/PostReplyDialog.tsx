@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogActions, Button, Typography, MenuItem, Sel
 import TextField from '../atoms/TextField';
 import { postReply } from '../../services/reply';
 import { sendPromptToGemini } from '../../services/gemini';
+import { getLocalizedStrings } from '../../layouts/strings';
+import { useLanguage } from '../../layouts/LanguageContext';
 
 interface PostDialogProps {
   open: boolean;
@@ -12,7 +14,8 @@ interface PostDialogProps {
 
 const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }) => {
   const theme = useTheme();
-
+  const { language } = useLanguage(); // 言語設定を取得
+  const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
   const [postText, setPostText] = React.useState('');
   const [aiResponse, setAiResponse] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -63,7 +66,7 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogContent>
         <TextField
-          label="リプライ内容"
+          label={strings.content}
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
           multiline
@@ -71,7 +74,7 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
         />
         {loading ? (
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
-            AIの回答を取得中...
+            {strings.receivingAnswer}
           </Typography>
         ) : aiResponse ? (
           <Typography variant="body1" sx={{ marginTop: 2, padding: 1, border: `1px solid ${theme.palette.primary.main}`, borderRadius: 4 }}>
@@ -81,17 +84,17 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} sx={{ color: theme.palette.primary.main }}>
-          キャンセル
+          {strings.cancel}
         </Button>
         <Button
           onClick={handleShowPromptSelector}
           disabled={!postText || loading}
           sx={{ color: theme.palette.primary.main }}
         >
-          AIに質問
+          {strings.question}
         </Button>
         <Button onClick={handlePost} disabled={!postText} sx={{ color: theme.palette.primary.main }}>
-          リプライを投稿
+          {strings.post}
         </Button>
       </DialogActions>
 

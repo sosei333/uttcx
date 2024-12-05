@@ -16,6 +16,8 @@ import { updateUserName, updateUserIntroduction } from "../../services/user";
 import { getUserNameByID, getUserIntroductionByID } from "../../services/user";
 import { getAuth } from "firebase/auth";
 import ViewUserDetailsButton from "../atoms/ViewUserButton";
+import { getLocalizedStrings } from "../../layouts/strings";
+import { useLanguage } from "../../layouts/LanguageContext";
 
 const ProfileBox: React.FC = () => {
   const theme = useTheme();
@@ -24,6 +26,8 @@ const ProfileBox: React.FC = () => {
   const [userIntroduction, setUserIntroduction] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage(); // 言語設定を取得
+  const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
 
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
@@ -184,16 +188,16 @@ const ProfileBox: React.FC = () => {
         <Card sx={{ maxWidth: 400, padding: 2, boxShadow: "none" }}>
           <CardContent>
             <Typography variant="h5" component="div" gutterBottom>
-              Profile
+              {strings.profile}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>User ID:</strong> {currentUser.user_id}
+              <strong>{strings.user} ID:</strong> {currentUser.user_id}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>User Name:</strong> {currentUser.user_name}
+              <strong>{strings.name}:</strong> {currentUser.user_name}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>Introduction:</strong> {userIntroduction || "No bio available"}
+              <strong>{strings.introduction}:</strong> {userIntroduction || "No bio available"}
             </Typography>
             <Box
               sx={{

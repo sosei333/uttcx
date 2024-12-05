@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import TweetAndReplies from './pages/TweetAndReplies';
 import NavigationButton from './components/atoms/NavigationButton';
+import Settings from './pages/Settings';
 
 const Title: React.FC = () => {
   return (
@@ -94,6 +95,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/follow" element={<FollowingList />} />
             <Route path="/tweet/:id" element={<TweetAndReplies />} />

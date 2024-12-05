@@ -114,3 +114,76 @@ func UpdateUserIntroduction(userID string, userIntroduction string) error {
 
 	return nil
 }
+
+// UpdateUserSettings updates the user settings in the database.
+func UpdateUserSettings(userID string, settings models.UserSettings) error {
+	// Prepare query components
+	query := "UPDATE users SET "
+	args := []interface{}{}
+	setClauses := ""
+
+	// Add clauses based on provided settings
+	if settings.Language != "" {
+		if len(setClauses) > 0 {
+			setClauses += ", "
+		}
+		setClauses += "language = ?"
+		args = append(args, settings.Language)
+	}
+	if settings.Theme != "" {
+		if len(setClauses) > 0 {
+			setClauses += ", "
+		}
+		setClauses += "color_theme = ?"
+		args = append(args, settings.Theme)
+	}
+	if settings.FontSize != "" {
+		if len(setClauses) > 0 {
+			setClauses += ", "
+		}
+		setClauses += "font_size = ?"
+		args = append(args, settings.FontSize)
+	}
+
+	// If no settings are provided, return an error
+	if len(setClauses) == 0 {
+		return fmt.Errorf("no settings to update for userID: %s", userID)
+	}
+
+	// Finalize the query
+	query += setClauses + " WHERE user_id = ?"
+	args = append(args, userID)
+
+	// Execute the query
+	result, err := db.DB.Exec(query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to execute update query: %w", err)
+	}
+
+	// Check the number of rows affected
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to check rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows updated for userID: %s", userID)
+	}
+
+	return nil
+}
+
+// GetUserSettings retrieves user settings from the database by userID.
+func GetUserSettings(userID string) (models.UserSettings, error) {
+	query := "SELECT language, color_theme, font_size FROM users WHERE user_id = ?"
+	var settings models.UserSettings
+
+	err := db.DB.QueryRow(query, userID).Scan(&settings.Language, &settings.Theme, &settings.FontSize)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return settings, fmt.Errorf("no user found with userID: %s", userID)
+		}
+		return settings, fmt.Errorf("failed to retrieve user settings: %w", err)
+	}
+
+	return settings, nil
+}

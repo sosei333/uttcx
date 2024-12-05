@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogActions, Button, Typography, MenuItem, Sel
 import TextField from '../atoms/TextField';
 import { postToBackend } from '../../services/tweet';
 import { sendPromptToGemini } from '../../services/gemini';
+import { getLocalizedStrings } from '../../layouts/strings';
+import { useLanguage } from '../../layouts/LanguageContext';
 
 interface PostDialogProps {
   open: boolean;
@@ -10,6 +12,8 @@ interface PostDialogProps {
 }
 
 const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
+  const { language } = useLanguage(); // 言語設定を取得
+  const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
   const theme = useTheme();
 
   const [postText, setPostText] = React.useState('');
@@ -63,7 +67,7 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogContent>
         <TextField
-          label="投稿内容"
+          label={strings.content}
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
           multiline
@@ -71,7 +75,7 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
         />
         {loading ? (
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
-            AIの回答を取得中...
+            {strings.receivingAnswer}
           </Typography>
         ) : aiResponse ? (
           <Typography variant="body1" sx={{ marginTop: 2, padding: 1, border: `1px solid ${theme.palette.primary.main}`, borderRadius: 4 }}>
@@ -81,17 +85,17 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} sx={{ color: theme.palette.primary.main }}>
-          キャンセル
+          {strings.cancel}
         </Button>
         <Button
           onClick={handleShowPromptSelector}
           disabled={!postText || loading}
           sx={{ color: theme.palette.primary.main }}
         >
-          AIに質問
+          {strings.question}
         </Button>
         <Button onClick={handlePost} disabled={!postText} sx={{ color: theme.palette.primary.main }}>
-          投稿
+          {strings.post}
         </Button>
       </DialogActions>
 
@@ -100,7 +104,7 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
         <Dialog open={showPromptSelector} onClose={() => setShowPromptSelector(false)} fullWidth maxWidth="xs">
           <DialogContent>
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
-              質問を選択してください:
+              {strings.selectQuestion}:
             </Typography>
             <Select
               value={selectedPrompt}
@@ -116,14 +120,14 @@ const PostDialog: React.FC<PostDialogProps> = ({ open, onClose }) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setShowPromptSelector(false)} sx={{ color: theme.palette.primary.main }}>
-              キャンセル
+              {strings.cancel}
             </Button>
             <Button
               onClick={handleChat}
               disabled={loading}
               sx={{ color: theme.palette.primary.main }}
             >
-              AIに質問する
+              {strings.question}
             </Button>
           </DialogActions>
         </Dialog>

@@ -1,5 +1,9 @@
 import { createTheme } from '@mui/material/styles';
-import { colors } from './colors';
+//import { colors } from './colors';
+import { getColorSet } from './colors';
+import { getUserSettings } from '../services/user';
+
+const colors=getColorSet(3)
 
 const customTheme = createTheme({
   palette: {
