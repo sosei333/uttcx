@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 import { getColorSet } from './colors';
 import { getUserSettings } from '../services/user';
 
-const colors=getColorSet(3)
+const colors=getColorSet(1)
 
 const customTheme = createTheme({
   palette: {
