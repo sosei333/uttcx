@@ -20,6 +20,8 @@ type LocalizationStrings = {
     post: string;
     selectQuestion: string;
     logout: string;
+    noFollowing:string;
+    noFollowed: string;
   };
   
   const localizationData: Record<string, LocalizationStrings> = {
@@ -44,7 +46,9 @@ type LocalizationStrings = {
       question: "Ask AI",
       post : "Post",
       selectQuestion: "Select a question",
-      logout: "Sign Out"
+      logout: "Sign Out",
+      noFollowed: "No one is following you yet.",
+      noFollowing: "You are not following anyone yet."
     },
     ja: {
       following: "フォロー中",
@@ -67,7 +71,9 @@ type LocalizationStrings = {
       question: "AIに尋ねる",
       post: "投稿",
       selectQuestion: "質問を選択してください",
-      logout: "ログアウト"
+      logout: "ログアウト",
+      noFollowed: "まだ誰もあなたをフォローしていません。他の人とつながってフォロワーを増やしましょう！",
+      noFollowing: "現在フォロワーはいません。興味深いコンテンツを共有してフォロワーを増やしましょう！"
     },
   };
   
