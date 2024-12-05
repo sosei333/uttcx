@@ -7,6 +7,7 @@ import { UserProfile } from "../../models/user_models";
 import { getUserNameByID } from "../../services/user";
 import { getFollowingUsers } from "../../services/follow";
 import { getLike } from "../../services/like";
+import { getLikeCount } from "../../services/like";
 
 type Tweet = {
     id: number;
@@ -68,6 +69,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     
             let likedIds = new Set<number>();
             let followingIds = new Set<string>();
+            let likeCounts: { [key: string]: number } = {};
     
             try {
                 // いいね状態を取得
@@ -75,6 +77,13 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                 setLikedTweetIds(likedIds);
             } catch (error) {
                 console.error("いいね状態の取得に失敗しました:", error);
+            }
+    
+            try {
+                // いいね数を取得
+                likeCounts = await getLikeCount();
+            } catch (error) {
+                console.error("いいね数の取得に失敗しました:", error);
             }
     
             try {
@@ -104,7 +113,13 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                     tweetsData = [];
                 }
     
-                setTweets(tweetsData);
+                // ツイートにいいね数を追加
+                const tweetsWithLikes = tweetsData.map((tweet) => ({
+                    ...tweet,
+                    likes_count: likeCounts[tweet.id] || 0, // いいね数がない場合は0
+                }));
+    
+                setTweets(tweetsWithLikes);
             } catch (error) {
                 console.error("ツイートの取得に失敗しました:", error);
                 setTweets([]);
