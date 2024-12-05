@@ -23,7 +23,7 @@ const RootLayout: React.FC = () => {
                     sx={{
                         zIndex: (theme) => theme.zIndex.drawer + 1,
                         height: '10vh', // AppBar自体の高さを設定
-                        backgroundColor: theme.palette.text.primary,
+                        backgroundColor: theme.palette.primary.main,
                     }}
                 >
                     <Toolbar
@@ -34,7 +34,14 @@ const RootLayout: React.FC = () => {
                             //backgroundColor: colors.primary, // AppBarの背景色
                         }}
                     >
-                        <Typography variant="h6" noWrap component="div">
+                        <Box mt={1}>
+                            <img
+                            src={`${process.env.PUBLIC_URL}/logo.png`} // `public` フォルダにあるロゴ画像
+                            alt="Logo"
+                            style={{ width: '7vh', height: '7vh' }} // ロゴのサイズを調整
+                            />
+                        </Box>
+                        <Typography mx={2} variant="h6" noWrap component="div">
                             Twitter
                         </Typography>
                     </Toolbar>

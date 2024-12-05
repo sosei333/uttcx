@@ -17,9 +17,21 @@ import NavigationButton from './components/atoms/NavigationButton';
 const Title: React.FC = () => {
   return (
     <Box textAlign="center" mt={4}>
+      {/* ロゴ画像 */}
+      <Box mb={2}>
+        <img
+          src={`${process.env.PUBLIC_URL}/logo.png`} // `public` フォルダにあるロゴ画像
+          alt="Logo"
+          style={{ width: 300, height: 300 }} // ロゴのサイズを調整
+        />
+      </Box>
+
+      {/* タイトル */}
       <Typography variant="h4" mb={2} sx={{ color: 'primary.main', fontWeight: 'bold' }}>
         Twitter
       </Typography>
+      
+      {/* サブタイトル */}
       <Typography variant="subtitle1" color="textSecondary">
         あなたのソーシャルメディアの出発点
       </Typography>
