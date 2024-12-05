@@ -131,7 +131,7 @@ const FollowingList: React.FC = () => {
           </Typography>
         ) : users.length === 0 ? (
           <Typography variant="body1" color="textSecondary">
-            {viewMode === "following" ? strings.follow : strings.follow}
+            {viewMode === "following" ? strings.noFollowing : strings.noFollowed}
           </Typography>
         ) : (
           users.map((user) => (
