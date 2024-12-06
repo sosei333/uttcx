@@ -34,16 +34,16 @@ const RootLayout: React.FC = () => {
                         }}
                     >
                         {/* 左側のロゴとタイトル */}
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Box mt={1}>
+                        <Box mx={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Box mt={1} mx={2}>
                                 <img
                                     src={`${process.env.PUBLIC_URL}/logo.png`} // `public` フォルダにあるロゴ画像
                                     alt="Logo"
                                     style={{ width: '7vh', height: '7vh' }} // ロゴのサイズを調整
                                 />
                             </Box>
-                            <Typography mx={2} variant="h6" noWrap component="div">
-                                Twitter
+                            <Typography mx={2} variant="h4" noWrap component="div" sx={{fontFamily: "'Pacifico', cursive" }}>
+                            Roots
                             </Typography>
                         </Box>
 

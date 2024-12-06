@@ -128,7 +128,7 @@ const TweetBox: React.FC<PostProps> = ({
                 <Box>
                     <LikeButton isLiked={isLiked} onClick={handleLikeClick} />
                     {likeCount}
-                    <BookmarkButton />
+                    {/* <BookmarkButton /> */}
                 </Box>
             </Box>
 

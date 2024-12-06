@@ -26,6 +26,18 @@ export type LocalizationStrings = {
   login: string;
   signup: string;
   editProfile: string;
+  home: string;
+  follow2:string;
+  light: string;
+  green: string;
+  blue: string;
+  small: string;
+  medium: string;
+  large: string;
+  email: string;
+  topPage: string;
+  password: string;
+  confirmPassword: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -55,7 +67,19 @@ const localizationData: Record<string, LocalizationStrings> = {
     noFollowing: "You are not following anyone yet.",
     login: "Login",
     signup: "Sign Up",
-    editProfile: "Edit Profile"
+    editProfile: "Edit Profile",
+    home: "Home",
+    follow2: "Follow",
+    light: "Light",
+    green: "Green",
+    blue: "Blue",
+    small: "Small",
+    medium: "Medium",
+    large: "Large",
+    email: "Email",
+    topPage: "Top Page",
+    password: "Password",
+    confirmPassword: "Confirm Password",
   },
   ja: {
     following: "フォロー中",
@@ -84,6 +108,18 @@ const localizationData: Record<string, LocalizationStrings> = {
     login: "ログイン",
     signup: "新規登録",
     editProfile: "プロフィールを編集",
+    home: "ホーム",
+    follow2: "フォロー",
+    light: "明るい",
+    green: "緑",
+    blue: "青",
+    small: "小さめ",
+    medium: "普通",
+    large: "大きめ",
+    email: "メールアドレス",
+    topPage: "タイトル",
+    password: "パスワード",
+    confirmPassword: "パスワード確認"
   },
 };
 

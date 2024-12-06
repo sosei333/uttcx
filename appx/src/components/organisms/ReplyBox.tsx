@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { Box, Typography,useTheme } from '@mui/material';
+import { Box, Typography, Link, useTheme } from '@mui/material';
 import { addLike, removeLike } from '../../services/like';
+import { useNavigate } from 'react-router-dom';
 
 interface PostProps {
     tweet_id: number;
     content: string;
     author: string;
+    authorId: string; // 作者のユーザーIDを追加
     date: string;
     onViewDetails?: () => void;
 }
 
-const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
-    const theme=useTheme();
-    
+const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, authorId, date, onViewDetails }) => {
+    const theme = useTheme();
+    const navigate = useNavigate();
+
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);
 
@@ -30,12 +33,8 @@ const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
         }
     };
 
-    const handleReplyClick = () => {
-        setReplyDialogOpen(true);
-    };
-
-    const handleReplyDialogClose = () => {
-        setReplyDialogOpen(false);
+    const handleAuthorClick = () => {
+        navigate(`/user/${authorId}`); // ユーザーページへの遷移
     };
 
     return (
@@ -53,19 +52,35 @@ const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onView
             sx={{
                 width: '90%',
                 borderColor: theme.palette.primary.main,
-                borderWidth: '1.5pt'
+                borderWidth: '1.5pt',
             }}
         >
-            <Box position="absolute" top={8} left={8}>
-                <Typography variant="caption" color="textSecondary">
-                    {author} ・ {date}
+            {/* ユーザー名をクリック可能にする */}
+            <Box display="flex" alignItems="center" mb={2}>
+                <Link
+                    component="button"
+                    variant="caption"
+                    color="textSecondary"
+                    onClick={handleAuthorClick} // ユーザー名クリック時のハンドラー
+                    sx={{
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        '&:hover': {
+                            textDecoration: 'underline',
+                        },
+                    }}
+                >
+                    {author}
+                </Link>
+                <Typography variant="caption" color="textSecondary" sx={{ ml: 1 }}>
+                    ・ {date}
                 </Typography>
             </Box>
 
+            {/* コンテンツ表示 */}
             <Typography variant="body1" mt={2} mb={4}>
                 {content}
             </Typography>
-
         </Box>
     );
 };

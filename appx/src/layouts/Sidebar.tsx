@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton onClick={() => navigate(item.link)}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
+                                <ListItemText primary={item.text} sx={{fontSize:'5'}}/>
                             </ListItemButton>
                         </ListItem>
                     ))}
