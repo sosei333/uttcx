@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { UserProfile } from "../../models/user_models";
 import { Box, Button, TextField, Typography, Card, CardContent } from "@mui/material";
+import { getLocalizedStrings } from "../../layouts/strings";
+
 
 interface EditProfileProps {
   user: UserProfile;
@@ -13,6 +15,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
   const [userName, setUserName] = useState(user.user_name);
   const [bio, setBio] = useState(introduction); // 親から受け取った introduction を初期値に設定
   const [loading, setLoading] = useState(false);
+  const messages = getLocalizedStrings();
 
   const handleSave = async () => {
     setLoading(true);
@@ -40,12 +43,12 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
       <Card sx={{ maxWidth: 400, padding: 2 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
-            Edit Profile
+            {messages.editProfile}
           </Typography>
           <Box sx={{ marginBottom: 2 }}>
             <TextField
               fullWidth
-              label="User Name"
+              label={messages.name}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               disabled={loading}
@@ -54,7 +57,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
           <Box sx={{ marginBottom: 2 }}>
             <TextField
               fullWidth
-              label="Introduction"
+              label={messages.introduction}
               multiline
               rows={4}
               value={bio}
@@ -64,10 +67,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
             <Button variant="contained" color="primary" onClick={handleSave} disabled={loading}>
-              {loading ? "Saving..." : "Save"}
+              {loading ? messages.saving : messages.save}
             </Button>
             <Button variant="outlined" color="secondary" onClick={onCancel} disabled={loading}>
-              Cancel
+              {messages.cancel}
             </Button>
           </Box>
         </CardContent>

@@ -1,4 +1,5 @@
 import NavigationButton from "./NavigationButton";
+import { getLocalizedStrings } from "../../layouts/strings";
 
 interface ViewUserDetailsButtonProps {
     userID?: string,
@@ -6,8 +7,9 @@ interface ViewUserDetailsButtonProps {
 }
 
 const ViewUserDetailsButton: React.FC<ViewUserDetailsButtonProps> = ({ userID, onClick }) => {
+    const messages = getLocalizedStrings();
     return (
-        <NavigationButton label="details" to={`/user/${userID}`} onClick={onClick}></NavigationButton>
+        <NavigationButton label={messages.detail} to={`/user/${userID}`} onClick={onClick}></NavigationButton>
     );
 };
 

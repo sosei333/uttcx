@@ -16,6 +16,7 @@ import { updateUserName, updateUserIntroduction } from "../../services/user";
 import { getUserNameByID, getUserIntroductionByID } from "../../services/user";
 import { getAuth } from "firebase/auth";
 import ViewUserDetailsButton from "../atoms/ViewUserButton";
+import { getLocalizedStrings } from "../../layouts/strings";
 
 const ProfileBox: React.FC = () => {
   const theme = useTheme();
@@ -27,6 +28,9 @@ const ProfileBox: React.FC = () => {
 
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
+
+  const messages= getLocalizedStrings();
+
 
   useEffect(() => {
     if (!firebaseUser) {
@@ -184,16 +188,16 @@ const ProfileBox: React.FC = () => {
         <Card sx={{ maxWidth: 400, padding: 2, boxShadow: "none" }}>
           <CardContent>
             <Typography variant="h5" component="div" gutterBottom>
-              Profile
+              {messages.profile}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>User ID:</strong> {currentUser.user_id}
+              <strong>{messages.user} ID:</strong> {currentUser.user_id}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>User Name:</strong> {currentUser.user_name}
+              <strong>{messages.name}:</strong> {currentUser.user_name}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>Introduction:</strong> {userIntroduction || "No bio available"}
+              <strong>{messages.introduction}:</strong> {userIntroduction || "No bio available"}
             </Typography>
             <Box
               sx={{

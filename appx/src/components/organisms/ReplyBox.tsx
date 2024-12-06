@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Typography,useTheme } from '@mui/material';
 import { addLike, removeLike } from '../../services/like';
 
-
 interface PostProps {
     tweet_id: number;
     content: string;

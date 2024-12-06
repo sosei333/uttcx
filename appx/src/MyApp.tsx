@@ -13,15 +13,32 @@ import Profile from './pages/Profile';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import TweetAndReplies from './pages/TweetAndReplies';
 import NavigationButton from './components/atoms/NavigationButton';
+import Settings from './pages/Settings';
+import { getLocalizedStrings } from './layouts/strings';
+
 
 const Title: React.FC = () => {
+  const messages = getLocalizedStrings();
+
   return (
     <Box textAlign="center" mt={4}>
+      {/* ロゴ画像 */}
+      <Box mb={2}>
+        <img
+          src={`${process.env.PUBLIC_URL}/logo.png`} // `public` フォルダにあるロゴ画像
+          alt="Logo"
+          style={{ width: 300, height: 300 }} // ロゴのサイズを調整
+        />
+      </Box>
+
+      {/* タイトル */}
       <Typography variant="h4" mb={2} sx={{ color: 'primary.main', fontWeight: 'bold' }}>
         Twitter
       </Typography>
+      
+      {/* サブタイトル */}
       <Typography variant="subtitle1" color="textSecondary">
-        あなたのソーシャルメディアの出発点
+        あなたのソーシャルメディアの出発点＜{messages.allTweet}＞
       </Typography>
     </Box>
   );
@@ -82,6 +99,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
           <Route element={<RootLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/follow" element={<FollowingList />} />
             <Route path="/tweet/:id" element={<TweetAndReplies />} />

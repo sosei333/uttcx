@@ -7,6 +7,9 @@ import { UserProfile } from "../../models/user_models";
 import { getUserNameByID } from "../../services/user";
 import { getFollowingUsers } from "../../services/follow";
 import { getLike } from "../../services/like";
+import { getLikeCount } from "../../services/like";
+import { useAppContext } from "../../context/AppContext";
+import { getLocalizedStrings } from "../../layouts/strings";
 
 type Tweet = {
     id: number;
@@ -29,6 +32,9 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
     const [followedUserIds, setFollowedUserIds] = useState<Set<string>>(new Set());
     const [likedTweetIds, setLikedTweetIds] = useState<Set<number>>(new Set());
+
+    const messages = getLocalizedStrings();
+
 
     const auth = getAuth();
     const firebaseUser = auth.currentUser;
@@ -68,6 +74,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     
             let likedIds = new Set<number>();
             let followingIds = new Set<string>();
+            let likeCounts: { [key: string]: number } = {};
     
             try {
                 // いいね状態を取得
@@ -75,6 +82,13 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                 setLikedTweetIds(likedIds);
             } catch (error) {
                 console.error("いいね状態の取得に失敗しました:", error);
+            }
+    
+            try {
+                // いいね数を取得
+                likeCounts = await getLikeCount();
+            } catch (error) {
+                console.error("いいね数の取得に失敗しました:", error);
             }
     
             try {
@@ -104,7 +118,13 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                     tweetsData = [];
                 }
     
-                setTweets(tweetsData);
+                // ツイートにいいね数を追加
+                const tweetsWithLikes = tweetsData.map((tweet) => ({
+                    ...tweet,
+                    likes_count: likeCounts[tweet.id] || 0, // いいね数がない場合は0
+                }));
+    
+                setTweets(tweetsWithLikes);
             } catch (error) {
                 console.error("ツイートの取得に失敗しました:", error);
                 setTweets([]);
@@ -140,10 +160,10 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
                         sx={{ width: "100%", marginBottom: 2 }}
                     >
                         <ToggleButton value="all" sx={{ flex: 1 }}>
-                            すべての投稿
+                            {messages.allTweet}
                         </ToggleButton>
                         <ToggleButton value="following" sx={{ flex: 1 }}>
-                            フォロー中
+                           {messages.following}
                         </ToggleButton>
                     </ToggleButtonGroup>
                     {/* ツイート一覧 */}

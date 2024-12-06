@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import TweetList from '../components/organisms/TweetsList';
+import { useAppContext } from '../context/AppContext';
 
 type Tweet = {
     id: number;
@@ -11,6 +12,8 @@ type Tweet = {
 };
 
 const Tweets: React.FC = () => {
+    const { theme, setTheme, language, setLanguage} = useAppContext();
+    
     const navigate = useNavigate();
 
     const handleViewDetails = (tweetId: number) => {

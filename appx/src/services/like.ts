@@ -128,3 +128,35 @@ export const getLike = async (): Promise<number[]> => {
   }
 };
 
+
+export const getLikeCount = async (): Promise<{ [key: string]: number }> => {
+  try {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    if (!backendUrl) {
+      console.error("Backend URL is not defined in the environment variables");
+      return {};
+    }
+
+    const response = await fetch(`${backendUrl}/likecount/get`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      let errorMessage = "Failed to fetch likeCount";
+      try {
+        const error = await response.json();
+        errorMessage = error.message || errorMessage;
+      } catch {
+        // JSONでないエラーのケース
+      }
+      throw new Error(errorMessage);
+    }
+
+    const data: { [key: string]: number } = await response.json(); // サーバーからのレスポンスをオブジェクトとして取得
+    return data;
+  } catch (error) {
+    console.error("Error fetching like counts:", error);
+    return {};
+  }
+};

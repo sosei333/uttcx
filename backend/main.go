@@ -20,6 +20,8 @@ func main() {
 	//http.HandleFunc("/user/update", handlers.UpdateUserNameHandler)
 	http.HandleFunc("/user/update/name", handlers.UpdateUserNameHandler)
 	http.HandleFunc("/user/update/introduction", handlers.UpdateUserIntroductionHandler)
+	http.HandleFunc("/user/update/settings", handlers.UpdateUserSettingsHandler)
+	http.HandleFunc("/user/get/settings", handlers.GetUserSettingsHandler)
 
 	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
 	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)
@@ -37,6 +39,7 @@ func main() {
 	http.HandleFunc("/like/add", handlers.AddLikeHandler)       // いいねを追加
 	http.HandleFunc("/like/remove", handlers.RemoveLikeHandler) // いいねを解除
 	http.HandleFunc("/like/get", handlers.GetLikedTweetsHandler)
+	http.HandleFunc("/likecount/get", handlers.GetTweetLikesHandler)
 
 	http.HandleFunc("/gemini", handlers.GeminiSearch)
 	http.HandleFunc("/gemini/generate", handlers.GenerateContentHandler)

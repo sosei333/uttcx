@@ -78,3 +78,30 @@ func GetLikedTweetIDs(userID string) ([]int, error) {
 
 	return tweetIDs, nil
 }
+
+func GetTweetLikesCount() (map[int]int, error) {
+
+	query := `SELECT tweet_id, COUNT(*) AS like_count FROM likes GROUP BY tweet_id`
+
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	likesCount := make(map[int]int)
+	for rows.Next() {
+		var tweetID int
+		var count int
+		if err := rows.Scan(&tweetID, &count); err != nil {
+			return nil, err
+		}
+		likesCount[tweetID] = count
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return likesCount, nil
+}
