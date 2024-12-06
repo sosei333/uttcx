@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { addFollow, removeFollow } from '../../services/follow';
 import ToggleButton from './ToggleButton';
 import { getLocalizedStrings } from '../../layouts/strings';
-import { useLanguage } from '../../layouts/LanguageContext';
+
 
 interface FollowButtonProps {
     userId: string; // フォロー対象のユーザーID
@@ -11,8 +11,9 @@ interface FollowButtonProps {
 
 const FollowButton: React.FC<FollowButtonProps> = ({ userId, isInitiallyFollowing = false }) => {
     const [isFollowing, setFollowing] = useState(isInitiallyFollowing);
-    const { language } = useLanguage(); // 言語設定を取得
-    const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
+
+    const messages=getLocalizedStrings();
+
 
     const handleToggleFollow = async () => {
         try {
@@ -31,8 +32,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ userId, isInitiallyFollowin
         <ToggleButton
             isActive={isFollowing}
             onToggle={handleToggleFollow}
-            activeText={strings.following}
-            inactiveText={strings.follow}
+            activeText={messages.following}
+            inactiveText={messages.follow}
         />
     );
 };

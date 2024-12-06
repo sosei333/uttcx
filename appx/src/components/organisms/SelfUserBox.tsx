@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import FollowButton from '../atoms/FollowButton';
 import ViewUserButton from '../atoms/ViewUserButton';
+import { getLocalizedStrings } from '../../layouts/strings';
 
 interface UserDetailsBoxProps {
     userName: string;
@@ -10,6 +11,8 @@ interface UserDetailsBoxProps {
 }
 
 const SelfUserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isFollowing }) => {
+    const messages= getLocalizedStrings()
+
     return (
         <Box
             display="flex"
@@ -19,7 +22,7 @@ const SelfUserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, i
         >
             <Typography variant="h6">{userName}</Typography>
             <Typography variant="body2" color="textSecondary">
-                User ID: {userId}
+                {messages.user} ID: {userId}
             </Typography>
             <Box display="flex" flexDirection="row" alignContent="center" gap={2} mt={1}>
             </Box>

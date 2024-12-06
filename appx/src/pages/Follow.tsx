@@ -3,8 +3,9 @@ import { getFollowingUsers, getFollowedUsers } from "../services/follow";
 import { Box, Typography, IconButton, ToggleButtonGroup, ToggleButton, Paper } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import UserBox from "../components/organisms/UserBox";
-import { useLanguage } from "../layouts/LanguageContext";
+// import { useLanguage } from "../layouts/LanguageContext";
 import { getLocalizedStrings } from "../layouts/strings";
+import { useAppContext } from "../context/AppContext";
 
 type FollowingUser = {
   ID: string;
@@ -17,8 +18,9 @@ const FollowingList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<"following" | "followed">("following");
   const [followingUserIds, setFollowingUserIds] = useState<Set<string>>(new Set());
-  const { language } = useLanguage(); // 言語設定を取得
-  const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
+  // const { language } = useLanguage(); // 言語設定を取得
+  const { theme, setTheme, language, setLanguage} = useAppContext();
+  const strings = getLocalizedStrings(); // 言語に基づく文字列を取得
 
   // フォローされているユーザーリストを取得
   const fetchFollowedUserIds = async () => {

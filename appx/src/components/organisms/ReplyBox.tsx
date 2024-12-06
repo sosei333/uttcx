@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Typography,useTheme } from '@mui/material';
 import { addLike, removeLike } from '../../services/like';
-import { getLocalizedStrings } from '../../layouts/strings';
-import { useLanguage } from '../../layouts/LanguageContext';
 
 interface PostProps {
     tweet_id: number;
@@ -14,8 +12,6 @@ interface PostProps {
 
 const ReplyBox: React.FC<PostProps> = ({ tweet_id, content, author, date, onViewDetails }) => {
     const theme=useTheme();
-    const { language } = useLanguage(); // 言語設定を取得
-    const strings = getLocalizedStrings(language); // 言語に基づく文字列を取得
     
     const [isLiked, setLiked] = useState(false);
     const [isReplyDialogOpen, setReplyDialogOpen] = useState(false);

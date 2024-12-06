@@ -14,8 +14,12 @@ import { Box, Typography, CircularProgress } from '@mui/material';
 import TweetAndReplies from './pages/TweetAndReplies';
 import NavigationButton from './components/atoms/NavigationButton';
 import Settings from './pages/Settings';
+import { getLocalizedStrings } from './layouts/strings';
+
 
 const Title: React.FC = () => {
+  const messages = getLocalizedStrings();
+
   return (
     <Box textAlign="center" mt={4}>
       {/* ロゴ画像 */}
@@ -34,7 +38,7 @@ const Title: React.FC = () => {
       
       {/* サブタイトル */}
       <Typography variant="subtitle1" color="textSecondary">
-        あなたのソーシャルメディアの出発点
+        あなたのソーシャルメディアの出発点＜{messages.allTweet}＞
       </Typography>
     </Box>
   );

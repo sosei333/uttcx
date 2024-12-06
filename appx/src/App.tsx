@@ -1,22 +1,18 @@
+// App.tsx
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { blue, green } from '@mui/material/colors';
-import MyApp from './MyApp'; // アプリ本体のコンポーネント
+import { AppProvider } from './context/AppContext';
+import MyApp from './MyApp';
+import { ThemeProvider } from '@emotion/react';
 import customTheme from './layouts/CustomTheme';
-import { LanguageProvider } from "./layouts/LanguageContext";
+import { CssBaseline } from '@mui/material';
 
-
-
-const App: React.FC = () => {
-    return (
-        <LanguageProvider>
-        <ThemeProvider theme={customTheme}>
-            <CssBaseline /> {/* グローバルリセット */}
-            <MyApp />
-        </ThemeProvider>
-        </LanguageProvider>
-    );
-};
+const App = () => (
+  <ThemeProvider theme={customTheme}>
+    <CssBaseline />
+    <AppProvider>
+      <MyApp />
+    </AppProvider>
+  </ThemeProvider>
+);
 
 export default App;

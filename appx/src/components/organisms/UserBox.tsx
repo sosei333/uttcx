@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import FollowButton from '../atoms/FollowButton';
 import ViewUserButton from '../atoms/ViewUserButton';
 import { getUserIntroductionByID } from '../../services/user';
+import { getLocalizedStrings } from '../../layouts/strings';
 
 interface UserBoxProps {
     userName: string;
@@ -11,6 +12,8 @@ interface UserBoxProps {
 }
 
 const UserBox: React.FC<UserBoxProps> = ({ userName, userId, isFollowing }) => {
+    const messages = getLocalizedStrings();
+
     return (
         <Box
             display="flex"
@@ -25,7 +28,7 @@ const UserBox: React.FC<UserBoxProps> = ({ userName, userId, isFollowing }) => {
         >
             <Typography variant="h6">{userName}</Typography>
             <Typography variant="body2" color="textSecondary">
-                User ID: {userId}
+                {messages.user} ID: {userId}
             </Typography>
             <Box display="flex" flexDirection="row" gap={2} mt={1}>
             <FollowButton userId={userId} isInitiallyFollowing={isFollowing}></FollowButton>
