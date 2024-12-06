@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Box, Typography, Alert, Paper } from '@mui/material';
 import NavigationButton from '../atoms/NavigationButton'; // 汎用コンポーネントをインポート
+import { getLocalizedStrings } from '../../layouts/strings';
 
 interface SignupFormProps {
   onSignup: (email: string, name: string, password: string, confirmPassword: string) => void;
@@ -13,7 +14,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const messages=getLocalizedStrings();
   const handleSubmit = () => {
     onSignup(email, name, password, confirmPassword);
   };
@@ -36,11 +37,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
           textAlign: 'center', // 中央揃え
         }}
       >
-        <Typography variant="h4" mb={2}>新規登録</Typography>
+        <Typography variant="h4" mb={2}>{messages.signup}</Typography>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
         <TextField
-          label="メールアドレス"
+          label={messages.email}
           variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -48,7 +49,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
           fullWidth
         />
         <TextField
-          label="ユーザー名"
+          label={messages.name}
           type="text"
           variant="outlined"
           value={name}
@@ -57,7 +58,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
           fullWidth
         />
         <TextField
-          label="パスワード"
+          label={messages.password}
           type="password"
           variant="outlined"
           value={password}
@@ -66,7 +67,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
           fullWidth
         />
         <TextField
-          label="パスワード確認"
+          label={messages.confirmPassword}
           type="password"
           variant="outlined"
           value={confirmPassword}
@@ -76,14 +77,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSignup, error, success }) => 
         />
 
         <Box mt={3}>
-          <NavigationButton label="新規登録" variant='contained' to="#" onClick={handleSubmit} />
+          <NavigationButton label={messages.signup} variant='contained' to="#" onClick={handleSubmit} />
         </Box>
       </Paper>
       <Box mt={2}>
-        <NavigationButton label="ログイン" to="/login" />
+        <NavigationButton label={messages.login} to="/login" />
       </Box>
       <Box mt={2}>
-        <NavigationButton label="トップページへ" to="/" />
+        <NavigationButton label={messages.topPage} to="/" />
       </Box>
     </Box>
   );

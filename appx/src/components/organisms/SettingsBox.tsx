@@ -16,11 +16,17 @@ const SettingsComponent: React.FC = () => {
   // 設定を保存
   const handleSave = () => {
     try {
+      // ローカルストレージに設定を保存
       localStorage.setItem("settings.language", language);
       localStorage.setItem("settings.theme", theme);
       localStorage.setItem("settings.fontSize", fontSize);
-
+  
       setAlertMessage("Settings updated successfully!");
+  
+      // ページをリロード
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000); // 成功メッセージを表示してからリロード
     } catch (error) {
       setAlertMessage("An error occurred while saving settings.");
     }
@@ -60,9 +66,9 @@ const SettingsComponent: React.FC = () => {
           fullWidth 
           sx={{ mb: 2 }}
         >
-          <MenuItem value="light">Light</MenuItem>
-          <MenuItem value="green">Green</MenuItem>
-          <MenuItem value="blue">Blue</MenuItem>
+          <MenuItem value="light">{messages.light}</MenuItem>
+          <MenuItem value="green">{messages.green}</MenuItem>
+          <MenuItem value="blue">{messages.blue}</MenuItem>
         </Select>
 
         {/* Font Size Selector */}
@@ -72,9 +78,9 @@ const SettingsComponent: React.FC = () => {
           fullWidth 
           sx={{ mb: 2 }}
         >
-          <MenuItem value="small">Small</MenuItem>
-          <MenuItem value="medium">Medium</MenuItem>
-          <MenuItem value="large">Large</MenuItem>
+          <MenuItem value="small">{messages.small}</MenuItem>
+          <MenuItem value="medium">{messages.medium}</MenuItem>
+          <MenuItem value="large">{messages.large}</MenuItem>
         </Select>
 
         {/* Save Button */}

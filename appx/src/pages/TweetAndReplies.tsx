@@ -98,6 +98,7 @@ const TweetAndReplies: React.FC = () => {
                             author={tweet.user_name}
                             authorId={tweet.user_id}
                             date={new Date(tweet.created_at).toLocaleDateString()}
+                            showFollowButton={false}
                             isInitialyLiked={likedTweetIds.has(tweet.id)} // いいね状態を渡す
                         />
                     </Box>
@@ -119,6 +120,7 @@ const TweetAndReplies: React.FC = () => {
                             replies.map((reply) => (
                                 <Box key={reply.id} sx={{ marginBottom: 2 }}>
                                     <ReplyBox
+                                        authorId={reply.user_id}
                                         tweet_id={reply.id}
                                         content={reply.content}
                                         author={reply.user_name}

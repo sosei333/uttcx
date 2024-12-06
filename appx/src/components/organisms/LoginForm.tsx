@@ -53,7 +53,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {/* {!error && success && <Alert severity="success">{success}</Alert>} */}
         <TextField
-          label="メールアドレス"
+          label={messages.email}
           variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -61,7 +61,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
           fullWidth
         />
         <TextField
-          label="パスワード"
+          label={messages.password}
           type="password"
           variant="outlined"
           value={password}
@@ -76,10 +76,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
 
       {/* カードの外に配置されるナビゲーションボタン */}
       <Box mt={3} display="flex" flexDirection="column" alignItems="center">
-        <NavigationButton label="ログイン" to="/signup" />
-        <Box mt={2}>
-          <NavigationButton label="トップページへ" to="/" />
-        </Box>
+        <NavigationButton label={messages.signup} to="/signup" />
+        <NavigationButton label={messages.topPage} to="/" />
       </Box>
     </Box>
   );

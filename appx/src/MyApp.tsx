@@ -32,13 +32,13 @@ const Title: React.FC = () => {
       </Box>
 
       {/* タイトル */}
-      <Typography variant="h4" mb={2} sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-        Twitter
+      <Typography variant="h3" mb={2} sx={{ color: 'primary.main', fontWeight: 'bold', fontFamily: "'Pacifico', cursive"  }}>
+        Roots
       </Typography>
       
       {/* サブタイトル */}
       <Typography variant="subtitle1" color="textSecondary">
-        あなたのソーシャルメディアの出発点＜{messages.allTweet}＞
+        {/* みんなにやさしいSNS */}
       </Typography>
     </Box>
   );
@@ -114,7 +114,7 @@ const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
       {!user && !['/login', '/signup'].includes(location.pathname) && (
         <Box mt={4} textAlign="center" alignItems="center" alignContent="center">
           <Title />
-          <Box mt={2}>
+          <Box mt={2} display="flex" flexDirection="row">
             <NavigationButton label="ログイン" to="/login" />
             <NavigationButton label="新規登録" to="/signup" />
           </Box>

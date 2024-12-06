@@ -33,7 +33,8 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
       sx={{
         minWidth: 120,
         maxWidth: 150,
-        m: '2px',
+        my: '8px',
+        mx: '4px'
       }}
     >
       {label}
