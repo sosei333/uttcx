@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Box, Typography, Alert, Paper } from '@mui/material';
 import NavigationButton from '../atoms/NavigationButton';
+import { getLocalizedStrings } from '../../layouts/strings';
 
 interface LoginFormProps {
   onLogin: (email: string, password: string) => void;
@@ -11,6 +12,8 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const messages=getLocalizedStrings();
 
   const handleSubmit = async () => {
     if (!email || !password) {
@@ -45,7 +48,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
           textAlign: 'center',
         }}
       >
-        <Typography variant="h4" mb={2}>ログイン</Typography>
+        <Typography variant="h4" mb={2}>{messages.login}</Typography>
         {/* 状態に応じたメッセージ表示 */}
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {/* {!error && success && <Alert severity="success">{success}</Alert>} */}
@@ -67,13 +70,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, error, success }) => {
           fullWidth
         />
         <Box mt={3}>
-          <NavigationButton label="ログイン" variant='contained' to="#" onClick={handleSubmit} />
+          <NavigationButton label={messages.login} variant='contained' to="#" onClick={handleSubmit} />
         </Box>
       </Paper>
 
       {/* カードの外に配置されるナビゲーションボタン */}
       <Box mt={3} display="flex" flexDirection="column" alignItems="center">
-        <NavigationButton label="新規登録" to="/signup" />
+        <NavigationButton label="ログイン" to="/signup" />
         <Box mt={2}>
           <NavigationButton label="トップページへ" to="/" />
         </Box>

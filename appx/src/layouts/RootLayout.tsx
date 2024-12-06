@@ -61,7 +61,7 @@ const RootLayout: React.FC = () => {
                 }}
             >
                 {/* Sidebar を Box として扱う */}
-                <Box
+                <Box 
                     sx={{
                         width: '20vw',
                         backgroundColor: theme.palette.background.default, // Sidebar用の背景色（任意）

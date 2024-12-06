@@ -4,6 +4,7 @@ import TextField from '../atoms/TextField';
 //import Button from '../atoms/Button';
 import { sendToGemini } from '../../services/gemini';
 //import { colors } from '../../layouts/colors';
+import { getLocalizedStrings } from '../../layouts/strings';
 
 interface ChatDialogProps {
   open: boolean;
@@ -15,6 +16,8 @@ const ChatDialog: React.FC<ChatDialogProps> = ({ open, onClose }) => {
 
   const [keyWord, setKeyWord] = React.useState('');
   const [answer, setAnswer] = React.useState('');
+
+  const messages=getLocalizedStrings();
 
   const handlePost = async () => {
     const response = await sendToGemini(keyWord);

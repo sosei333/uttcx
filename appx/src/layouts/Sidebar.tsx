@@ -17,12 +17,16 @@ import PostDialog from '../components/organisms/PostTweetDialog';
 import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 import ChatDialog from '../components/organisms/GeminiChatBox';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import {useTheme} from '@mui/material';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [chatDialogOpen, setChatDialogOpen] = useState(false);
+    const theme = useTheme();
+
+    // 背景カラーを定義（テーマに基づく）
+    const sidebarBackgroundColor = theme.palette.background.default; // または直接 '#E6E5E4' 等を設定
 
     const handleOpenPostDialog = () => {
         setPostDialogOpen(true);
@@ -43,19 +47,21 @@ const Sidebar: React.FC = () => {
     return (
         <Drawer
             variant="permanent"
-            sx={{mt:0,
+            sx={{
+                mt: 0,
+                backgroundColor: sidebarBackgroundColor, // 背景カラーを統一
                 [`& .MuiDrawer-paper`]: {
                     width: '20%',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    backgroundColor: sidebarBackgroundColor, // 背景カラーを統一
                 },
             }}
         >
-            <Box>
-                {/*<Toolbar /> {/* AppBarの高さ分の余白を作る */}
-                <List sx={{mt:'10vh'}}>
+            <Box sx={{ backgroundColor: sidebarBackgroundColor }}>
+                <List sx={{ mt: '10vh' }}>
                     {menuItems.map((item) => (
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton onClick={() => navigate(item.link)}>
@@ -67,39 +73,26 @@ const Sidebar: React.FC = () => {
                 </List>
                 <Divider />
             </Box>
-            <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {/* 投稿ボタン */}
+            <Box
+                sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    backgroundColor: sidebarBackgroundColor, // 背景カラーを統一
+                }}
+            >
                 <Fab
                     onClick={handleOpenPostDialog}
                     aria-label="add"
                     size="large"
-                    color='primary'
-                    sx={{ alignSelf: 'center'
-                    }}
+                    color="primary"
+                    sx={{ alignSelf: 'center' }}
                 >
                     <DrawOutlinedIcon />
                 </Fab>
-                {/* 投稿ダイアログ */}
-                <PostDialog
-                    open={postDialogOpen}
-                    onClose={handleClosePostDialog}
-                />
-                {/*gemini*/}
-                 {/* <Fab
-                    onClick={handleOpenChatDialog}
-                    aria-label="add"
-                    size="large"
-                    color='primary'
-                    sx={{ alignSelf: 'center',}}
-                    
-                >
-                    <SupportAgentIcon />
-                </Fab> */}
-                {/* 投稿ダイアログ */}
-                <ChatDialog
-                    open={chatDialogOpen}
-                    onClose={handleCloseChatDialog}
-                />
+                <PostDialog open={postDialogOpen} onClose={handleClosePostDialog} />
+                <ChatDialog open={chatDialogOpen} onClose={handleCloseChatDialog} />
                 <SignOutButton />
             </Box>
         </Drawer>

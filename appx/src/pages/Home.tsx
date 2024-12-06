@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import TweetList from '../components/organisms/TweetsList';
-import { getLocalizedStrings } from '../layouts/strings';
-import { useLanguage } from "../layouts/LanguageContext";
+import { useAppContext } from '../context/AppContext';
 
 type Tweet = {
     id: number;
@@ -13,6 +12,7 @@ type Tweet = {
 };
 
 const Tweets: React.FC = () => {
+    const { theme, setTheme, language, setLanguage} = useAppContext();
     
     const navigate = useNavigate();
 
