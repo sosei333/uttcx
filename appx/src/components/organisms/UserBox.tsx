@@ -4,6 +4,7 @@ import FollowButton from '../atoms/FollowButton';
 import ViewUserButton from '../atoms/ViewUserButton';
 import { getUserIntroductionByID } from '../../services/user';
 import { getLocalizedStrings } from '../../layouts/strings';
+import { Height } from '@mui/icons-material';
 
 interface UserBoxProps {
     userName: string;
@@ -31,7 +32,7 @@ const UserBox: React.FC<UserBoxProps> = ({ userName, userId, isFollowing }) => {
                 {messages.user} ID: {userId}
             </Typography>
             <Box display="flex" flexDirection="row" gap={2} mt={1}>
-            <FollowButton userId={userId} isInitiallyFollowing={isFollowing}></FollowButton>
+            <FollowButton userId={userId} isInitiallyFollowing={isFollowing} ></FollowButton>
             <ViewUserButton userID={userId}></ViewUserButton>
             </Box>
         </Box>
