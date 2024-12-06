@@ -38,6 +38,9 @@ export type LocalizationStrings = {
   topPage: string;
   password: string;
   confirmPassword: string;
+  language: string;
+  theme: string;
+  fontSize: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -80,6 +83,9 @@ const localizationData: Record<string, LocalizationStrings> = {
     topPage: "Top Page",
     password: "Password",
     confirmPassword: "Confirm Password",
+    language: "Language",
+    theme: "Theme",
+    fontSize: "Font Size",
   },
   ja: {
     following: "フォロー中",
@@ -119,7 +125,10 @@ const localizationData: Record<string, LocalizationStrings> = {
     email: "メールアドレス",
     topPage: "タイトル",
     password: "パスワード",
-    confirmPassword: "パスワード確認"
+    confirmPassword: "パスワード確認",
+    language: "言語",
+    theme: "テーマ",
+    fontSize: "フォントサイズ",
   },
 };
 

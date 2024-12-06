@@ -33,7 +33,7 @@ const SettingsComponent: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center",height:'80vh', padding: 2 }}>
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center",height:'80vh',width:'40vw', padding: 2 }}>
       <Paper 
         elevation={3} 
         sx={{
@@ -49,6 +49,9 @@ const SettingsComponent: React.FC = () => {
         </Typography>
 
         {/* Language Selector */}
+        <Typography variant="subtitle1" gutterBottom>
+          {messages.language}:
+        </Typography>
         <Select 
           value={language} 
           onChange={(e) => setLanguage(e.target.value)} 
@@ -60,6 +63,9 @@ const SettingsComponent: React.FC = () => {
         </Select>
 
         {/* Theme Selector */}
+        <Typography variant="subtitle1" gutterBottom>
+          {messages.theme}:
+        </Typography>
         <Select 
           value={theme} 
           onChange={(e) => setTheme(e.target.value)} 
@@ -72,6 +78,9 @@ const SettingsComponent: React.FC = () => {
         </Select>
 
         {/* Font Size Selector */}
+        <Typography variant="subtitle1" gutterBottom>
+          {messages.fontSize}:
+        </Typography>
         <Select 
           value={fontSize} 
           onChange={(e) => setFontSize(e.target.value)} 
@@ -84,7 +93,7 @@ const SettingsComponent: React.FC = () => {
         </Select>
 
         {/* Save Button */}
-        <Button variant="contained" color="primary" onClick={handleSave} fullWidth>
+        <Button variant="contained" color="primary" onClick={handleSave} fullWidth sx={{mt:2}}>
           {messages.save}
         </Button>
 

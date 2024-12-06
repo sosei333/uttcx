@@ -65,7 +65,7 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogContent>
         <TextField
-          label="内容"
+          label={messages.content}
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
           multiline
