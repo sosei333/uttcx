@@ -17,6 +17,8 @@ import { getUserNameByID, getUserIntroductionByID } from "../../services/user";
 import { getAuth } from "firebase/auth";
 import ViewUserDetailsButton from "../atoms/ViewUserButton";
 import { getLocalizedStrings } from "../../layouts/strings";
+import ImageUploader from "./ImageUploader";
+import { getUserImageByID } from "../../services/image";
 
 const ProfileBox: React.FC = () => {
   const theme = useTheme();
@@ -25,6 +27,7 @@ const ProfileBox: React.FC = () => {
   const [userIntroduction, setUserIntroduction] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(null);
 
   const auth = getAuth();
   const firebaseUser = auth.currentUser;
@@ -47,10 +50,11 @@ const ProfileBox: React.FC = () => {
       try {
         const userName = await getUserNameByID(userId);
         const userIntro = await getUserIntroductionByID(userId);
-
+        const url = await getUserImageByID(userId)
         if (userName) {
           setCurrentUser({ user_id: userId, user_name: userName });
           setUserIntroduction(userIntro || "No bio available");
+          setUrl(url)
         } else {
           throw new Error("Failed to fetch user information");
         }
@@ -185,32 +189,61 @@ const ProfileBox: React.FC = () => {
           border: `2px solid ${theme.palette.primary.light}`, // 枠線を追加
         }}
       >
-        <Card sx={{ maxWidth: 400, padding: 2, boxShadow: "none" }}>
-          <CardContent>
-            <Typography variant="h5" component="div" gutterBottom>
-              {messages.profile}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>{messages.user} ID:</strong> {currentUser.user_id}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>{messages.name}:</strong> {currentUser.user_name}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-              <strong>{messages.introduction}:</strong> {userIntroduction || "No bio available"}
-            </Typography>
-            <Box
-              sx={{
-                marginTop: 5,
-                display: "flex",
-                justifyContent: "space-around", // ボタン間のスペースを確保
-              }}
-            >
-              <EditButton onClick={handleEditClick} />
-              <ViewUserDetailsButton userID={currentUser.user_id} />
-            </Box>
-          </CardContent>
-        </Card>
+      <Card sx={{ 
+        display: "flex",
+        maxWidth: 400, 
+        padding: 2, 
+        boxShadow: "none" , 
+        alignItems: "center",
+        alignContent: "center", 
+        justifyContent: "center"}}>
+        <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>
+            {messages.profile}
+          </Typography>
+          {(url!==null)?
+          <Box
+          component="img"
+            src={url}
+            sx={{
+              width: '30%', // 横幅を親要素にフィット
+              // 最大幅を指定
+              height: "auto", // 高さを自動調整
+              borderRadius: "50%", // 角丸にする
+              boxShadow: 2, // 軽い影を追加
+              alignSelf: "center"
+            }}
+            alt="Uploaded Preview"
+          /> : 
+          <Typography>ありません</Typography>
+          }
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+            <strong>{messages.user} ID:</strong>
+            <br />
+            {currentUser.user_id}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+            <strong>{messages.name}:</strong>
+            <br />
+            {currentUser.user_name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+            <strong>{messages.introduction}:</strong>
+            <br />
+            {userIntroduction || "No bio available"}
+          </Typography>
+          <Box
+            sx={{
+              marginTop: 5,
+              display: "flex",
+              justifyContent: "space-around", // ボタン間のスペースを確保
+            }}
+          >
+            <EditButton onClick={handleEditClick} />
+            <ViewUserDetailsButton userID={currentUser.user_id} />
+          </Box>
+        </CardContent>
+      </Card>
       </Paper>
     </Box>
   );

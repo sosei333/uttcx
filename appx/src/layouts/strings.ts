@@ -49,6 +49,8 @@ export type LocalizationStrings = {
   aiPrompt2: string;
   aiPrompt3: string;
   aiPrompt4: string;
+  upload: string; 
+  uploading: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -101,7 +103,9 @@ const localizationData: Record<string, LocalizationStrings> = {
     aiPrompt1: 'If the following content contains inappropriate expressions, please point them out.',
     aiPrompt2: 'Please translate the following post into Japanese.',
     aiPrompt3: 'Please tell me if the following post is easy to read and suggest improvements if necessary.',
-    aiPrompt4: 'Please evaluate whether the following post is considered interesting.'
+    aiPrompt4: 'Please evaluate whether the following post is considered interesting.',
+    upload: 'Upload',
+    uploading: 'Uploading...'
   },
   ja: {
     following: "フォロー中",
@@ -152,7 +156,9 @@ const localizationData: Record<string, LocalizationStrings> = {
     aiPrompt1: '以下の内容に不適切な表現が含まれている場合、指摘してください。',
     aiPrompt2: '以下の投稿内容を英語に翻訳してください。',
     aiPrompt3: '以下の投稿内容が読みやすいかどうか、改善点を教えてください。',
-    aiPrompt4: '以下の投稿が面白いと思われるかどうか評価してください。'
+    aiPrompt4: '以下の投稿が面白いと思われるかどうか評価してください。',
+    upload: "アップロード",
+    uploading: "アップロード中",
   },
 };
 
