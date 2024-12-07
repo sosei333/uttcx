@@ -7,8 +7,8 @@ type Settings = {
 // context/getSettings.ts
 export const getSettingsFromLocalStorage = () => {
     return {
-      language: localStorage.getItem("settings.language") || "en",
-      theme: localStorage.getItem("settings.theme") || "light",
+      language: localStorage.getItem("settings.language") || "ja",
+      theme: localStorage.getItem("settings.theme") || "green",
       fontSize: localStorage.getItem("settings.fontSize") || "medium",
     };
   };

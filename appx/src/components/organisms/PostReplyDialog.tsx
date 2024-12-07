@@ -23,10 +23,10 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
 
   // ユーザーに表示する質問文とAIに送る質問文を分ける
   const prompts = [
-    { userPrompt: '不適切な内容は？', aiPrompt: '以下の内容に不適切な表現が含まれている場合、指摘してください。' },
-    { userPrompt: '英語に翻訳して！', aiPrompt: '以下の投稿内容を英語に翻訳してください。' },
-    { userPrompt: '読みやすい？', aiPrompt: '以下の投稿内容が読みやすいかどうか、改善点を教えてください。' },
-    { userPrompt: '面白い内容か？', aiPrompt: '以下の投稿が面白いと思われるかどうか評価してください。' },
+    { userPrompt: messages.aiQuestion1, aiPrompt: messages.aiPrompt1 },
+    { userPrompt: messages.aiQuestion2, aiPrompt: messages.aiPrompt2 },
+    { userPrompt: messages.aiQuestion3, aiPrompt: messages.aiPrompt3 },
+    { userPrompt: messages.aiQuestion4, aiPrompt: messages.aiPrompt4 },
   ];
 
   const handlePost = () => {
@@ -65,7 +65,7 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogContent>
         <TextField
-          label="内容"
+          label={messages.content}
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
           multiline
