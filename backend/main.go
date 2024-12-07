@@ -22,6 +22,8 @@ func main() {
 	http.HandleFunc("/user/update/introduction", handlers.UpdateUserIntroductionHandler)
 	http.HandleFunc("/user/update/settings", handlers.UpdateUserSettingsHandler)
 	http.HandleFunc("/user/get/settings", handlers.GetUserSettingsHandler)
+	http.HandleFunc("/user/get/img", handlers.GetUserImgByIDHandler)
+	http.HandleFunc("/user/put/img", handlers.UpdateUserImgByIDHandler)
 
 	http.HandleFunc("/tweet", handlers.GetAllTweetHandler)
 	http.HandleFunc("/tweet/new", handlers.SaveTweetHandler)
