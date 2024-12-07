@@ -10,7 +10,7 @@ const SignOutButton: React.FC = () => {
     const handleSignOut = useSignOut();
     return (
         <Button variant="contained" color='secondary' onClick={handleSignOut} fullWidth 
-        sx={{ alignSelf: 'center',maxWidth:'10vw'}}>
+        sx={{ alignSelf: 'center',maxWidth:'90%'}}>
             {strings.logout}
         </Button>
     );
