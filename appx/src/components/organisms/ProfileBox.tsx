@@ -201,10 +201,9 @@ const ProfileBox: React.FC = () => {
         <Typography variant="h5" component="div" gutterBottom>
             {messages.profile}
           </Typography>
-          {(url!==null)?
           <Box
           component="img"
-            src={url}
+            src={url || `${process.env.PUBLIC_URL}/logo.png`}
             sx={{
               width: '30%', // 横幅を親要素にフィット
               // 最大幅を指定
@@ -214,9 +213,7 @@ const ProfileBox: React.FC = () => {
               alignSelf: "center"
             }}
             alt="Uploaded Preview"
-          /> : 
-          <Typography>ありません</Typography>
-          }
+          />
           <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
             <strong>{messages.user} ID:</strong>
             <br />
