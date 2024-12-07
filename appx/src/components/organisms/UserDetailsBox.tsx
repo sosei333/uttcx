@@ -5,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { getFollowingUsers } from '../../services/follow'; // フォロー中ユーザーを取得する関数
 import { getUserIntroductionByID } from '../../services/user'; // 自己紹介を取得する関数
+import { getUserImageByID } from '../../services/image';
 
 interface UserDetailsBoxProps {
     userName: string;
@@ -18,6 +19,7 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
     const [introduction, setIntroduction] = useState<string | null>(null); // 自己紹介文を管理
     const [loading, setLoading] = useState<boolean>(true); // 全体のローディング状態を管理
     const [loadingIntroduction, setLoadingIntroduction] = useState<boolean>(true); // 自己紹介文のローディング状態を管理
+    const [url, setUrl] = useState<string | null>(null); // 自己紹介文を管理
 
     // Firebaseから現在のユーザー情報を取得
     useEffect(() => {
@@ -58,6 +60,20 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
 
     // 自己紹介文を取得
     useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const url = await getUserImageByID(userId);
+                setUrl(url || `${process.env.PUBLIC_URL}/logo.png`);
+            } catch (error) {
+                console.error("Failed to fetch user image:", error);
+                setUrl(`${process.env.PUBLIC_URL}/logo.png`)
+            }
+        };
+
+        fetchImage();
+    }, [userId]);
+
+    useEffect(() => {
         const fetchIntroduction = async () => {
             try {
                 setLoadingIntroduction(true);
@@ -86,6 +102,19 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             width="100%"
         >
+            <Box
+            component="img"
+            src={url || `${process.env.PUBLIC_URL}/logo.png`}
+            sx={{
+              width: '20%', // 横幅を親要素にフィット
+              // 最大幅を指定
+              height: "auto", // 高さを自動調整
+              borderRadius: "50%", // 角丸にする
+              boxShadow: 2, // 軽い影を追加
+              alignSelf: "center"
+            }}
+            alt="Uploaded Preview"
+          />
             <Typography variant="h6">{userName}</Typography>
             <Typography variant="body2" color="textSecondary">
                 User ID: {userId}

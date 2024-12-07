@@ -5,12 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     user_id VARCHAR(255) PRIMARY KEY,
     user_name VARCHAR(255) NOT NULL,
     user_introduction TEXT,
-    language VARCHAR(10) DEFAULT 'ja',
-    color_theme VARCHAR(50) DEFAULT 'default',
-    font_size VARCHAR(10) DEFAULT 'medium'
+    url TEXT
 );
-
-
 
 CREATE TABLE IF NOT EXISTS tweets (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,12 +47,12 @@ CREATE TABLE IF NOT EXISTS follows (
 
 
 -- Insert sample data into the users table
-INSERT INTO users (user_id, user_name, user_introduction, language, color_theme, font_size) VALUES
-        ('user1', 'John Doe', 'I love coding and exploring new technologies.', 'en', 'dark', 'large'),
-        ('user2', 'Jane Smith', 'Traveler and food enthusiast.', 'en', 'light', 'medium'),
-        ('user3', 'Alice Johnson', 'Passionate about movies and music.', 'en', 'default', 'small'),
-        ('user4', 'Bob Brown', 'Avid reader and art lover.', 'en', 'dark', 'medium'),
-        ('user5', 'Charlie Davis', 'Enjoys running and photography.', 'en', 'light', 'large');
+INSERT INTO users (user_id, user_name, user_introduction) VALUES
+        ('user1', 'John Doe', 'I love coding and exploring new technologies.'),
+        ('user2', 'Jane Smith', 'Traveler and food enthusiast.'),
+        ('user3', 'Alice Johnson', 'Passionate about movies and music.'),
+        ('user4', 'Bob Brown', 'Avid reader and art lover.'),
+        ('user5', 'Charlie Davis', 'Enjoys running and photography.');
 
 -- Insert sample data into the tweets table
 INSERT INTO tweets (user_id, content) VALUES
