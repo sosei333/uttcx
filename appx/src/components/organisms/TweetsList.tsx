@@ -157,7 +157,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             alignSelf="center"
             padding={2}
             height="90vh"
-            width="95%"
+            width="40vw"
         >
             {/* ローディング中のインジケータ */}
             {loading || !dataLoaded ? (
