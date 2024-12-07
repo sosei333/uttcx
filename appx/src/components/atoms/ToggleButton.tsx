@@ -19,7 +19,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
             variant={isActive ? 'contained' : 'outlined'}
             color="primary"
             onClick={onToggle}
-            sx={{maxWidth:'120px', height:'36px', alignSelf:"center"}}
+            sx={{maxWidth:'200px', height:'36px', alignSelf:"center"}}
         >
             {isActive ? activeText : inactiveText}
         </Button>

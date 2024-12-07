@@ -75,25 +75,35 @@ const Sidebar: React.FC = () => {
             </Box>
             <Box
                 sx={{
-                    p: 2,
+                    p: 0,
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 2,
+                    height: '100%', // 等間隔を確実にするための高さ指定
                     backgroundColor: sidebarBackgroundColor, // 背景カラーを統一
                 }}
             >
+                <Box  sx={{
+                    p: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%', // 等間隔を確実にするための高さ指定
+                    backgroundColor: sidebarBackgroundColor, // 背景カラーを統一
+                }}>
                 <Fab
                     onClick={handleOpenPostDialog}
                     aria-label="add"
-                    size="large"
                     color="primary"
-                    sx={{ alignSelf: 'center' }}
+                    sx={{ alignSelf: 'center',mt:10, width:'7vw', height: '7vw'
+                     }}
                 >
-                    <DrawOutlinedIcon />
+                    <DrawOutlinedIcon fontSize='large'/>
                 </Fab>
+                </Box>
                 <PostDialog open={postDialogOpen} onClose={handleClosePostDialog} />
                 <ChatDialog open={chatDialogOpen} onClose={handleCloseChatDialog} />
-                <SignOutButton />
+                <Box sx={{ alignSelf: 'center', pb: 3, width: '90%' }}> 
+                    <SignOutButton />
+                </Box>
             </Box>
         </Drawer>
     );

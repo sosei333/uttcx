@@ -74,8 +74,11 @@ const TweetAndReplies: React.FC = () => {
                 overflow: "hidden",
             }}
         >
-            {/* サイドバー */}
+            <Box sx={{width: '40vw'}}>
             <TweetList onViewDetails={handleViewDetails} />
+            </Box>
+            {/* サイドバー */}
+            
 
             {/* 投稿詳細とリプライ */}
             <Box

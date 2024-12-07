@@ -39,6 +39,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
     const auth = getAuth();
     const firebaseUser = auth.currentUser;
 
+        
     // Firebaseユーザーの情報を取得
     useEffect(() => {
         if (!firebaseUser) {
@@ -46,24 +47,34 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             return;
         }
 
-        const fetchUser = async () => {
+        const fetchUser = async (retryCount = 3, delay = 1000) => {
             setLoading(true);
-            try {
-                const userId = firebaseUser.uid;
-                const userName = await getUserNameByID(userId);
-                if (userName) {
-                    setCurrentUser({ user_id: userId, user_name: userName });
-                } else {
-                    console.error("ユーザー情報の取得に失敗しました");
+
+            for (let attempt = 0; attempt < retryCount; attempt++) {
+                try {
+                    const userId = firebaseUser.uid;
+                    const userName = await getUserNameByID(userId);
+
+                    if (userName) {
+                        setCurrentUser({ user_id: userId, user_name: userName });
+                        return; // 成功したら終了
+                    } else {
+                        console.error(`ユーザー情報の取得に失敗しました: 試行回数 ${attempt + 1}`);
+                    }
+                } catch (error) {
+                    console.error(`エラーが発生しました (試行回数: ${attempt + 1}):`, error);
                 }
-            } catch (error) {
-                console.error("エラーが発生しました:", error);
-            } finally {
-                setLoading(false);
+
+                // 次の試行まで遅延
+                if (attempt < retryCount - 1) {
+                    await new Promise((resolve) => setTimeout(resolve, delay));
+                }
             }
+
+            console.error("全ての試行が失敗しました");
         };
 
-        fetchUser();
+        fetchUser().finally(() => setLoading(false));
     }, [firebaseUser]);
 
     // データの一括取得 (いいね状態, フォロー状態, ツイート)
@@ -143,6 +154,7 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
+            alignSelf="center"
             padding={2}
             height="90vh"
             width="40vw"
