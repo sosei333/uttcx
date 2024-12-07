@@ -75,7 +75,7 @@ const Sidebar: React.FC = () => {
             </Box>
             <Box
                 sx={{
-                    p: 2,
+                    p: 0,
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%', // 等間隔を確実にするための高さ指定
@@ -83,7 +83,7 @@ const Sidebar: React.FC = () => {
                 }}
             >
                 <Box  sx={{
-                    p: 2,
+                    p: 0,
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%', // 等間隔を確実にするための高さ指定
@@ -92,17 +92,16 @@ const Sidebar: React.FC = () => {
                 <Fab
                     onClick={handleOpenPostDialog}
                     aria-label="add"
-                    size="large"
                     color="primary"
-                    sx={{ alignSelf: 'center',mt:10
+                    sx={{ alignSelf: 'center',mt:10, width:'7vw', height: '7vw'
                      }}
                 >
-                    <DrawOutlinedIcon />
+                    <DrawOutlinedIcon fontSize='large'/>
                 </Fab>
                 </Box>
                 <PostDialog open={postDialogOpen} onClose={handleClosePostDialog} />
                 <ChatDialog open={chatDialogOpen} onClose={handleCloseChatDialog} />
-                <Box sx={{ alignSelf: 'center', pb: 2, width: '100%' }}> {/* 下部に固定 */}
+                <Box sx={{ alignSelf: 'center', pb: 3, width: '90%' }}> 
                     <SignOutButton />
                 </Box>
             </Box>
