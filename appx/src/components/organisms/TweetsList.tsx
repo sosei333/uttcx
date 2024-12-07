@@ -66,6 +66,10 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
         fetchUser();
     }, [firebaseUser]);
 
+    if(!firebaseUser){
+        window.location.reload()
+    }
+
     // データの一括取得 (いいね状態, フォロー状態, ツイート)
     useEffect(() => {
         const fetchAllData = async () => {
@@ -143,9 +147,10 @@ const TweetList: React.FC<TweetListWithToggleProps> = ({ onViewDetails }) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
+            alignSelf="center"
             padding={2}
             height="90vh"
-            width="40vw"
+            width="95%"
         >
             {/* ローディング中のインジケータ */}
             {loading || !dataLoaded ? (
