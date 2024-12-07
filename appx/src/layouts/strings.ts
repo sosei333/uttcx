@@ -41,6 +41,14 @@ export type LocalizationStrings = {
   language: string;
   theme: string;
   fontSize: string;
+  aiQuestion1: string;
+  aiQuestion2: string;
+  aiQuestion3: string;
+  aiQuestion4: string;
+  aiPrompt1: string;
+  aiPrompt2: string;
+  aiPrompt3: string;
+  aiPrompt4: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -86,6 +94,14 @@ const localizationData: Record<string, LocalizationStrings> = {
     language: "Language",
     theme: "Theme",
     fontSize: "Font Size",
+    aiQuestion1: 'What is inappropriate?',
+    aiQuestion2: 'Translate into Japanese!',
+    aiQuestion3: 'Is it easy to read?',
+    aiQuestion4: 'Is the content interesting?',
+    aiPrompt1: 'If the following content contains inappropriate expressions, please point them out.',
+    aiPrompt2: 'Please translate the following post into Japanese.',
+    aiPrompt3: 'Please tell me if the following post is easy to read and suggest improvements if necessary.',
+    aiPrompt4: 'Please evaluate whether the following post is considered interesting.'
   },
   ja: {
     following: "フォロー中",
@@ -129,6 +145,14 @@ const localizationData: Record<string, LocalizationStrings> = {
     language: "言語",
     theme: "テーマ",
     fontSize: "フォントサイズ",
+    aiQuestion1: '不適切な内容は？',
+    aiQuestion2: '英語に翻訳して！',
+    aiQuestion3: '読みやすい？',
+    aiQuestion4: '面白い内容か？',
+    aiPrompt1: '以下の内容に不適切な表現が含まれている場合、指摘してください。',
+    aiPrompt2: '以下の投稿内容を英語に翻訳してください。',
+    aiPrompt3: '以下の投稿内容が読みやすいかどうか、改善点を教えてください。',
+    aiPrompt4: '以下の投稿が面白いと思われるかどうか評価してください。'
   },
 };
 
