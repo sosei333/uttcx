@@ -114,7 +114,7 @@ const ProfileBox: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          bgcolor: theme.palette.background.paper,
+          bgcolor: theme.palette.background.default,
         }}
       >
         <CircularProgress />
