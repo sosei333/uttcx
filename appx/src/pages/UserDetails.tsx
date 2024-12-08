@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getAllTweet } from '../services/tweet';
 import TweetBox from '../components/organisms/TweetBox';
-import { Box, CircularProgress, Typography, Paper } from '@mui/material';
+import { Box, CircularProgress, Typography, Paper, useTheme } from '@mui/material';
 import { useNavigate, useParams } from "react-router-dom";
 import UserDetailsBox from '../components/organisms/UserDetailsBox';
 import { UserProfile } from "../models/user_models";
 import { getUserNameByID } from '../services/user';
 import { getFollowingUsers } from '../services/follow';
+import { getLocalizedStrings} from '../layouts/strings';
 
 type Tweet = {
     id: number;
@@ -24,6 +25,9 @@ const UserDetails: React.FC = () => {
     const [loadingTweets, setLoadingTweets] = useState(true);
     const [followingUserIds, setFollowingUserIds] = useState<Set<string>>(new Set()); // フォロー中のユーザーIDを保存
     const navigate = useNavigate();
+    const strings = getLocalizedStrings();
+
+    const theme=useTheme();
 
     // ユーザー情報を取得する関数
     const fetchUser = async () => {
@@ -83,9 +87,10 @@ const UserDetails: React.FC = () => {
             alignItems="center"
             justifyContent="center"
             padding={2}
+            sx={{textAlign: 'center'}}
         >
             {/* ユーザー情報 */}
-            <Paper
+            {/* <Paper
                 elevation={3}
                 sx={{
                     padding: 3,
@@ -95,7 +100,7 @@ const UserDetails: React.FC = () => {
                     borderRadius: 3,
                     backgroundColor: '#f9f9f9',
                 }}
-            >
+            > */}
                 {loadingUser ? (
                     <CircularProgress />
                 ) : currentUser ? (
@@ -103,7 +108,7 @@ const UserDetails: React.FC = () => {
                 ) : (
                     <Typography color="error">ユーザー情報を取得できませんでした。</Typography>
                 )}
-            </Paper>
+            {/* </Paper> */}
 
             {/* ユーザーの投稿 */}
             <Box
@@ -112,11 +117,12 @@ const UserDetails: React.FC = () => {
                 overflow="auto"
                 padding={2}
                 width="60vh"
-                maxHeight="60vh"
+                maxHeight="57vh"
                 sx={{
                     backgroundColor: '#ffffff',
                     borderRadius: 3,
                     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                    border: `3px solid ${theme.palette.primary.light}`
                 }}
             >
                 {loadingTweets ? (
@@ -137,7 +143,7 @@ const UserDetails: React.FC = () => {
                     ))
                 ) : (
                     <Typography color="textSecondary" textAlign="center">
-                        このユーザーはまだ投稿していません。
+                        {strings.noTweets}
                     </Typography>
                 )}
             </Box>

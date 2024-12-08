@@ -53,6 +53,7 @@ export type LocalizationStrings = {
   uploading: string;
   selectFile: string;
   noBio: string;
+  noTweets: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -109,7 +110,8 @@ const localizationData: Record<string, LocalizationStrings> = {
     upload: 'Upload',
     uploading: 'Uploading...',
     selectFile: 'Select a file',
-    noBio: 'No bio available'
+    noBio: 'No bio available',
+    noTweets: "This user hasn't posted anything yet."
   },
   ja: {
     following: "フォロー中",
@@ -164,7 +166,8 @@ const localizationData: Record<string, LocalizationStrings> = {
     upload: "アップロード",
     uploading: "アップロード中",
     selectFile: "画像を選択してください",
-    noBio: '自己紹介がありません'
+    noBio: '自己紹介がありません',
+    noTweets: "このユーザーはまだ投稿していません。"
   },
 };
 
