@@ -163,7 +163,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
             borderRadius: "50%", // 角丸にする
             boxShadow: 2, // 軽い影を追加
             mt: 2, // マージン（上側）
-            ml:3
+            ml:3,
+            border: `3px solid ${theme.palette.primary.light}`
           }}
           alt="Uploaded Preview"
         />
