@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UserProfile } from "../../models/user_models";
-import { Box, Button, TextField, Typography, Card, CardContent, Input } from "@mui/material";
+import { Box, Button, TextField, Typography, Card, CardContent, Input, useTheme, Paper } from "@mui/material";
 import { getLocalizedStrings } from "../../layouts/strings";
 import { uploadImageToFirebase } from "../../services/image";
 import { PutURL } from "../../services/image";
@@ -19,6 +19,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
   const [bio, setBio] = useState(introduction); // 親から受け取った introduction を初期値に設定
   const [loading, setLoading] = useState(false);
   const messages = getLocalizedStrings();
+
+  const theme=useTheme();
 
 //=============
 
@@ -104,13 +106,18 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "90vh",
-        bgcolor: "#f5f5f5",
+        bgcolor: theme.palette.background.default,
       }}
     >
-      <Card sx={{ maxWidth: 400, padding: 2 }}>
+      <Card sx={{ maxWidth: 400, padding: 2,bgcolor: theme.palette.background.paper,borderRadius: 2,border: `2px solid ${theme.palette.primary.light}`, 
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center", }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
             {messages.editProfile}
@@ -156,7 +163,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
             borderRadius: "50%", // 角丸にする
             boxShadow: 2, // 軽い影を追加
             mt: 2, // マージン（上側）
-            ml:3
+            ml:3,
+            border: `3px solid ${theme.palette.primary.light}`
           }}
           alt="Uploaded Preview"
         />
@@ -184,11 +192,11 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
             />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+          <Button variant="contained" color='secondary' onClick={onCancel} disabled={loading}>
+              {messages.cancel}
+            </Button>
             <Button variant="contained" color="primary" onClick={handleSave} disabled={loading}>
               {loading ? messages.saving : messages.save}
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={onCancel} disabled={loading}>
-              {messages.cancel}
             </Button>
           </Box>
         </CardContent>
