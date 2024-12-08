@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import FollowButton from '../atoms/FollowButton';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase';
@@ -20,6 +20,7 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
     const [loading, setLoading] = useState<boolean>(true); // 全体のローディング状態を管理
     const [loadingIntroduction, setLoadingIntroduction] = useState<boolean>(true); // 自己紹介文のローディング状態を管理
     const [url, setUrl] = useState<string | null>(null); // 自己紹介文を管理
+    const theme=useTheme();
 
     // Firebaseから現在のユーザー情報を取得
     useEffect(() => {
@@ -111,7 +112,8 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
               height: "auto", // 高さを自動調整
               borderRadius: "50%", // 角丸にする
               boxShadow: 2, // 軽い影を追加
-              alignSelf: "center"
+              alignSelf: "center",
+              border: `3px solid ${theme.palette.primary.light}`
             }}
             alt="Uploaded Preview"
           />
