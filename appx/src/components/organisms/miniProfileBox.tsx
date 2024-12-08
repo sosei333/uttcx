@@ -206,7 +206,8 @@ const MiniProfileBox: React.FC = () => {
               height: "100px", // 高さを自動調整
               borderRadius: "50%", // 角丸にする
               boxShadow: 2, // 軽い影を追加
-              alignSelf: "center"
+              alignSelf: "center",
+              border: `3px solid ${theme.palette.primary.light}`
             }}
             alt="Uploaded Preview"
           />
