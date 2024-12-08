@@ -51,6 +51,7 @@ export type LocalizationStrings = {
   aiPrompt4: string;
   upload: string; 
   uploading: string;
+  selectFile: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -105,7 +106,8 @@ const localizationData: Record<string, LocalizationStrings> = {
     aiPrompt3: 'Please tell me if the following post is easy to read and suggest improvements if necessary.',
     aiPrompt4: 'Please evaluate whether the following post is considered interesting.',
     upload: 'Upload',
-    uploading: 'Uploading...'
+    uploading: 'Uploading...',
+    selectFile: 'Select a file',
   },
   ja: {
     following: "フォロー中",
@@ -159,6 +161,7 @@ const localizationData: Record<string, LocalizationStrings> = {
     aiPrompt4: '以下の投稿が面白いと思われるかどうか評価してください。',
     upload: "アップロード",
     uploading: "アップロード中",
+    selectFile: "画像を選択してください"
   },
 };
 

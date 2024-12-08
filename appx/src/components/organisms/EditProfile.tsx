@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UserProfile } from "../../models/user_models";
 import { Box, Button, TextField, Typography, Card, CardContent, Input } from "@mui/material";
 import { getLocalizedStrings } from "../../layouts/strings";
 import { uploadImageToFirebase } from "../../services/image";
 import { PutURL } from "../../services/image";
+import { getUserImageByID } from "../../services/image";
 
 interface EditProfileProps {
   user: UserProfile;
   introduction: string;
   onSave: (updatedUser: UserProfile, updatedIntroduction: string) => void;
   onCancel: () => void;
+  imgurl:string | null;
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, onCancel }) => {
+const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, onCancel, imgurl=null }) => {
   const [userName, setUserName] = useState(user.user_name);
   const [bio, setBio] = useState(introduction); // 親から受け取った introduction を初期値に設定
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [videoURL, setVideoURL] = useState<string>("");
+  const [url, setUrl] = useState<string | null>(null);
     // ファイル選択の処理
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files[0]) {
@@ -31,6 +34,27 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
         setFile(selectedFile);
       }
     };
+
+    useEffect(() => {
+      const fetchUser = async () => {
+        setLoading(true);
+        try {
+          const url = await getUserImageByID(user.user_id);
+          if (url) {
+            setUrl(url);
+          } else {
+            setUrl(imgurl)
+            throw new Error("Failed to fetch user information");
+          }
+        } catch (fetchError: any) {
+          console.error("Error fetching user data:", fetchError);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchUser(); // コンポーネントマウント時に実行
+    }, [user.user_id]); // user.user_id が変更されたときのみ再実行
 
     // アップロード処理
     const handleUpload = async () => {
@@ -43,6 +67,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
       try {
         const url = await uploadImageToFirebase(file, "image/");
         setVideoURL(url);
+        setUrl(url);
         alert("Video uploaded successfully!");
       } catch (error) {
         console.error("Failed to upload video:", error);
@@ -68,6 +93,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
         alert("An error occurred.");
       } finally {
         setLoading(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); // 成功メッセージを表示してからリロード
       }
     }
   };
@@ -89,14 +117,22 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
           </Typography>
 
           <Box sx={{ padding: 2 }}>
-      <Input
-        type="file"
-        onChange={handleFileChange}
-        sx={{
-          marginBottom: 2,
-          width: "100%",
-        }}
-      />
+          <Box>
+      <label htmlFor="file-input">
+        <Input
+          id="file-input"
+          type="file"
+          inputProps={{
+            accept: ".png", // PNGファイルのみ許可
+          }}
+          onChange={handleFileChange}
+          sx={{ display: "none" }} // Inputを非表示
+        />
+        <Button variant="contained" component="span">
+          {messages.selectFile}
+        </Button>
+      </label>
+    </Box>
       <Button
         variant="contained"
         color="primary"
@@ -110,20 +146,21 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, introduction, onSave, o
       >
         {uploading ? messages.uploading : messages.upload}
       </Button>
-      {videoURL && (
+      
         <Box
           component="img"
-          src={videoURL}
+          src={url || `${process.env.PUBLIC_URL}/logo.png`}
           sx={{
-            width: "50%", // 固定幅
-            height: "auto", // 高さを自動調整
+            width: "100px", // 固定幅
+            height: "100px", // 高さを自動調整
             borderRadius: "50%", // 角丸にする
             boxShadow: 2, // 軽い影を追加
             mt: 2, // マージン（上側）
+            ml:3
           }}
           alt="Uploaded Preview"
         />
-      )}
+
     </Box>
 
           <Box sx={{ marginBottom: 2 }}>
