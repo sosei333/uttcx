@@ -29,6 +29,10 @@ const FollowingList: React.FC = () => {
       setFollowingUserIds(new Set(followingUsers.map((user) => user.ID)));
     } catch (err) {
       console.error("Failed to fetch followed users:", err);
+    } finally{
+      setTimeout(() => {
+        fetchUsers(viewMode);
+      }, 100); 
     }
   };
 
@@ -53,7 +57,7 @@ const FollowingList: React.FC = () => {
   // 初期データの取得とモード変更時のデータ取得
   useEffect(() => {
     fetchFollowedUserIds();
-    fetchUsers(viewMode);
+    //fetchUsers(viewMode);
   }, [viewMode]);
 
   return (
