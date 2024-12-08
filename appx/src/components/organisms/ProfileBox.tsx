@@ -79,7 +79,7 @@ const ProfileBox: React.FC = () => {
       const isBioChanged = updatedIntroduction !== userIntroduction;
 
       if (!isNameChanged && !isBioChanged) {
-        alert("No changes detected");
+        // alert("No changes detected");
         setIsEditing(false);
         return;
       }
@@ -149,6 +149,7 @@ const ProfileBox: React.FC = () => {
         introduction={userIntroduction || ""}
         onSave={handleSave}
         onCancel={handleCancel}
+        imgurl={url}
       />
     );
   }
@@ -201,22 +202,19 @@ const ProfileBox: React.FC = () => {
         <Typography variant="h5" component="div" gutterBottom>
             {messages.profile}
           </Typography>
-          {(url!==null)?
           <Box
           component="img"
-            src={url}
+            src={url || `${process.env.PUBLIC_URL}/logo.png`}
             sx={{
-              width: '30%', // 横幅を親要素にフィット
+              width: '100px', // 横幅を親要素にフィット
               // 最大幅を指定
-              height: "auto", // 高さを自動調整
+              height: "100px", // 高さを自動調整
               borderRadius: "50%", // 角丸にする
               boxShadow: 2, // 軽い影を追加
               alignSelf: "center"
             }}
             alt="Uploaded Preview"
-          /> : 
-          <Typography>ありません</Typography>
-          }
+          />
           <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
             <strong>{messages.user} ID:</strong>
             <br />

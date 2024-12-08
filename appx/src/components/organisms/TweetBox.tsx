@@ -10,6 +10,7 @@ import { addLike, removeLike } from '../../services/like';
 import { addFollow, removeFollow } from '../../services/follow';
 import { Link } from '@mui/material'; // MUIのLinkコンポーネントを使用
 import { useNavigate } from 'react-router-dom';
+import { getUserImageByID } from '../../services/image';
 
 interface PostProps {
     tweet_id: number;
