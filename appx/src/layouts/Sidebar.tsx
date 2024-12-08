@@ -18,6 +18,7 @@ import Fab from '@mui/material/Fab';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 import ChatDialog from '../components/organisms/GeminiChatBox';
 import {useTheme} from '@mui/material';
+import MiniProfileBox from '../components/organisms/miniProfileBox';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
@@ -64,15 +65,15 @@ const Sidebar: React.FC = () => {
                 <List sx={{ mt: '10vh' }}>
                     {menuItems.map((item) => (
                         <ListItem key={item.text} disablePadding>
-                            <ListItemButton onClick={() => navigate(item.link)}>
+                            <ListItemButton onClick={() => navigate(item.link)} sx={{p:1}}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} sx={{fontSize:'5'}}/>
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
-                <Divider />
             </Box>
+            <Divider/>
             <Box
                 sx={{
                     p: 0,
@@ -93,17 +94,38 @@ const Sidebar: React.FC = () => {
                     onClick={handleOpenPostDialog}
                     aria-label="add"
                     color="primary"
-                    sx={{ alignSelf: 'center',mt:10, width:'7vw', height: '7vw'
+                    sx={{ alignSelf: 'center',mt:10, width:'6vw', height: '6vw'
                      }}
                 >
-                    <DrawOutlinedIcon fontSize='large'/>
+                    <DrawOutlinedIcon fontSize='medium'/>
                 </Fab>
                 </Box>
                 <PostDialog open={postDialogOpen} onClose={handleClosePostDialog} />
                 <ChatDialog open={chatDialogOpen} onClose={handleCloseChatDialog} />
-                <Box sx={{ alignSelf: 'center', pb: 3, width: '90%' }}> 
+                <Box sx={{width:'100%', 
+                    display: 'flex',
+                    flexDirection: "colum", 
+                    justifyContent: "center",
+                    alignItems: "center"}}> 
+                    <Box
+                    sx={{
+                        height: "100%", 
+                        width: "18vw", 
+                        display: "flex", // Flexbox を使用
+                        flexDirection: "column", // 子要素を縦方向に配置
+                        justifyContent: "center", // 上下中央寄せ
+                        alignItems: "center", // 左右中央寄せ
+                        pb: 3
+                    }}
+                    >
+                    <MiniProfileBox />
                     <SignOutButton />
+                    </Box>
+
                 </Box>
+                {/* <Box sx={{ alignSelf: 'center', pb: 3, width: '90%' }}> 
+                    <SignOutButton />
+                </Box> */}
             </Box>
         </Drawer>
     );

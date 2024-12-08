@@ -52,6 +52,7 @@ export type LocalizationStrings = {
   upload: string; 
   uploading: string;
   selectFile: string;
+  noBio: string;
 };
 
 const localizationData: Record<string, LocalizationStrings> = {
@@ -108,6 +109,7 @@ const localizationData: Record<string, LocalizationStrings> = {
     upload: 'Upload',
     uploading: 'Uploading...',
     selectFile: 'Select a file',
+    noBio: 'No bio available'
   },
   ja: {
     following: "フォロー中",
@@ -161,7 +163,8 @@ const localizationData: Record<string, LocalizationStrings> = {
     aiPrompt4: '以下の投稿が面白いと思われるかどうか評価してください。',
     upload: "アップロード",
     uploading: "アップロード中",
-    selectFile: "画像を選択してください"
+    selectFile: "画像を選択してください",
+    noBio: '自己紹介がありません'
   },
 };
 

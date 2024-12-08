@@ -9,6 +9,7 @@ import {
   CircularProgress,
   useTheme,
   Button,
+  Divider,
 } from "@mui/material";
 import EditButton from "../atoms/EditButton";
 import EditProfile from "./EditProfile";
@@ -20,7 +21,7 @@ import { getLocalizedStrings } from "../../layouts/strings";
 import ImageUploader from "./ImageUploader";
 import { getUserImageByID } from "../../services/image";
 
-const ProfileBox: React.FC = () => {
+const MiniProfileBox: React.FC = () => {
   const theme = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
@@ -53,7 +54,7 @@ const ProfileBox: React.FC = () => {
         const url = await getUserImageByID(userId)
         if (userName) {
           setCurrentUser({ user_id: userId, user_name: userName });
-          setUserIntroduction(userIntro || messages.noBio);
+          setUserIntroduction(userIntro || "No bio available");
           setUrl(url)
         } else {
           throw new Error("Failed to fetch user information");
@@ -68,10 +69,6 @@ const ProfileBox: React.FC = () => {
 
     fetchUser();
   }, [firebaseUser]);
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
   const handleSave = async (updatedUser: UserProfile, updatedIntroduction: string) => {
     try {
@@ -176,15 +173,16 @@ const ProfileBox: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "90vh",
+        height: "30vh",
+        width: '90%',
         bgcolor: theme.palette.background.default,
       }}
     >
       <Paper
         elevation={4}
         sx={{
-          padding: 2,
-          maxWidth: 500,
+          padding: 0,
+          width: '90%',
           bgcolor: theme.palette.background.paper,
           borderRadius: 2,
           border: `2px solid ${theme.palette.primary.light}`, // 枠線を追加
@@ -193,15 +191,12 @@ const ProfileBox: React.FC = () => {
       <Card sx={{ 
         display: "flex",
         maxWidth: 400, 
-        padding: 2, 
+        padding: 0, 
         boxShadow: "none" , 
         alignItems: "center",
         alignContent: "center", 
         justifyContent: "center"}}>
         <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
-            {messages.profile}
-          </Typography>
           <Box
           component="img"
             src={url || `${process.env.PUBLIC_URL}/logo.png`}
@@ -215,31 +210,12 @@ const ProfileBox: React.FC = () => {
             }}
             alt="Uploaded Preview"
           />
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-            <strong>{messages.user} ID:</strong>
-            <br />
-            {currentUser.user_id}
-          </Typography>
+          <Divider/>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
             <strong>{messages.name}:</strong>
             <br />
             {currentUser.user_name}
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-            <strong>{messages.introduction}:</strong>
-            <br />
-            {userIntroduction || messages.noBio}
-          </Typography>
-          <Box
-            sx={{
-              marginTop: 5,
-              display: "flex",
-              justifyContent: "space-around", // ボタン間のスペースを確保
-            }}
-          >
-            <EditButton onClick={handleEditClick} />
-            <ViewUserDetailsButton userID={currentUser.user_id} />
-          </Box>
         </CardContent>
       </Card>
       </Paper>
@@ -247,4 +223,4 @@ const ProfileBox: React.FC = () => {
   );
 };
 
-export default ProfileBox;
+export default MiniProfileBox;
