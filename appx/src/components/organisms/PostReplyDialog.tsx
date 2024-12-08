@@ -21,6 +21,8 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
   const [showPromptSelector, setShowPromptSelector] = React.useState(false);
   const [selectedPrompt, setSelectedPrompt] = React.useState(0);
 
+  const [error, setError] = React.useState<string | null>(null);
+
   // ユーザーに表示する質問文とAIに送る質問文を分ける
   const prompts = [
     { userPrompt: messages.aiQuestion1, aiPrompt: messages.aiPrompt1 },
@@ -28,8 +30,29 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
     { userPrompt: messages.aiQuestion3, aiPrompt: messages.aiPrompt3 },
     { userPrompt: messages.aiQuestion4, aiPrompt: messages.aiPrompt4 },
   ];
+  
 
+  const MAX_LENGTH = 280;
+
+  const validatePostText = (text: string) => {
+    if (!text.trim()) {
+      setError("投稿内容を入力してください"); // 空文字エラー
+
+      return false;
+    }
+    if (text.length > MAX_LENGTH) {
+      setError("文章が長すぎます"); // 長すぎるエラー
+
+      return false;
+    }
+    setError(null); // エラーがなければクリア
+    return true;
+  };
+  
   const handlePost = () => {
+    if (!validatePostText(postText)) {
+      alert(error)
+      return};
     postReply(parent_id, postText);
     setPostText('');
     onClose();
@@ -67,7 +90,9 @@ const PostReplyDialog: React.FC<PostDialogProps> = ({ open, parent_id, onClose }
         <TextField
           label={messages.content}
           value={postText}
-          onChange={(e) => setPostText(e.target.value)}
+          onChange={(e) => {
+            setPostText(e.target.value);
+            validatePostText(e.target.value); }}
           multiline
           minRows={4}
         />
