@@ -99,9 +99,10 @@ const UserDetailsBox: React.FC<UserDetailsBoxProps> = ({ userName, userId, isIni
             p={2}
             my={1}
             border="1px solid #ccc"
-            borderRadius={2}
+            borderRadius={5}
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
             width="100%"
+            sx={{border: `3px solid ${theme.palette.primary.light}`}}
         >
             <Box
             component="img"
