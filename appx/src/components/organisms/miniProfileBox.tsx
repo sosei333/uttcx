@@ -158,7 +158,7 @@ const MiniProfileBox: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "30vh",
           bgcolor: theme.palette.warning.light,
         }}
       >
